@@ -219,7 +219,7 @@ class Angle(object):
         # to make sure people could see how to add further C++-layer optimizations as needed.
         import coord
         sc = np.empty(2)
-        coord._lib.sincos(self._rad, coord._ffi.cast('double*', sc.ctypes.data))
+        coord._lib.coord_sincos(self._rad, coord._ffi.cast('double*', sc.ctypes.data))
         return sc
 
     def __str__(self):

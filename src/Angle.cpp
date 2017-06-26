@@ -26,7 +26,7 @@ extern "C" {
 #include "Angle_C.h"
 }
 
-void sincos(double theta, double* sc)
+void coord_sincos(double theta, double* sc)
 {
 #ifdef _GLIBCXX_HAVE_SINCOS
     ::sincos(theta,&sint,&cost);

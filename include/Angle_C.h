@@ -20,4 +20,5 @@
  * SOFTWARE.Copyright (c) 2013-2017 LSST Dark Energy Science Collaboration (DESC)
  */
 
-extern void sincos(double theta, double* sc);
+// Not called simply sincos to avoid nme clash with the normal function of that name.
+extern void coord_sincos(double theta, double* sc);
