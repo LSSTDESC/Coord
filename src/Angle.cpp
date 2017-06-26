@@ -29,7 +29,7 @@ extern "C" {
 void coord_sincos(double theta, double* sc)
 {
 #ifdef _GLIBCXX_HAVE_SINCOS
-    ::sincos(theta,&sint,&cost);
+    ::sincos(theta,&sc[0],&sc[1]);
 #else
     // If the native sincos function isn't available, then most compilers will still optimize
     // this into a single trig calculation.
