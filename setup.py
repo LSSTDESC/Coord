@@ -7,7 +7,8 @@ from setuptools import setup, Extension
 print('Python version = ',sys.version)
 py_version = "%d.%d"%sys.version_info[0:2]  # we check things based on the major.minor version.
 
-dependencies = ['numpy', 'cffi']
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
 
 sources = glob.glob(os.path.join('src','*.cpp'))
 print('sources = ',sources)
@@ -42,4 +43,4 @@ dist = setup(name="LSSTDESC.Coord",
       packages=['coord'],
       package_data={'coord' : headers },
       ext_modules=[ext],
-      install_requires=dependencies)
+      install_requires=required)
