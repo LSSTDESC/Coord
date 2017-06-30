@@ -770,5 +770,18 @@ class CelestialCoord(object):
                 self.ra == other.ra and self.dec == other.dec)
     def __ne__(self, other): return not self.__eq__(other)
 
+def _CelestialCoord(self, ra, dec):
+    """
+    Equivalent to CeletialCoord(ra,dec), but without some of the sanity checks.
 
+    It also doesn't wrap the RA to [-pi,pi), so if you care about that, you should make sure
+    `ra` is wrapped.
 
+    :param ra:       The right ascension.  Must be an Angle instance.
+    :param dec:      The declination.  Must be an Angle instance.
+    """
+    ret = CelestialCoord.__new__(CelestialCoord)
+    ret._ra = ra
+    ret._dec = dec
+    ret._x = None
+    return ret
