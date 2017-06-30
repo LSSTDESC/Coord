@@ -262,13 +262,13 @@ class Angle(object):
         An optional `sep` parameter can change the : to something else (e.g. a space or
         nothing at all).
 
-        Note: the reverse process is effected by HMS_Angle:
+        Note: the reverse process is effected by `from_hms`::
 
             >>> angle = -5.357 * coord.hours
             >>> hms = angle.hms()
             >>> print hms
             +18:38:34.80000000
-            >>> angle2 = coord.HMS_Angle(hms)
+            >>> angle2 = coord.from_hms(hms)
             >>> print angle2 / coord.hours
             18.643
             >>> print angle2 / coord.hours - 24
@@ -276,9 +276,9 @@ class Angle(object):
             >>> print angle2 - angle - 24 * coord.hours
             0.0 radians
 
-        @param sep      The token to put between the hh and mm, and beteen mm and ss. [default: ':']
+        :param sep:     The token to put between the hh and mm, and beteen mm and ss. [default: ':']
 
-        @returns a string of the HMS representation of the angle.
+        :returns: a string of the HMS representation of the angle.
         """
         # HMS convention is usually to have the hours between 0 and 24, not -12 and 12
         h = self.wrap(12. * hours) / hours
@@ -289,37 +289,78 @@ class Angle(object):
         An optional `sep` parameter can change the : to something else (e.g. a space or
         nothing at all).
 
-        Note: the reverse process is effected by DMS_Angle:
+        Note: the reverse process is effected by `from_dms`::
 
             >>> angle = -(5 * coord.degrees + 13 * coord.arcmin + 23 * coord.arcsec)
             >>> dms = angle.dms()
             >>> print dms
             -05:13:23.00000000
-            >>> angle2 = coord.DMS_Angle(dms)
+            >>> angle2 = coord.from_dms(dms)
             >>> print angle2 / coord.degrees
             -5.22305555556
             >>> print angle2 - angle
             0.0 radians
 
-        @param sep      The token to put between the dd and mm, and beteen mm and ss. [default: ':']
+        :param sep:     The token to put between the dd and mm, and beteen mm and ss. [default: ':']
 
-        @returns a string of the DMS representation of the angle.
+        :returns: a string of the DMS representation of the angle.
         """
         d = self.wrap() / degrees
         return self._make_dms_string(d,sep)
 
     @staticmethod
-    def parse_dms(dms):
+    def from_hms(str):
+        """Convert a string of the form hh:mm:ss.decimal into an Angle.
+
+        There may be an initial + or - (or neither), then two digits for the hours, two for the
+        minutes, and two for the seconds.  Then there may be a decimal point followed by more
+        digits.  There may be a colon separating hh, mm, and ss, or whitespace, or nothing at all.
+        In fact, the code will ignore any non-digits between the hours, minutes, and seconds.
+
+        Note: the reverse process is effected by Angle.hms():
+
+            >>> angle = -5.357 * coord.hours
+            >>> hms = angle.hms()
+            >>> print hms
+            +18:38:34.80000000
+            >>> angle2 = coord.from_hms(hms)
+            >>> print angle2 / coord.hours
+            18.643
+            >>> print angle2 / coord.hours - 24
+            -5.357
+            >>> print angle2 - angle - 24 * coord.hours
+            0.0 radians
+
+        :param str:     The string to parse.
+
+        :returns: the corresponding Angle instance
+        """
+        return Angle._parse_dms(str) * hours
+
+    @staticmethod
+    def from_dms(str):
+        """Convert a string of the form dd:mm:ss.decimal into an Angle.
+
+        There may be an initial + or - (or neither), then two digits for the degrees, two for the
+        minutes, and two for the seconds.  Then there may be a decimal point followed by more
+        digits.  There may be a colon separating dd, mm, and ss, or whitespace, or nothing at all.
+        In fact, the code will ignore any non-digits between the degrees, minutes, and seconds.
+
+        :param str:     The string to parse.
+
+        :returns: the corresponding Angle instance
+        """
+        return Angle._parse_dms(str) * degrees
+
+    @staticmethod
+    def _parse_dms(dms):
         """Convert a string of the form dd:mm:ss.decimal into decimal degrees."""
         sign = 1
         if dms[0] == '-':
             sign = -1
             dms = dms[1:]
-
         d, m, s = dms.split(':')
-
         return sign * (int(d) + int(m)/60. + float(s)/3600.)
-
 
 def _Angle(theta):
     """Equivalent to either `theta * coord.radians` or `Angle(theta, coord.radians)`, but without
@@ -328,43 +369,4 @@ def _Angle(theta):
     ret = Angle.__new__(Angle)
     ret._rad = theta
     return ret
-
-
-def HMS_Angle(str):
-    """Convert a string of the form hh:mm:ss.decimal into an Angle.
-
-    There may be an initial + or - (or neither), then two digits for the hours, two for the
-    minutes, and two for the seconds.  Then there may be a decimal point followed by more
-    digits.  There may be a colon separating hh, mm, and ss, or whitespace, or nothing at all.
-    In fact, the code will ignore any non-digits between the hours, minutes, and seconds.
-
-    Note: the reverse process is effected by Angle.hms():
-
-        >>> angle = -5.357 * coord.hours
-        >>> hms = angle.hms()
-        >>> print hms
-        +18:38:34.80000000
-        >>> angle2 = coord.HMS_Angle(hms)
-        >>> print angle2 / coord.hours
-        18.643
-        >>> print angle2 / coord.hours - 24
-        -5.357
-        >>> print angle2 - angle - 24 * coord.hours
-        0.0 radians
-
-    @returns the corresponding Angle instance
-    """
-    return Angle.parse_dms(str) * hours
-
-def DMS_Angle(str):
-    """Convert a string of the form dd:mm:ss.decimal into an Angle.
-
-    There may be an initial + or - (or neither), then two digits for the degrees, two for the
-    minutes, and two for the seconds.  Then there may be a decimal point followed by more
-    digits.  There may be a colon separating dd, mm, and ss, or whitespace, or nothing at all.
-    In fact, the code will ignore any non-digits between the degrees, minutes, and seconds.
-
-    @returns the corresponding Angle instance
-    """
-    return Angle.parse_dms(str) * degrees
 

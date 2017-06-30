@@ -49,5 +49,5 @@ _lib = _ffi.dlopen(lib_file)
 
 # Explicitly import things that we want to be in the coord namespace
 from .angleunit import AngleUnit, arcsec, arcmin, degrees, hours, radians
-from .angle import Angle, _Angle, DMS_Angle, HMS_Angle
+from .angle import Angle, _Angle
 from .celestial import CelestialCoord
