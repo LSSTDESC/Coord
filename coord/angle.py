@@ -28,92 +28,94 @@ import numpy as np
 from .angleunit import AngleUnit, radians, degrees, hours
 
 class Angle(object):
-    """A class representing an Angle.
+    """A class representing an Angle.  Angles are a value with an AngleUnit.
 
-    Initialization
-    --------------
+    **Initialization:**
 
-    Angles are a value with an AngleUnit.
+        You typically create an Angle by multiplying a number by a coord.AngleUnit, for example::
 
-    You typically create an Angle by multiplying a number by a coord.AngleUnit, for example::
+            >>> pixel = 0.27 * coord.arcsec
+            >>> ra = 13.4 * coord.hours
+            >>> dec = -32 * coord.degrees
+            >>> from math import pi
+            >>> theta = pi/2. * coord.radians
 
-        >>> pixel = 0.27 * coord.arcsec
-        >>> ra = 13.4 * coord.hours
-        >>> dec = -32 * coord.degrees
-        >>> from math import pi
-        >>> theta = pi/2. * coord.radians
+        You can also initialize explicitly, taking a value and a unit::
 
-    You can also initialize explicitly, taking a value and a unit::
+            >>> phi = coord.Angle(90, coord.degrees)
 
-        >>> phi = coord.Angle(90, coord.degrees)
+    **Built-in units:**
 
-    There are five built-in AngleUnits which are always available for use:
+        There are five built-in AngleUnits which are always available for use:
 
-        :coord.radians:   # = coord.AngleUnit(1.)
-        :coord.degrees:   # = coord.AngleUnit(pi / 180.)
-        :coord.hours:     # = coord.AngleUnit(pi / 12.)
-        :coord.arcmin:    # = coord.AngleUnit(pi / 180. / 60.)
-        :coord.arcsec:    # = coord.AngleUnit(pi / 180. / 3600.)
+            :coord.radians:   # = coord.AngleUnit(1.)
+            :coord.degrees:   # = coord.AngleUnit(pi / 180.)
+            :coord.hours:     # = coord.AngleUnit(pi / 12.)
+            :coord.arcmin:    # = coord.AngleUnit(pi / 180. / 60.)
+            :coord.arcsec:    # = coord.AngleUnit(pi / 180. / 3600.)
 
-    Radian access method
-    --------------------
+    **Attribute:**
 
-    Since extracting the value in radians is extremely common, we have an accessor method to do this
-    quickly::
+        Since extracting the value in radians is extremely common, we have a read-only attribute
+        to do this quickly:
 
-        >>> x = theta.rad
-        >>> print x
-        1.57079632679
+        :rad:       The measure of the unit in radians.
 
-    It is equivalent to the more verbose::
+        For example::
 
-        >>> x = theta / coord.radians
+            >>> x = theta.rad
+            >>> print x
+            1.57079632679
 
-    but without actually requiring the floating point operation of dividing by 1.
+        It is equivalent to the more verbose::
 
-    Operations
-    ----------
+            >>> x = theta / coord.radians
 
-    Allowed arithmetic with Angles include the following:
-    (In the list below, `x` is a float, `unit` is a coord.AngleUnit, `theta` is a coord.Angle)::
+        but without actually requiring the floating point operation of dividing by 1.
 
-        >>> theta = x * unit
-        >>> x = theta / unit
-        >>> theta3 = theta1 + theta2
-        >>> theta3 = theta1 - theta2
-        >>> theta2 = theta1 * x
-        >>> theta2 = x * theta1
-        >>> theta2 = theta1 / x
-        >>> theta2 = -theta1
-        >>> theta2 += theta1
-        >>> theta2 -= theta1
-        >>> theta *= x
-        >>> theta /= x
-        >>> x = unit1 / unit2   # equivalent to x = (1 * unit1) / unit2
+    **Arithmetic:**
 
-    Operations on NumPy arrays containing Angles are permitted, provided that they are within the
-    bounds of the allowed operations on Angles listed above (e.g., addition/subtraction of Angles,
-    multiplication of an Angle by a float, but not multiplication of Angles together).
+        Allowed arithmetic with Angles include the following:
+        (In the list below, `x` is a float, `unit` is a coord.AngleUnit, `theta` is a coord.Angle)::
 
-    There are convenience function for getting the sin, cos, and tan of an angle, along with
-    one for getting sin and cos together, which should be more efficient than doing sin and
-    cos separately:
+            >>> theta = x * unit
+            >>> x = theta / unit
+            >>> theta3 = theta1 + theta2
+            >>> theta3 = theta1 - theta2
+            >>> theta2 = theta1 * x
+            >>> theta2 = x * theta1
+            >>> theta2 = theta1 / x
+            >>> theta2 = -theta1
+            >>> theta2 += theta1
+            >>> theta2 -= theta1
+            >>> theta *= x
+            >>> theta /= x
+            >>> x = unit1 / unit2   # equivalent to x = (1 * unit1) / unit2
 
-        >>> sint = theta.sin()  # equivalent to sint = math.sin(theta.rad)
-        >>> cost = theta.cos()  # equivalent to cost = math.cos(theta.rad)
-        >>> tant = theta.tan()  # equivalent to tant = math.tan(theta.rad)
-        >>> sint, cost = theta.sincos()
+        Operations on NumPy arrays containing Angles are permitted, provided that they are within
+        the bounds of the allowed operations on Angles listed above (e.g., addition/subtraction of
+        Angles, multiplication of an Angle by a float, but not multiplication of Angles together).
 
-    Wrapping
-    --------
+    **Trigonometry:**
 
-    Depending on the context, theta = 2pi radians and theta = 0 radians are the same thing.
-    If you want your angles to be wrapped to [-pi,pi) radians, you can do this by calling
+        There are convenience function for getting the sin, cos, and tan of an angle, along with
+        one for getting sin and cos together, which should be more efficient than doing sin and
+        cos separately:
 
-        >>> theta = theta.wrap()
+            >>> sint = theta.sin()  # equivalent to sint = math.sin(theta.rad)
+            >>> cost = theta.cos()  # equivalent to cost = math.cos(theta.rad)
+            >>> tant = theta.tan()  # equivalent to tant = math.tan(theta.rad)
+            >>> sint, cost = theta.sincos()
 
-    This could be appropriate before testing for the equality of two angles for example, or
-    calculating the difference between them.
+    **Wrapping:**
+
+        Depending on the context, theta = 2pi radians and theta = 0 radians are the same thing.
+        If you want your angles to be wrapped to [-pi,pi) radians, you can do this by calling
+
+            >>> theta = theta.wrap()
+
+        This could be appropriate before testing for the equality of two angles for example, or
+        calculating the difference between them.
     """
     def __init__(self, theta, unit=None):
         """
@@ -188,9 +190,9 @@ class Angle(object):
 
             >>> theta = theta.wrap(center=180. * coord.degrees)
 
-        @param center   The center point of the wrapped range. [default: 0 radians]
+        :param center:  The center point of the wrapped range. [default: 0 radians]
 
-        @returns the equivalent angle within the range [center-pi, center+pi)
+        :returns: the equivalent angle within the range [center-pi, center+pi)
         """
         if center is None: center = _Angle(0.)
         start = center._rad - math.pi
@@ -366,6 +368,8 @@ class Angle(object):
 def _Angle(theta):
     """Equivalent to either `theta * coord.radians` or `Angle(theta, coord.radians)`, but without
     the normal overhead (which isn't much to be honest, but this is nonetheless slightly quicker).
+
+    :param theta:   The numerical value of the angle in radians.
     """
     ret = Angle.__new__(Angle)
     ret._rad = theta

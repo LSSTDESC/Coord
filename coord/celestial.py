@@ -38,58 +38,56 @@ class CelestialCoord(object):
     as finding the angular distance between two points in the sky, calculating the angles in
     spherical triangles, projecting from sky coordinates onto a Euclidean tangent plane, etc.
 
-    Initialization
-    --------------
+    **Initialization:**
 
-    A `CelestialCoord` object is constructed from the right ascension and declination::
+        A `CelestialCoord` object is constructed from the right ascension and declination::
 
-        >>> c = coord.CelestialCoord(ra, dec)
+            >>> c = coord.CelestialCoord(ra, dec)
 
-    where ra and dec must be `coord.Angle` instances.
+        where ra and dec must be `coord.Angle` instances.
 
-    Attributes
-    ----------
+    **Attributes:**
 
-    After construction, you can access the ra and dec values as read-only attributes::
+        A CelestialCoord has the following (read-only) attributes:
 
-        >>> ra = c.ra
-        >>> dec = c.dec
+            :ra:        The right ascension (an Angle instance)
+            :dec:       The declination (an Angle instance)
 
-    Sperical Geometry
-    -----------------
+        Note: the ra will be wrapped to lie within [-pi, pi) radians.
 
-    The basic spherical geometry operations are available to work with spherical triangles
+    **Sperical Geometry:**
 
-    For three coordinates cA, cB, cC making a spherical triangle, one can calculate the
-    sides and angles via::
+        The basic spherical geometry operations are available to work with spherical triangles
 
-        >>> a = cB.distanceTo(cC)
-        >>> b = cC.distanceTo(cA)
-        >>> c = cA.distanceTo(cB)
-        >>> A = cA.angleBetween(cB, cC)
-        >>> B = cA.angleBetween(cC, cA)
-        >>> C = cA.angleBetween(cA, cB)
+        For three coordinates cA, cB, cC making a spherical triangle, one can calculate the
+        sides and angles via::
 
-    All of these return values are coord.Angle instances.
+            >>> a = cB.distanceTo(cC)
+            >>> b = cC.distanceTo(cA)
+            >>> c = cA.distanceTo(cB)
+            >>> A = cA.angleBetween(cB, cC)
+            >>> B = cA.angleBetween(cC, cA)
+            >>> C = cA.angleBetween(cA, cB)
 
-    Projections
-    -----------
+        All of these return values are coord.Angle instances.
 
-    Local tangent plane projections of an area of the sky can be performed using the project
-    method::
+    **Projections:**
 
-        >>> u, v = center.project(sky_coord)
+        Local tangent plane projections of an area of the sky can be performed using the project
+        method::
 
-    and back::
+            >>> u, v = center.project(sky_coord)
 
-        >>> sky_coord = center.deproject(u,v)
+        and back::
 
-    where u,v are Angles and cente, sky_coord are CelestialCoords.
+            >>> sky_coord = center.deproject(u,v)
+
+        where u,v are Angles and cente, sky_coord are CelestialCoords.
     """
     def __init__(self, ra, dec):
         """
-        :param ra:       The right ascension in radians.  Must be an Angle instance.
-        :param dec:      The declination in radian.  Must be an Angle instance.
+        :param ra:       The right ascension.  Must be an Angle instance.
+        :param dec:      The declination.  Must be an Angle instance.
         """
         if not isinstance(ra, Angle):
             raise TypeError("ra must be a coord.Angle")
@@ -104,16 +102,35 @@ class CelestialCoord(object):
     def get_xyz(self):
         """Get the (x,y,z) coordinates on the unit sphere corresponding to this (RA, Dec).
 
+        .. math::
+
+            x &= \\cos(dec) \\cos(ra)  \\\\
+            y &= \\cos(dec) \\sin(ra)  \\\\
+            z &= \\sin(dec
+
         :returns: a tuple (x,y,z)
         """
         self._set_aux()
         return self._x, self._y, self._z
 
-    @classmethod
+    @staticmethod
     def from_xyz(cls, x, y, z):
         """Construct a CelestialCoord from a given (x,y,z) position in three dimensions.
 
-        The 3D (x,y,z) position does not need to fall on the unit sphere.
+        The 3D (x,y,z) position does not need to fall on the unit sphere.  The RA, Dec will
+        be inferred from the relations:
+
+        .. math::
+
+            x &= r \\cos(dec) \\cos(ra)  \\\\
+            y &= r \\cos(dec) \\sin(ra)  \\\\
+            z &= r \\sin(dec
+
+        where :math:`r` is arbitrary.
+
+        :param x:       The x position in 3 dimensions.  Corresponds to r cos(dec) cos(ra)
+        :param y:       The y position in 3 dimensions.  Corresponds to r cos(dec) sin(ra)
+        :param z:       The z position in 3 dimensions.  Corresponds to r sin(dec)
 
         :returns: a CelestialCoord instance
         """
@@ -130,10 +147,13 @@ class CelestialCoord(object):
 
     @property
     def ra(self):
-         return self._ra
+        """A read-only attribute, giving the Right Ascension as an Angle"""
+        return self._ra
 
     @property
-    def dec(self): return self._dec
+    def dec(self):
+        """A read-only attribute, giving the Declination as an Angle"""
+        return self._dec
 
     def _set_aux(self):
         if self._x is None:
@@ -143,9 +163,13 @@ class CelestialCoord(object):
             self._y = self._cosdec * self._sinra
             self._z = self._sindec
 
-    def distanceTo(self, other):
+    def distanceTo(self, coord2):
         """Returns the great circle distance between this coord and another one.
         The return value is an Angle object
+
+        :param coord2:      The CelestialCoordinate to calculate the distance to.
+
+        :returns: the great circle distance to `coord2`.
         """
         # The easiest way to do this in a way that is stable for small separations
         # is to calculate the (x,y,z) position on the unit sphere corresponding to each
@@ -156,13 +180,13 @@ class CelestialCoord(object):
         # z = sin(dec)
 
         self._set_aux()
-        other._set_aux()
+        coord2._set_aux()
 
         # The the direct distance between the two points is
         #
         # d^2 = (x1-x2)^2 + (y1-y2)^2 + (z1-z2)^2
 
-        dsq = (self._x-other._x)**2 + (self._y-other._y)**2 + (self._z-other._z)**2
+        dsq = (self._x-coord2._x)**2 + (self._y-coord2._y)**2 + (self._z-coord2._z)**2
 
         # This direct distance can then be converted to a great circle distance via
         #
@@ -171,14 +195,24 @@ class CelestialCoord(object):
         theta = 2. * math.asin(0.5 * math.sqrt(dsq))
         return _Angle(theta)
 
-    def angleBetween(self, coord1, coord2):
-        """Find the open angle at the location of the current coord between `coord1` and `coord2`.
+    def angleBetween(self, coord2, coord3):
+        """Find the open angle at the location of the current coord between `coord2` and `coord3`.
+
+        The current coordinate along with the two other coordinates form a spherical triangle
+        on the sky.  This function calculates the angle between the two sides at the location of
+        the current coordinate.
 
         Note that this returns a signed angle.  The angle is positive if the sweep direction from
-        coord1 to coord2 is counter-clockwise (as observed from Earth).  It is negative if
+        coord2 to coord3 is counter-clockwise (as observed from Earth).  It is negative if
         the direction is clockwise.
+
+        :param coord2:       A second CelestialCoord
+        :param coord3:       A third CelestialCoord
+
+        :returns: the angle between the great circles joining other two coordinates to the
+                  current coordinate.
         """
-        # Call A = coord1, B = coord2, C = self
+        # Call A = coord2, B = coord3, C = self
         # Then we are looking for the angle ACB.
         # If we treat each coord as a (x,y,z) vector, then we can use the following spherical
         # trig identities:
@@ -191,23 +225,31 @@ class CelestialCoord(object):
         # the case.
 
         self._set_aux()
-        coord1._set_aux()
         coord2._set_aux()
+        coord3._set_aux()
 
-        AxC = ( coord1._y * self._z - coord1._z * self._y ,
-                coord1._z * self._x - coord1._x * self._z ,
-                coord1._x * self._y - coord1._y * self._x )
-        BxC = ( coord2._y * self._z - coord2._z * self._y ,
+        AxC = ( coord2._y * self._z - coord2._z * self._y ,
                 coord2._z * self._x - coord2._x * self._z ,
                 coord2._x * self._y - coord2._y * self._x )
-        sinC = AxC[0] * coord2._x + AxC[1] * coord2._y + AxC[2] * coord2._z
+        BxC = ( coord3._y * self._z - coord3._z * self._y ,
+                coord3._z * self._x - coord3._x * self._z ,
+                coord3._x * self._y - coord3._y * self._x )
+        sinC = AxC[0] * coord3._x + AxC[1] * coord3._y + AxC[2] * coord3._z
         cosC = AxC[0] * BxC[0] + AxC[1] * BxC[1] + AxC[2] * BxC[2]
         C = math.atan2(sinC, cosC)
         return _Angle(C)
 
-    def area(self, coord1, coord2):
-        """Find the area of the spherical triangle defined by the current coord, `coord1`,
-        and `coord2`, returning the area in steradians.
+    def area(self, coord2, coord3):
+        """Find the area of a spherical triangle in streadians.
+
+        The current coordinate along with the two other coordinates form a spherical triangle
+        on the sky.  This function calculates the area of that spherical triangle, which is
+        measured in steradians (i.e. surface area of the triangle on the unit sphere).
+
+        :param coord2:       A second CelestialCoord
+        :param coord3:       A third CelestialCoord
+
+        :returns: the area in steradians of the given spherical triangle.
         """
         # The area of a spherical triangle is defined by the "spherical excess", E.
         # There are several formulae for E:
@@ -237,19 +279,19 @@ class CelestialCoord(object):
         #          = F / (4-da^2) (4-db^2)/4 + G)
 
         self._set_aux()
-        coord1._set_aux()
         coord2._set_aux()
+        coord3._set_aux()
 
-        AxC = ( coord1._y * self._z - coord1._z * self._y ,
-                coord1._z * self._x - coord1._x * self._z ,
-                coord1._x * self._y - coord1._y * self._x )
-        BxC = ( coord2._y * self._z - coord2._z * self._y ,
+        AxC = ( coord2._y * self._z - coord2._z * self._y ,
                 coord2._z * self._x - coord2._x * self._z ,
                 coord2._x * self._y - coord2._y * self._x )
-        F = AxC[0] * coord2._x + AxC[1] * coord2._y + AxC[2] * coord2._z
+        BxC = ( coord3._y * self._z - coord3._z * self._y ,
+                coord3._z * self._x - coord3._x * self._z ,
+                coord3._x * self._y - coord3._y * self._x )
+        F = AxC[0] * coord3._x + AxC[1] * coord3._y + AxC[2] * coord3._z
         G = AxC[0] * BxC[0] + AxC[1] * BxC[1] + AxC[2] * BxC[2]
-        dasq = (self._x-coord1._x)**2 + (self._y-coord1._y)**2 + (self._z-coord1._z)**2
-        dbsq = (self._x-coord2._x)**2 + (self._y-coord2._y)**2 + (self._z-coord2._z)**2
+        dasq = (self._x-coord2._x)**2 + (self._y-coord2._y)**2 + (self._z-coord2._z)**2
+        dbsq = (self._x-coord3._x)**2 + (self._y-coord3._y)**2 + (self._z-coord3._z)**2
 
         tanEo2 = F / ( 0.25 * (4.-dasq) * (4.-dbsq) + G)
         E = 2. * math.atan( abs(tanEo2) )
@@ -257,9 +299,9 @@ class CelestialCoord(object):
 
     _valid_projections = [None, 'gnomonic', 'stereographic', 'lambert', 'postel']
 
-    def project(self, other, projection=None):
+    def project(self, coord2, projection=None):
         """Use the currect coord as the center point of a tangent plane projection to project
-        the `other` coordinate onto that plane.
+        the `coord2` coordinate onto that plane.
 
         This function return a tuple (u,v) in the Euclidean coordinate system defined by
         a tangent plane projection around the current coordinate, with +v pointing north and
@@ -268,22 +310,26 @@ class CelestialCoord(object):
         There are currently four options for the projection, which you can specify with the
         optional `projection` keyword argument:
 
-            'gnomonic' [default] uses a gnomonic projection (i.e. a projection from the center of
+            :gnomonic: [default] uses a gnomonic projection (i.e. a projection from the center of
                     the sphere, which has the property that all great circles become straight
                     lines.  For more information, see
                     http://mathworld.wolfram.com/GnomonicProjection.html
                     This is the usual TAN projection used by most FITS images.
-            'stereographic' uses a stereographic proejection, which preserves angles, but
+            :stereographic: uses a stereographic proejection, which preserves angles, but
                     not area.  For more information, see
                     http://mathworld.wolfram.com/StereographicProjection.html
-            'lambert' uses a Lambert azimuthal projection, which preserves area, but not angles.
+            :lambert: uses a Lambert azimuthal projection, which preserves area, but not angles.
                     For more information, see
                     http://mathworld.wolfram.com/LambertAzimuthalEqual-AreaProjection.html
-            'postel' uses a Postel equidistant proejection, which preserves distances from
+            :postel: uses a Postel equidistant proejection, which preserves distances from
                     the projection point, but not area or angles.  For more information, see
                     http://mathworld.wolfram.com/AzimuthalEquidistantProjection.html
 
         The distance or angle errors increase with distance from the projection point of course.
+
+        :param coord2:      The coordinate to project onto the tangent plane.
+        :param projection:  The name of the projection to be used. [default: gnomonic, see above
+                            for other options]
 
         :returns: (u,v) as Angle instances
         """
@@ -291,15 +337,42 @@ class CelestialCoord(object):
             raise ValueError('Unknown projection ' + projection)
 
         self._set_aux()
-        other._set_aux()
+        coord2._set_aux()
 
         # The core calculation is done in a helper function:
-        u, v = self._project_core(other._cosra, other._sinra, other._cosdec, other._sindec,
-                                  projection)
+        u, v = self._project(coord2._cosra, coord2._sinra, coord2._cosdec, coord2._sindec,
+                             projection)
 
         return u * arcsec, v * arcsec
 
-    def _project_core(self, cosra, sinra, cosdec, sindec, projection):
+    def project_rad(self, ra, dec, projection=None):
+        """This is basically identical to the project() function except that the input `ra`, `dec`
+        are given in radians rather than packaged as a CelestialCoord object and the returned
+        u,v are given in arcsec.
+
+        The main advantage to this is that it will work if `ra` and `dec` are NumPy arrays, in which
+        case the output `u`, `v` will also be NumPy arrays.
+
+        :param ra:          The right ascension in radians to project onto the tangent plane.
+        :param dec:         The declination in radians to project onto the tangent plane.
+        :param projection:  The name of the projection to be used. [default: gnomonic, see `project`
+                            docstring for other options]
+
+        :returns: (u,v) in arcsec
+        """
+        if projection not in CelestialCoord._valid_projections:
+            raise ValueError('Unknown projection ' + projection)
+
+        self._set_aux()
+
+        cosra = np.cos(ra)
+        sinra = np.sin(ra)
+        cosdec = np.cos(dec)
+        sindec = np.sin(dec)
+
+        return self._project(cosra, sinra, cosdec, sindec, projection)
+
+    def _project(self, cosra, sinra, cosdec, sindec, projection):
         # The equations are given at the above mathworld websites.  They are the same except
         # for the definition of k:
         #
@@ -360,42 +433,51 @@ class CelestialCoord(object):
 
         return u, v
 
-    def project_rad(self, ra, dec, projection=None):
-        """This is basically identical to the project() function except that the input `ra`, `dec`
-        are given in radians rather than packaged as a CelestialCoord object and the returned
-        u,v are given in arcsec.
-
-        The main advantage to this is that it will work if `ra` and `dec` are NumPy arrays, in which
-        case the output `u`, `v` will also be NumPy arrays.
-        """
-        if projection not in CelestialCoord._valid_projections:
-            raise ValueError('Unknown projection ' + projection)
-
-        self._set_aux()
-
-        cosra = np.cos(ra)
-        sinra = np.sin(ra)
-        cosdec = np.cos(dec)
-        sindec = np.sin(dec)
-
-        return self._project_core(cosra, sinra, cosdec, sindec, projection)
-
     def deproject(self, u, v, projection=None):
         """Do the reverse process from the project() function.
 
         i.e. This takes in a position (u,v) and returns the corresponding celestial
         coordinate, using the current coordinate as the center point of the tangent plane
         projection.
+
+        :param u:           The u position on the tangent plane to deproject (must be an Angle
+                            instance)
+        :param v:           The v position on the tangent plane to deproject (must be an Angle
+                            instance)
+        :param projection:  The name of the projection to be used. [default: gnomonic, see `project`
+                            docstring for other options]
+
+        :returns: the corresponding CelestialCoord for that position.
         """
         if projection not in CelestialCoord._valid_projections:
             raise ValueError('Unknown projection ' + projection)
 
         # Again, do the core calculations in a helper function
-        ra, dec = self._deproject_core(u / arcsec, v / arcsec, projection)
+        ra, dec = self._deproject(u / arcsec, v / arcsec, projection)
 
         return CelestialCoord(_Angle(ra), _Angle(dec))
 
-    def _deproject_core(self, u, v, projection):
+    def deproject_rad(self, u, v, projection=None):
+        """This is basically identical to the deproject() function except that the output `ra`,
+        `dec` are returned as a tuple (ra, dec) in radians rather than packaged as a CelestialCoord
+        object and `u` and `v` are in arcsec rather than Angle instances.
+
+        The main advantage to this is that it will work if `u` and `v` are NumPy arrays, in which
+        case the output `ra`, `dec` will also be NumPy arrays.
+
+        :param u:           The u position in arcsec on the tangent plane to deproject
+        :param v:           The v position in arcsec on the tangent plane to deproject
+        :param projection:  The name of the projection to be used. [default: gnomonic, see `project`
+                            docstring for other options]
+
+        :returns: the corresponding RA, Dec in radians
+        """
+        if projection not in CelestialCoord._valid_projections:
+            raise ValueError('Unknown projection ' + projection)
+
+        return self._deproject(u, v, projection)
+
+    def _deproject(self, u, v, projection):
         # The inverse equations are also given at the same web sites:
         #
         # sin(dec) = cos(c) sin(dec0) + v sin(c) cos(dec0) / r
@@ -411,8 +493,8 @@ class CelestialCoord(object):
 
         # Convert from arcsec to radians
         factor = arcsec / radians
-        u *= factor
-        v *= factor
+        u = u * factor
+        v = v * factor
 
         # Note that we can rewrite the formulae as:
         #
@@ -468,36 +550,44 @@ class CelestialCoord(object):
 
         return ra, dec
 
-    def deproject_rad(self, u, v, projection=None):
-        """This is basically identical to the deproject() function except that the output `ra`,
-        `dec` are returned as a tuple (ra, dec) in radians rather than packaged as a CelestialCoord
-        object and `u` and `v` are in arcsec rather than Angle instances.
-
-        The main advantage to this is that it will work if `u` and `v` are NumPy arrays, in which
-        case the output `ra`, `dec` will also be NumPy arrays.
-        """
-        if projection not in CelestialCoord._valid_projections:
-            raise ValueError('Unknown projection ' + projection)
-
-        return self._deproject_core(u, v, projection)
-
-    def deproject_jac(self, u, v, projection=None):
+    def jac_deproject(self, u, v, projection=None):
         """Return the jacobian of the deprojection.
 
-        i.e. if the input position is (u,v) (in arcsec) then the return matrix is
+        i.e. if the input position is (u,v) then the return matrix is
 
-        J = ( dra/du cos(dec)  dra/dv cos(dec) )
-            (    ddec/du          ddec/dv      )
+        .. math::
+
+            J &= \\begin{bmatrix}
+                d\\textrm{ra}/du \\cos(\\textrm{dec}) & d\\textrm{ra}/dv \\cos(\\textrm{dec})  \\\\
+                        d\\textrm{dec}/du             &      d\\textrm{dec}/dv
+                 \\end{bmatrix}
+
+        :param u:           The u position (as an Angle instance) on the tangent plane
+        :param v:           The v position (as an Angle instance) on the tangent plane
+        :param projection:  The name of the projection to be used. [default: gnomonic, see `project`
+                            docstring for other options]
 
         :returns: the matrix as a tuple (J00, J01, J10, J11)
         """
         if projection not in CelestialCoord._valid_projections:
             raise ValueError('Unknown projection ' + projection)
+        return self._jac_deproject(self, u.rad(), v.rad(), projection)
 
+    def jac_deproject_arcsec(self, u, v, projection=None):
+        """Equivalent to `jac_deproject`, but the inputs are in arcsec and may be numpy
+        arrays.
+
+        :param u:           The u position (in arcsec) on the tangent plane
+        :param v:           The v position (in arcsec) on the tangent plane
+        :param projection:  The name of the projection to be used. [default: gnomonic, see `project`
+                            docstring for other options]
+
+        :returns: the matrix as a tuple (J00, J01, J10, J11)
+        """
         factor = arcsec / radians
-        u = u * factor
-        v = v * factor
+        return self._jac_deproject(self, u * factor, v * factor, projection)
 
+    def _jac_deproject(self, u, v, projection):
         # sin(dec) = cos(c) sin(dec0) + v sin(c)/r cos(dec0)
         # tan(ra-ra0) = u sin(c)/r / (cos(dec0) cos(c) - v sin(dec0) sin(c)/r)
         #
@@ -572,6 +662,11 @@ class CelestialCoord(object):
            It is adapted from a set of fortran subroutines based on (a) pages 30-34 of
            the Explanatory Supplement to the AE, (b) Lieske, et al. (1977) A&A 58, 1-16,
            and (c) Lieske (1979) A&A 73, 282-284.
+
+        :param from_epoch:  The epoch of the current coordinate
+        :param to_epoch:    The epoch of the returned precessed coordinate
+
+        :returns: a CelestialCoord object corresponding to the precessed position.
         """
         if from_epoch == to_epoch: return self
 

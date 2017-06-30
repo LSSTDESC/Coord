@@ -32,7 +32,7 @@ from .angle import Angle
 def sun_position_ecliptic(date):
     """Helper routine to calculate the position of the sun in ecliptic coordinates given a
     python datetime object.
-    
+
     It is most precise for dates between 1950-2050, and is based on
 
         http://en.wikipedia.org/wiki/Position_of_the_Sun#Ecliptic_coordinates
@@ -51,7 +51,7 @@ def sun_position_ecliptic(date):
 
 def date_to_julian_day(date):
     """Helper routine to return the Julian day for a given date.
-    
+
     If `date` is a datetime.datetime instance, then it uses the full time info.
     If `date` is a datetime.date, then it does the calculation for noon of that day.
 

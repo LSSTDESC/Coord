@@ -28,28 +28,29 @@ class AngleUnit(object):
     """
     A class for defining angular units used by Angle objects.
 
-    Initialization
-    --------------
+    **Initialization:**
 
-    An AngleUnit takes a single argument for initialization, a float that specifies the size of the
-    desired angular unit in radians.  For example::
+        An AngleUnit takes a single argument for initialization, a float that specifies the size
+        of the desired angular unit in radians.  For example::
 
-        >>> import math
-        >>> gradian = coord.AngleUnit(2. * math.pi / 400.)
+            >>> import math
+            >>> gradian = coord.AngleUnit(2. * math.pi / 400.)
 
-    There are five built-in AngleUnits which are always available for use:
+    **Built-in units:**
 
-        :coord.radians:   = coord.AngleUnit(1.)
-        :coord.degrees:   = coord.AngleUnit(pi / 180.)
-        :coord.hours:     = coord.AngleUnit(pi / 12.)
-        :coord.arcmin:    = coord.AngleUnit(pi / 180. / 60.)
-        :coord.arcsec:    = coord.AngleUnit(pi / 180. / 3600.)
+        There are five built-in AngleUnits which are always available for use:
 
-    Attributes
-    ----------
+            :coord.radians:   = `coord.AngleUnit(1.)`
+            :coord.degrees:   = `coord.AngleUnit(pi / 180.)`
+            :coord.hours:     = `coord.AngleUnit(pi / 12.)`
+            :coord.arcmin:    = `coord.AngleUnit(pi / 180. / 60.)`
+            :coord.arcsec:    = `coord.AngleUnit(pi / 180. / 3600.)`
 
-        :value:     (read-only) The measure of the unit in radians.
+    **Attribute:**
 
+        An AngleUnit as the following (read-only) attribute:
+
+        :value:     The measure of the unit in radians.
     """
     def __init__(self, value):
         """

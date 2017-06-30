@@ -1,0 +1,29 @@
+Notes on setting up Sphinx and publishing the docs on GitHub.
+
+First install Sphinx following the instructions here:
+
+http://www.sphinx-doc.org/en/stable/tutorial.html
+
+On a new project, run sphinx-quickstart.  (This has already been done here.)
+I used the default answers except for
+Project name: Coord
+Project version: 1.0 (although I don't think it uses this anywhere)
+autodoc: y
+doctest: y
+mathjax: y
+viewcode: y
+Create Windows command file: n
+
+
+The *.rst files in this directory constitute the source files for the documentation.
+As you can see, they mostly consist of importing the inline documentation from the
+classes and function definitions.  But you can add any additional documentation
+that you want in these files and Sphinx will render it for you.
+
+
+On GitHub, in the Settings, Options, GitHub Pages panel, select source:
+"master branch /docs folder".
+
+
+To update the documentation, run update_docs in this directory, commit and push.
+If this is for a new version, update the version number in the Makefile.
