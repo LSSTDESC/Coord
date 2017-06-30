@@ -28,6 +28,7 @@ import datetime
 
 from .angle import Angle, _Angle
 from .angleunit import radians, degrees, arcsec
+from . import util
 
 class CelestialCoord(object):
     """This class defines a position on the celestial sphere, normally given by two angles,
@@ -697,7 +698,7 @@ class CelestialCoord(object):
         # Get the obliquity of the ecliptic.
         if date is not None:
             epoch = date.year
-        ep = CelestialCoord._ecliptic_obliquity(epoch)
+        ep = util.ecliptic_obliquity(epoch)
         sin_ep, cos_ep = ep.sincos()
 
         # Coordinate transformation here, from celestial to ecliptic:
@@ -712,7 +713,7 @@ class CelestialCoord(object):
             # Find the sun position in ecliptic coordinates on this date.  We have to convert to
             # Julian day in order to use our helper routine to find the Sun position in ecliptic
             # coordinates.
-            lam_sun = CelestialCoord._sun_position_ecliptic(date)
+            lam_sun = util.sun_position_ecliptic(date)
             # Subtract it off, to get ecliptic coordinates relative to the sun.
             lam -= lam_sun
 
@@ -735,7 +736,7 @@ class CelestialCoord(object):
         :returns: the CelestialCoord corresponding to these ecliptic coordinates.
         """
         if date is not None:
-            lam += CelestialCoord._sun_position_ecliptic(date)
+            lam += util.sun_position_ecliptic(date)
 
         # Get the (x, y, z)_ecliptic from (lam, beta).
         sinbeta, cosbeta = beta.sincos()
@@ -747,7 +748,7 @@ class CelestialCoord(object):
         # Get the obliquity of the ecliptic.
         if date is not None:
             epoch = date.year
-        ep = CelestialCoord._ecliptic_obliquity(epoch)
+        ep = util.ecliptic_obliquity(epoch)
 
         # Transform to (x, y, z)_equatorial.
         sin_ep, cos_ep = ep.sincos()
@@ -769,58 +770,5 @@ class CelestialCoord(object):
                 self.ra == other.ra and self.dec == other.dec)
     def __ne__(self, other): return not self.__eq__(other)
 
-    # Some helper functions for the ecliptic functionality.
-    @staticmethod
-    def _sun_position_ecliptic(date):
-        """Helper routine to calculate the position of the sun in ecliptic coordinates given a
-        python datetime object.
-    
-        It is most precise for dates between 1950-2050, and is based on
 
-            http://en.wikipedia.org/wiki/Position_of_the_Sun#Ecliptic_coordinates
-        """
-        # We start by getting the number of days since Greenwich noon on 1 January 2000 (J2000).
-        jd = CelestialCoord._date_to_julian_day(date)
-        n = jd - 2451545.0
-        L = 280.46*degrees + (0.9856474*degrees) * n
-        g = 357.528*degrees + (0.9856003*degrees) * n
-        lam = L + (1.915*degrees)*g.sin() + (0.020*degrees)*(2*g).sin()
-        return lam
 
-    @staticmethod
-    def _date_to_julian_day(date):
-        """Helper routine to return the Julian day for a given date.
-    
-        If `date` is a datetime.datetime instance, then it uses the full time info.
-        If `date` is a datetime.date, then it does the calculation for noon of that day.
-        """
-        # From http://code-highlights.blogspot.com/2013/01/julian-date-in-python.html
-        if not (isinstance(date, datetime.date) or isinstance(date, datetime.datetime)):
-            raise ValueError("Date must be a python datetime object!")
-        a = (14. - date.month)//12
-        y = date.year + 4800 - a
-        m = date.month + 12*a - 3
-        retval = date.day + ((153*m + 2)//5) + 365*y + y//4 - y//100 + y//400 - 32045
-        if isinstance(date, datetime.datetime):
-            dayfrac = (date.hour + date.minute/60. + date.second/3600.)/24
-            # The default is the value at noon, so we want to add 0 if dayfrac = 0.5
-            dayfrac -= 0.5
-            retval += dayfrac
-        return retval
-
-    @staticmethod
-    def _ecliptic_obliquity(epoch):
-        """Helper routine to return the obliquity of the ecliptic for a given date.
-        """
-        # We need to figure out the time in Julian centuries from J2000 for this epoch.
-        t = (epoch - 2000.)/100.
-        # Then we use the last (most recent) formula listed under
-        # http://en.wikipedia.org/wiki/Ecliptic#Obliquity_of_the_ecliptic, from
-        # JPL's 2010 calculations.
-        ep = Angle.from_dms('23:26:21.406')
-        ep -= Angle.from_dms('00:00:46.836769')*t
-        ep -= Angle.from_dms('00:00:0.0001831')*(t**2)
-        ep += Angle.from_dms('00:00:0.0020034')*(t**3)
-        # There are even higher order terms, but they are probably not important for any reasonable
-        # calculation someone would do with this package.
-        return ep

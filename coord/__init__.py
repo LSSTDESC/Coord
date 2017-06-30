@@ -51,3 +51,4 @@ _lib = _ffi.dlopen(lib_file)
 from .angleunit import AngleUnit, arcsec, arcmin, degrees, hours, radians
 from .angle import Angle, _Angle
 from .celestial import CelestialCoord
+from . import util
