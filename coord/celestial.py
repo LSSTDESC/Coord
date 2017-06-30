@@ -464,7 +464,7 @@ class CelestialCoord(object):
         tandra_denom += cosc * self._cosdec
 
         dec = np.arcsin(sindec)
-        ra = self.ra.rad() + np.arctan2(tandra_num, tandra_denom)
+        ra = self.ra.rad + np.arctan2(tandra_num, tandra_denom)
 
         return ra, dec
 

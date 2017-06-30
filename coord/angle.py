@@ -61,7 +61,7 @@ class Angle(object):
     Since extracting the value in radians is extremely common, we have an accessor method to do this
     quickly::
 
-        >>> x = theta.rad()
+        >>> x = theta.rad
         >>> print x
         1.57079632679
 
@@ -99,9 +99,9 @@ class Angle(object):
     one for getting sin and cos together, which should be more efficient than doing sin and
     cos separately:
 
-        >>> sint = theta.sin()  # equivalent to sint = math.sin(theta.rad())
-        >>> cost = theta.cos()  # equivalent to cost = math.cos(theta.rad())
-        >>> tant = theta.tan()  # equivalent to tant = math.tan(theta.rad())
+        >>> sint = theta.sin()  # equivalent to sint = math.sin(theta.rad)
+        >>> cost = theta.cos()  # equivalent to cost = math.cos(theta.rad)
+        >>> tant = theta.tan()  # equivalent to tant = math.tan(theta.rad)
         >>> sint, cost = theta.sincos()
 
     Wrapping
@@ -133,6 +133,7 @@ class Angle(object):
             # Normal case
             self._rad = float(theta) * unit.value
 
+    @property
     def rad(self):
         """Return the Angle in radians.
 
@@ -226,10 +227,10 @@ class Angle(object):
         return str(self._rad) + ' radians'
 
     def __repr__(self):
-        return 'coord.Angle(%r, coord.radians)'%self.rad()
+        return 'coord.Angle(%r, coord.radians)'%self.rad
 
     def __eq__(self, other):
-        return isinstance(other,Angle) and self.rad() == other.rad()
+        return isinstance(other,Angle) and self.rad == other.rad
 
     def __ne__(self, other):
         return not self.__eq__(other)
