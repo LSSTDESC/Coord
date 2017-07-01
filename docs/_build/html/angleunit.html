@@ -28,7 +28,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Angles" href="angle.html" />
-    <link rel="prev" title="Overview" href="overview.html" /> 
+    <link rel="prev" title="Features" href="overview.html" /> 
   </head>
   <body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -41,7 +41,7 @@
           <a href="angle.html" title="Angles"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="overview.html" title="Overview"
+          <a href="overview.html" title="Features"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Coord 1.0 documentation</a> &#187;</li> 
       </ul>
@@ -50,7 +50,7 @@
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
   <p class="topless"><a href="overview.html"
-                        title="previous chapter">Overview</a></p>
+                        title="previous chapter">Features</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="angle.html"
                         title="next chapter">Angles</a></p>
@@ -141,6 +141,12 @@ of the desired angular unit in radians.  For example:</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="coord.AngleUnit.value">
+<code class="descname">value</code><a class="headerlink" href="#coord.AngleUnit.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>A read-only attribute giving the measure of the AngleUnit in radians.</p>
+</dd></dl>
+
 <dl class="staticmethod">
 <dt id="coord.AngleUnit.from_name">
 <em class="property">static </em><code class="descname">from_name</code><span class="sig-paren">(</span><em>unit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angleunit.html#AngleUnit.from_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.AngleUnit.from_name" title="Permalink to this definition">¶</a></dt>
@@ -149,13 +155,23 @@ of the desired angular unit in radians.  For example:</p>
 equivalent to ‘rad’.</p>
 <p>Valid options are:</p>
 <blockquote>
-<div>unit            returns
-—-            ——-
-rad             AngleUnit(1.)
-deg             AngleUnit(pi / 180.)
-hour or hr      AngleUnit(pi / 12.)
-arcmin          AngleUnit(pi / 180. / 60.)
-arcsec          AngleUnit(pi / 180. / 3600.)</div></blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">rad:</th><td class="field-body">AngleUnit(1.)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">deg:</th><td class="field-body">AngleUnit(pi / 180.)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">hour or hr:</th><td class="field-body">AngleUnit(pi / 12.)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">arcmin:</th><td class="field-body">AngleUnit(pi / 180. / 60.)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">arcsec:</th><td class="field-body">AngleUnit(pi / 180. / 3600.)</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -166,12 +182,6 @@ arcsec          AngleUnit(pi / 180. / 3600.)</div></blockquote>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="coord.AngleUnit.value">
-<code class="descname">value</code><a class="headerlink" href="#coord.AngleUnit.value" title="Permalink to this definition">¶</a></dt>
-<dd><p>A read-only attribute giving the measure of the AngleUnit in radians.</p>
 </dd></dl>
 
 </dd></dl>
@@ -194,7 +204,7 @@ arcsec          AngleUnit(pi / 180. / 3600.)</div></blockquote>
           <a href="angle.html" title="Angles"
              >next</a> |</li>
         <li class="right" >
-          <a href="overview.html" title="Overview"
+          <a href="overview.html" title="Features"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Coord 1.0 documentation</a> &#187;</li> 
       </ul>

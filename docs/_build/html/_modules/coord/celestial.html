@@ -96,7 +96,7 @@
     <span class="sd">&quot;&quot;&quot;This class defines a position on the celestial sphere, normally given by two angles,</span>
 <span class="sd">    `ra` and `dec`.</span>
 
-<span class="sd">    This class is used to perform various calculations in spherical coordinates, such</span>
+<span class="sd">    This class can be used to perform various calculations in spherical coordinates, such</span>
 <span class="sd">    as finding the angular distance between two points in the sky, calculating the angles in</span>
 <span class="sd">    spherical triangles, projecting from sky coordinates onto a Euclidean tangent plane, etc.</span>
 
@@ -144,7 +144,7 @@
 
 <span class="sd">            &gt;&gt;&gt; sky_coord = center.deproject(u,v)</span>
 
-<span class="sd">        where u,v are Angles and cente, sky_coord are CelestialCoords.</span>
+<span class="sd">        where u and v are Angles and center and sky_coord are CelestialCoords.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="CelestialCoord.__init__"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -160,6 +160,24 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dec must be between -90 deg and +90 deg.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span> <span class="o">=</span> <span class="n">dec</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Indicate that x,y,z are not set yet.</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ra</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A read-only attribute, giving the Right Ascension as an Angle&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A read-only attribute, giving the Declination as an Angle&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span>
+
+    <span class="k">def</span> <span class="nf">_set_aux</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sindec</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cosdec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span><span class="o">.</span><span class="n">sincos</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sinra</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cosra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span><span class="o">.</span><span class="n">sincos</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cosdec</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cosra</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cosdec</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sinra</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sindec</span>
 
 <div class="viewcode-block" id="CelestialCoord.get_xyz"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.get_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">get_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the (x,y,z) coordinates on the unit sphere corresponding to this (RA, Dec).</span>
@@ -207,24 +225,6 @@
         <span class="n">ret</span><span class="o">.</span><span class="n">_z</span> <span class="o">=</span> <span class="n">z</span><span class="o">/</span><span class="n">norm</span>
         <span class="k">return</span> <span class="n">ret</span></div>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">ra</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A read-only attribute, giving the Right Ascension as an Angle&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">dec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A read-only attribute, giving the Declination as an Angle&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span>
-
-    <span class="k">def</span> <span class="nf">_set_aux</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_sindec</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cosdec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span><span class="o">.</span><span class="n">sincos</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_sinra</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cosra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span><span class="o">.</span><span class="n">sincos</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cosdec</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cosra</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cosdec</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sinra</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sindec</span>
-
 <div class="viewcode-block" id="CelestialCoord.distanceTo"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.distanceTo">[docs]</a>    <span class="k">def</span> <span class="nf">distanceTo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord2</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns the great circle distance between this coord and another one.</span>
 <span class="sd">        The return value is an Angle object</span>
@@ -265,13 +265,13 @@
 <span class="sd">        the current coordinate.</span>
 
 <span class="sd">        Note that this returns a signed angle.  The angle is positive if the sweep direction from</span>
-<span class="sd">        coord2 to coord3 is counter-clockwise (as observed from Earth).  It is negative if</span>
+<span class="sd">        `coord2` to `coord3` is counter-clockwise (as observed from Earth).  It is negative if</span>
 <span class="sd">        the direction is clockwise.</span>
 
 <span class="sd">        :param coord2:       A second CelestialCoord</span>
 <span class="sd">        :param coord3:       A third CelestialCoord</span>
 
-<span class="sd">        :returns: the angle between the great circles joining other two coordinates to the</span>
+<span class="sd">        :returns: the angle between the great circles joining the other two coordinates to the</span>
 <span class="sd">                  current coordinate.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Call A = coord2, B = coord3, C = self</span>
@@ -302,7 +302,7 @@
         <span class="k">return</span> <span class="n">_Angle</span><span class="p">(</span><span class="n">C</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CelestialCoord.area"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.area">[docs]</a>    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord2</span><span class="p">,</span> <span class="n">coord3</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Find the area of a spherical triangle in streadians.</span>
+        <span class="sd">&quot;&quot;&quot;Find the area of a spherical triangle in steradians.</span>
 
 <span class="sd">        The current coordinate along with the two other coordinates form a spherical triangle</span>
 <span class="sd">        on the sky.  This function calculates the area of that spherical triangle, which is</span>
@@ -619,9 +619,10 @@
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">            J &amp;= \\begin{bmatrix}</span>
+<span class="sd">            J \\equiv \\begin{bmatrix} J00 &amp; J01 \\\\ J10 &amp; J11 \\end{bmatrix}</span>
+<span class="sd">              = \\begin{bmatrix}</span>
 <span class="sd">                d\\textrm{ra}/du \\cos(\\textrm{dec}) &amp; d\\textrm{ra}/dv \\cos(\\textrm{dec})  \\\\</span>
-<span class="sd">                        d\\textrm{dec}/du             &amp;      d\\textrm{dec}/dv </span>
+<span class="sd">                        d\\textrm{dec}/du             &amp;      d\\textrm{dec}/dv</span>
 <span class="sd">                 \\end{bmatrix}</span>
 
 <span class="sd">        :param u:           The u position (as an Angle instance) on the tangent plane</span>

@@ -94,12 +94,12 @@
 <div class="viewcode-block" id="sun_position_ecliptic"><a class="viewcode-back" href="../../util.html#coord.util.sun_position_ecliptic">[docs]</a><span class="k">def</span> <span class="nf">sun_position_ecliptic</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper routine to calculate the position of the sun in ecliptic coordinates given a</span>
 <span class="sd">    python datetime object.</span>
-<span class="sd">    </span>
+
 <span class="sd">    It is most precise for dates between 1950-2050, and is based on</span>
 
 <span class="sd">        http://en.wikipedia.org/wiki/Position_of_the_Sun#Ecliptic_coordinates</span>
 
-<span class="sd">    :param data:    The date as either a datetime.datetime instance or a datetime.date instance.</span>
+<span class="sd">    :param date:    The date as either a datetime.datetime instance or a datetime.date instance.</span>
 
 <span class="sd">    :returns the angular position of the sun along the ecliptic.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -113,7 +113,7 @@
 
 <div class="viewcode-block" id="date_to_julian_day"><a class="viewcode-back" href="../../util.html#coord.util.date_to_julian_day">[docs]</a><span class="k">def</span> <span class="nf">date_to_julian_day</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper routine to return the Julian day for a given date.</span>
-<span class="sd">    </span>
+
 <span class="sd">    If `date` is a datetime.datetime instance, then it uses the full time info.</span>
 <span class="sd">    If `date` is a datetime.date, then it does the calculation for noon of that day.</span>
 

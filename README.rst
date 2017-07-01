@@ -28,28 +28,22 @@ the accompanying LICENSE file with the distribution.
 Installation
 ============
 
-This module is mostly pure Python.  However, it does have a small bit of C++ code which is
-wrapped with cffi, which in turn depends on libffi.  Most modern Python installations will have
-this already installed, so you probably don't have to do anything special to use it.  However,
-if not, installing libffi is fairly straightforward.
+Installing libffi
+-----------------
 
-Installing libffi on a Mac
---------------------------
+This module is mostly pure Python.  However, it does have a small bit of C++ code, which is
+wrapped with cffi.  This in turn depends on libffi, which is not itself pip installable.
+Most modern Python installations will have this already installed, so you probably don't have
+to do anything special to use it.  However, if not, installing libffi is fairly straightforward:
 
-You should only need to run the command::
+On a Mac, you should only need to run the command::
 
     $ xcode-select --install
 
-Installing libffi on Linux
---------------------------
-
-If you have root access, then one of the following should work for you::
+On Linux, if you have root access, then one of the following should work for you::
 
     $ apt-get install libffi-dev
     $ yum install libffi-devel
-
-Installing libffi from source
------------------------------
 
 If you don't have root access (and don't want to bother your sysadmin), then installing from
 source into a {prefix} directory where you have write access (e.g. your home directory) is also
@@ -67,8 +61,8 @@ not very hard::
 Installing Coord
 ----------------
 
-Once you have done one of the above (or ignored that in the hope that you already have libffi
-installed), you can install Coord simply with::
+Once you have done one of the above (or not if you already have libffi installed), you can
+install Coord in the usual way with::
 
     $ python setup.py install --prefix={prefix}
 
@@ -82,15 +76,15 @@ Or any of the other usual variants of this command as you prefer.
 DESC DE School
 ==============
 
-For the DE School lesson on July 10, 2017, we will be designing some tests for this module, so
-I havve intentionally not ported over any of the existing tests that I have in the TreeCorr and
+For a DE School lesson on July 10, 2017, we will be designing some tests for this module, so
+I have intentionally not ported over any of the existing tests that I have in the TreeCorr and
 GalSim repositories related to that version of the code.  If you are planning to participate in
 the DE School lesson, then you are on your honor not to look at those tests.
 
 Prior to attending DE School, it would be a good idea to try to clone this repository and install
-the code.  If you have trouble, please ask on the #desc-bnl-sb-2017 Slack channel.  It will be
-helpful if you have the code already installed on your laptop, although you may certainly still
-participate even if not.
+the code.  If you have trouble, please ask for help on the #desc-bnl-sb-2017 Slack channel. 
+It will be helpful if you have the code already installed on your laptop, although you may
+certainly still participate even if not.
 
 After the end of the class I will add all the unit tests that I currently have for this module
 along with (hopefully) some that the class will have written.

@@ -1,18 +1,19 @@
 .. Coord documentation master file
 
+Overview
+========
+
+.. toctree::
+    overview
+
 Coord documentation
 ===================
 
 .. toctree::
-   :maxdepth: 1
-
-   overview
-
-.. toctree::
-   angleunit
-   angle
-   celestial
-   util
+    angleunit
+    angle
+    celestial
+    util
 
 
 Indices and tables

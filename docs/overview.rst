@@ -1,5 +1,5 @@
 
-Overview
+Features
 ========
 
 .. include:: ../README.rst

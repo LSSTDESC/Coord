@@ -34,7 +34,7 @@ class CelestialCoord(object):
     """This class defines a position on the celestial sphere, normally given by two angles,
     `ra` and `dec`.
 
-    This class is used to perform various calculations in spherical coordinates, such
+    This class can be used to perform various calculations in spherical coordinates, such
     as finding the angular distance between two points in the sky, calculating the angles in
     spherical triangles, projecting from sky coordinates onto a Euclidean tangent plane, etc.
 
@@ -82,7 +82,7 @@ class CelestialCoord(object):
 
             >>> sky_coord = center.deproject(u,v)
 
-        where u,v are Angles and cente, sky_coord are CelestialCoords.
+        where u and v are Angles and center and sky_coord are CelestialCoords.
     """
     def __init__(self, ra, dec):
         """
@@ -98,6 +98,24 @@ class CelestialCoord(object):
             raise ValueError("dec must be between -90 deg and +90 deg.")
         self._dec = dec
         self._x = None  # Indicate that x,y,z are not set yet.
+
+    @property
+    def ra(self):
+        """A read-only attribute, giving the Right Ascension as an Angle"""
+        return self._ra
+
+    @property
+    def dec(self):
+        """A read-only attribute, giving the Declination as an Angle"""
+        return self._dec
+
+    def _set_aux(self):
+        if self._x is None:
+            self._sindec, self._cosdec = self._dec.sincos()
+            self._sinra, self._cosra = self._ra.sincos()
+            self._x = self._cosdec * self._cosra
+            self._y = self._cosdec * self._sinra
+            self._z = self._sindec
 
     def get_xyz(self):
         """Get the (x,y,z) coordinates on the unit sphere corresponding to this (RA, Dec).
@@ -145,24 +163,6 @@ class CelestialCoord(object):
         ret._z = z/norm
         return ret
 
-    @property
-    def ra(self):
-        """A read-only attribute, giving the Right Ascension as an Angle"""
-        return self._ra
-
-    @property
-    def dec(self):
-        """A read-only attribute, giving the Declination as an Angle"""
-        return self._dec
-
-    def _set_aux(self):
-        if self._x is None:
-            self._sindec, self._cosdec = self._dec.sincos()
-            self._sinra, self._cosra = self._ra.sincos()
-            self._x = self._cosdec * self._cosra
-            self._y = self._cosdec * self._sinra
-            self._z = self._sindec
-
     def distanceTo(self, coord2):
         """Returns the great circle distance between this coord and another one.
         The return value is an Angle object
@@ -203,13 +203,13 @@ class CelestialCoord(object):
         the current coordinate.
 
         Note that this returns a signed angle.  The angle is positive if the sweep direction from
-        coord2 to coord3 is counter-clockwise (as observed from Earth).  It is negative if
+        `coord2` to `coord3` is counter-clockwise (as observed from Earth).  It is negative if
         the direction is clockwise.
 
         :param coord2:       A second CelestialCoord
         :param coord3:       A third CelestialCoord
 
-        :returns: the angle between the great circles joining other two coordinates to the
+        :returns: the angle between the great circles joining the other two coordinates to the
                   current coordinate.
         """
         # Call A = coord2, B = coord3, C = self
@@ -240,7 +240,7 @@ class CelestialCoord(object):
         return _Angle(C)
 
     def area(self, coord2, coord3):
-        """Find the area of a spherical triangle in streadians.
+        """Find the area of a spherical triangle in steradians.
 
         The current coordinate along with the two other coordinates form a spherical triangle
         on the sky.  This function calculates the area of that spherical triangle, which is
@@ -557,7 +557,8 @@ class CelestialCoord(object):
 
         .. math::
 
-            J &= \\begin{bmatrix}
+            J \\equiv \\begin{bmatrix} J00 & J01 \\\\ J10 & J11 \\end{bmatrix}
+              = \\begin{bmatrix}
                 d\\textrm{ra}/du \\cos(\\textrm{dec}) & d\\textrm{ra}/dv \\cos(\\textrm{dec})  \\\\
                         d\\textrm{dec}/du             &      d\\textrm{dec}/dv
                  \\end{bmatrix}

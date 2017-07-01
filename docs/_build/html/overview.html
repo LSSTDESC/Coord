@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Overview &#8212; Coord 1.0 documentation</title>
+    <title>Features &#8212; Coord 1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -28,7 +28,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Angle Units" href="angleunit.html" />
-    <link rel="prev" title="Coord documentation" href="index.html" /> 
+    <link rel="prev" title="Overview" href="index.html" /> 
   </head>
   <body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -41,7 +41,7 @@
           <a href="angleunit.html" title="Angle Units"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="index.html" title="Coord documentation"
+          <a href="index.html" title="Overview"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Coord 1.0 documentation</a> &#187;</li> 
       </ul>
@@ -50,12 +50,10 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Overview</a></li>
+<li><a class="reference internal" href="#">Features</a></li>
 <li><a class="reference internal" href="#licence">Licence</a></li>
 <li><a class="reference internal" href="#installation">Installation</a><ul>
-<li><a class="reference internal" href="#installing-libffi-on-a-mac">Installing libffi on a Mac</a></li>
-<li><a class="reference internal" href="#installing-libffi-on-linux">Installing libffi on Linux</a></li>
-<li><a class="reference internal" href="#installing-libffi-from-source">Installing libffi from source</a></li>
+<li><a class="reference internal" href="#installing-libffi">Installing libffi</a></li>
 <li><a class="reference internal" href="#installing-coord">Installing Coord</a></li>
 </ul>
 </li>
@@ -64,7 +62,7 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="index.html"
-                        title="previous chapter">Coord documentation</a></p>
+                        title="previous chapter">Overview</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="angleunit.html"
                         title="next chapter">Angle Units</a></p>
@@ -93,8 +91,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="overview">
-<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="features">
+<h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
 <a class="reference external image-reference" href="https://travis-ci.org/LSSTDESC/Coord"><img alt="https://api.travis-ci.org/LSSTDESC/Coord.svg?branch=master" src="https://api.travis-ci.org/LSSTDESC/Coord.svg?branch=master" /></a>
 <a class="reference external image-reference" href="https://codecov.io/gh/LSSTDESC/Coord"><img alt="https://codecov.io/gh/LSSTDESC/Coord/branch/master/graph/badge.svg" src="https://codecov.io/gh/LSSTDESC/Coord/branch/master/graph/badge.svg" /></a>
 <p>Coord is a Python module that provides basic functionality related to angles,
@@ -117,27 +115,21 @@ the accompanying LICENSE file with the distribution.</p>
 </div>
 <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>This module is mostly pure Python.  However, it does have a small bit of C++ code which is
-wrapped with cffi, which in turn depends on libffi.  Most modern Python installations will have
-this already installed, so you probably don’t have to do anything special to use it.  However,
-if not, installing libffi is fairly straightforward.</p>
-<div class="section" id="installing-libffi-on-a-mac">
-<h2>Installing libffi on a Mac<a class="headerlink" href="#installing-libffi-on-a-mac" title="Permalink to this headline">¶</a></h2>
-<p>You should only need to run the command:</p>
+<div class="section" id="installing-libffi">
+<h2>Installing libffi<a class="headerlink" href="#installing-libffi" title="Permalink to this headline">¶</a></h2>
+<p>This module is mostly pure Python.  However, it does have a small bit of C++ code, which is
+wrapped with cffi.  This in turn depends on libffi, which is not itself pip installable.
+Most modern Python installations will have this already installed, so you probably don’t have
+to do anything special to use it.  However, if not, installing libffi is fairly straightforward:</p>
+<p>On a Mac, you should only need to run the command:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ xcode-select --install
 </pre></div>
 </div>
-</div>
-<div class="section" id="installing-libffi-on-linux">
-<h2>Installing libffi on Linux<a class="headerlink" href="#installing-libffi-on-linux" title="Permalink to this headline">¶</a></h2>
-<p>If you have root access, then one of the following should work for you:</p>
+<p>On Linux, if you have root access, then one of the following should work for you:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ apt-get install libffi-dev
 $ yum install libffi-devel
 </pre></div>
 </div>
-</div>
-<div class="section" id="installing-libffi-from-source">
-<h2>Installing libffi from source<a class="headerlink" href="#installing-libffi-from-source" title="Permalink to this headline">¶</a></h2>
 <p>If you don’t have root access (and don’t want to bother your sysadmin), then installing from
 source into a {prefix} directory where you have write access (e.g. your home directory) is also
 not very hard:</p>
@@ -154,8 +146,8 @@ $ cd ..
 </div>
 <div class="section" id="installing-coord">
 <h2>Installing Coord<a class="headerlink" href="#installing-coord" title="Permalink to this headline">¶</a></h2>
-<p>Once you have done one of the above (or ignored that in the hope that you already have libffi
-installed), you can install Coord simply with:</p>
+<p>Once you have done one of the above (or not if you already have libffi installed), you can
+install Coord in the usual way with:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ python setup.py install --prefix={prefix}
 </pre></div>
 </div>
@@ -168,14 +160,14 @@ installed), you can install Coord simply with:</p>
 </div>
 <div class="section" id="desc-de-school">
 <h1>DESC DE School<a class="headerlink" href="#desc-de-school" title="Permalink to this headline">¶</a></h1>
-<p>For the DE School lesson on July 10, 2017, we will be designing some tests for this module, so
-I havve intentionally not ported over any of the existing tests that I have in the TreeCorr and
+<p>For a DE School lesson on July 10, 2017, we will be designing some tests for this module, so
+I have intentionally not ported over any of the existing tests that I have in the TreeCorr and
 GalSim repositories related to that version of the code.  If you are planning to participate in
 the DE School lesson, then you are on your honor not to look at those tests.</p>
 <p>Prior to attending DE School, it would be a good idea to try to clone this repository and install
-the code.  If you have trouble, please ask on the #desc-bnl-sb-2017 Slack channel.  It will be
-helpful if you have the code already installed on your laptop, although you may certainly still
-participate even if not.</p>
+the code.  If you have trouble, please ask for help on the #desc-bnl-sb-2017 Slack channel.
+It will be helpful if you have the code already installed on your laptop, although you may
+certainly still participate even if not.</p>
 <p>After the end of the class I will add all the unit tests that I currently have for this module
 along with (hopefully) some that the class will have written.</p>
 </div>
@@ -196,7 +188,7 @@ along with (hopefully) some that the class will have written.</p>
           <a href="angleunit.html" title="Angle Units"
              >next</a> |</li>
         <li class="right" >
-          <a href="index.html" title="Coord documentation"
+          <a href="index.html" title="Overview"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Coord 1.0 documentation</a> &#187;</li> 
       </ul>

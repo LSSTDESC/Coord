@@ -90,13 +90,11 @@ class AngleUnit(object):
 
         Valid options are:
 
-            unit            returns
-            ----            -------
-            rad             AngleUnit(1.)
-            deg             AngleUnit(pi / 180.)
-            hour or hr      AngleUnit(pi / 12.)
-            arcmin          AngleUnit(pi / 180. / 60.)
-            arcsec          AngleUnit(pi / 180. / 3600.)
+            :rad:             AngleUnit(1.)
+            :deg:             AngleUnit(pi / 180.)
+            :hour or hr:    AngleUnit(pi / 12.)
+            :arcmin:          AngleUnit(pi / 180. / 60.)
+            :arcsec:          AngleUnit(pi / 180. / 3600.)
 
         :param unit:    The string name of the unit to return
 

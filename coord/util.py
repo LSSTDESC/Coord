@@ -37,7 +37,7 @@ def sun_position_ecliptic(date):
 
         http://en.wikipedia.org/wiki/Position_of_the_Sun#Ecliptic_coordinates
 
-    :param data:    The date as either a datetime.datetime instance or a datetime.date instance.
+    :param date:    The date as either a datetime.datetime instance or a datetime.date instance.
 
     :returns the angular position of the sun along the ecliptic.
     """

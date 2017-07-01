@@ -3,7 +3,7 @@ Utility Functions
 
 .. note::
     The functions in this module are not in the `coord` namespace.  They are in the `coord.util`
-    namespace.  To use them, you need to write the whole name.  e.g.::
+    namespace.  To use them, you need to write, e.g.::
 
         jd = coord.util.date_to_julian_day(datetime.datetime.now())
 
