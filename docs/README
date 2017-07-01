@@ -22,7 +22,9 @@ that you want in these files and Sphinx will render it for you.
 
 
 On GitHub, in the Settings, Options, GitHub Pages panel, select source:
-"master branch /docs folder".
+"master branch /docs folder".  This will make the /docs directory the root of the
+gh-pages site, so I use an index.html in this directory that just redirects to the
+_build/html/index.html file that Sphix builds.
 
 
 To update the documentation, run update_docs in this directory, commit and push.

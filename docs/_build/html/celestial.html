@@ -1,0 +1,651 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Celestial Coordinates &#8212; Coord 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Utility Functions" href="util.html" />
+    <link rel="prev" title="Angles" href="angle.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="util.html" title="Utility Functions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="angle.html" title="Angles"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Coord 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="celestial-coordinates">
+<h1>Celestial Coordinates<a class="headerlink" href="#celestial-coordinates" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="coord.CelestialCoord">
+<em class="property">class </em><code class="descclassname">coord.</code><code class="descname">CelestialCoord</code><span class="sig-paren">(</span><em>ra</em>, <em>dec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class defines a position on the celestial sphere, normally given by two angles,
+<cite>ra</cite> and <cite>dec</cite>.</p>
+<p>This class is used to perform various calculations in spherical coordinates, such
+as finding the angular distance between two points in the sky, calculating the angles in
+spherical triangles, projecting from sky coordinates onto a Euclidean tangent plane, etc.</p>
+<p><strong>Initialization:</strong></p>
+<blockquote>
+<div><p>A <cite>CelestialCoord</cite> object is constructed from the right ascension and declination:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">CelestialCoord</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where ra and dec must be <cite>coord.Angle</cite> instances.</p>
+</div></blockquote>
+<p><strong>Attributes:</strong></p>
+<blockquote>
+<div><p>A CelestialCoord has the following (read-only) attributes:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ra:</th><td class="field-body">The right ascension (an Angle instance)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">dec:</th><td class="field-body">The declination (an Angle instance)</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>Note: the ra will be wrapped to lie within [-pi, pi) radians.</p>
+</div></blockquote>
+<p><strong>Sperical Geometry:</strong></p>
+<blockquote>
+<div><p>The basic spherical geometry operations are available to work with spherical triangles</p>
+<p>For three coordinates cA, cB, cC making a spherical triangle, one can calculate the
+sides and angles via:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">cB</span><span class="o">.</span><span class="n">distanceTo</span><span class="p">(</span><span class="n">cC</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">cC</span><span class="o">.</span><span class="n">distanceTo</span><span class="p">(</span><span class="n">cA</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">cA</span><span class="o">.</span><span class="n">distanceTo</span><span class="p">(</span><span class="n">cB</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">cA</span><span class="o">.</span><span class="n">angleBetween</span><span class="p">(</span><span class="n">cB</span><span class="p">,</span> <span class="n">cC</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">cA</span><span class="o">.</span><span class="n">angleBetween</span><span class="p">(</span><span class="n">cC</span><span class="p">,</span> <span class="n">cA</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="n">cA</span><span class="o">.</span><span class="n">angleBetween</span><span class="p">(</span><span class="n">cA</span><span class="p">,</span> <span class="n">cB</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>All of these return values are coord.Angle instances.</p>
+</div></blockquote>
+<p><strong>Projections:</strong></p>
+<blockquote>
+<div><p>Local tangent plane projections of an area of the sky can be performed using the project
+method:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">center</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">sky_coord</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and back:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sky_coord</span> <span class="o">=</span> <span class="n">center</span><span class="o">.</span><span class="n">deproject</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where u,v are Angles and cente, sky_coord are CelestialCoords.</p>
+</div></blockquote>
+<dl class="method">
+<dt id="coord.CelestialCoord.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>ra</em>, <em>dec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ra</strong> – The right ascension.  Must be an Angle instance.</li>
+<li><strong>dec</strong> – The declination.  Must be an Angle instance.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.CelestialCoord.angleBetween">
+<code class="descname">angleBetween</code><span class="sig-paren">(</span><em>coord2</em>, <em>coord3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.angleBetween"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.angleBetween" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the open angle at the location of the current coord between <cite>coord2</cite> and <cite>coord3</cite>.</p>
+<p>The current coordinate along with the two other coordinates form a spherical triangle
+on the sky.  This function calculates the angle between the two sides at the location of
+the current coordinate.</p>
+<p>Note that this returns a signed angle.  The angle is positive if the sweep direction from
+coord2 to coord3 is counter-clockwise (as observed from Earth).  It is negative if
+the direction is clockwise.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>coord2</strong> – A second CelestialCoord</li>
+<li><strong>coord3</strong> – A third CelestialCoord</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the angle between the great circles joining other two coordinates to the
+current coordinate.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.CelestialCoord.area">
+<code class="descname">area</code><span class="sig-paren">(</span><em>coord2</em>, <em>coord3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the area of a spherical triangle in streadians.</p>
+<p>The current coordinate along with the two other coordinates form a spherical triangle
+on the sky.  This function calculates the area of that spherical triangle, which is
+measured in steradians (i.e. surface area of the triangle on the unit sphere).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>coord2</strong> – A second CelestialCoord</li>
+<li><strong>coord3</strong> – A third CelestialCoord</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the area in steradians of the given spherical triangle.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="coord.CelestialCoord.dec">
+<code class="descname">dec</code><a class="headerlink" href="#coord.CelestialCoord.dec" title="Permalink to this definition">¶</a></dt>
+<dd><p>A read-only attribute, giving the Declination as an Angle</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.CelestialCoord.deproject">
+<code class="descname">deproject</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.deproject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.deproject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do the reverse process from the project() function.</p>
+<p>i.e. This takes in a position (u,v) and returns the corresponding celestial
+coordinate, using the current coordinate as the center point of the tangent plane
+projection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> – The u position on the tangent plane to deproject (must be an Angle
+instance)</li>
+<li><strong>v</strong> – The v position on the tangent plane to deproject (must be an Angle
+instance)</li>
+<li><strong>projection</strong> – The name of the projection to be used. [default: gnomonic, see <cite>project</cite>
+docstring for other options]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the corresponding CelestialCoord for that position.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.CelestialCoord.deproject_rad">
+<code class="descname">deproject_rad</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.deproject_rad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.deproject_rad" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is basically identical to the deproject() function except that the output <cite>ra</cite>,
+<cite>dec</cite> are returned as a tuple (ra, dec) in radians rather than packaged as a CelestialCoord
+object and <cite>u</cite> and <cite>v</cite> are in arcsec rather than Angle instances.</p>
+<p>The main advantage to this is that it will work if <cite>u</cite> and <cite>v</cite> are NumPy arrays, in which
+case the output <cite>ra</cite>, <cite>dec</cite> will also be NumPy arrays.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> – The u position in arcsec on the tangent plane to deproject</li>
+<li><strong>v</strong> – The v position in arcsec on the tangent plane to deproject</li>
+<li><strong>projection</strong> – The name of the projection to be used. [default: gnomonic, see <cite>project</cite>
+docstring for other options]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the corresponding RA, Dec in radians</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.CelestialCoord.distanceTo">
+<code class="descname">distanceTo</code><span class="sig-paren">(</span><em>coord2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.distanceTo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.distanceTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the great circle distance between this coord and another one.
+The return value is an Angle object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>coord2</strong> – The CelestialCoordinate to calculate the distance to.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the great circle distance to <cite>coord2</cite>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.CelestialCoord.ecliptic">
+<code class="descname">ecliptic</code><span class="sig-paren">(</span><em>epoch=2000.0</em>, <em>date=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.ecliptic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.ecliptic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the longitude and latitude in ecliptic coordinates corresponding to this position.</p>
+<p>The <cite>epoch</cite> parameter is used to get an accurate value for the (time-varying) obliquity of
+the ecliptic.  The formulae for this are quite straightforward.  It requires just a single
+parameter for the transformation, the obliquity of the ecliptic (the Earth’s axial tilt).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>epoch</strong> – The epoch to be used for estimating the obliquity of the ecliptic, if
+<cite>date</cite> is None.  But if <cite>date</cite> is given, then use that to determine the
+epoch.  [default: 2000.]</li>
+<li><strong>date</strong> – If a date is given as a python datetime object, then return the
+position in ecliptic coordinates with respect to the sun position at
+that date.  If None, then return the true ecliptic coordiantes.
+[default: None]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the longitude and latitude as a tuple (lambda, beta), given as Angle instances.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="coord.CelestialCoord.from_ecliptic">
+<em class="property">static </em><code class="descname">from_ecliptic</code><span class="sig-paren">(</span><em>lam</em>, <em>beta</em>, <em>epoch=2000.0</em>, <em>date=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.from_ecliptic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.from_ecliptic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a CelestialCoord from the given ecliptic coordinates</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lam</strong> – The longitude in ecliptic coordinates (an Angle instance)</li>
+<li><strong>beta</strong> – The latitude in ecliptic coordinates (an Angle instance)</li>
+<li><strong>epoch</strong> – The epoch to be used for estimating the obliquity of the ecliptic, if
+<cite>date</cite> is None.  But if <cite>date</cite> is given, then use that to determine the
+epoch.  [default: 2000.]</li>
+<li><strong>date</strong> – If a date is given as a python datetime object, then return the
+position in ecliptic coordinates with respect to the sun position at
+that date.  If None, then return the true ecliptic coordiantes.
+[default: None]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the CelestialCoord corresponding to these ecliptic coordinates.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="coord.CelestialCoord.from_galactic">
+<em class="property">static </em><code class="descname">from_galactic</code><span class="sig-paren">(</span><em>el</em>, <em>b</em>, <em>epoch=2000.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.from_galactic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.from_galactic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a CelestialCoord from the given galactic coordinates</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>el</strong> – The longitude in galactic coordinates (an Angle instance)</li>
+<li><strong>b</strong> – The latitude in galactic coordinates (an Angle instance)</li>
+<li><strong>epoch</strong> – The epoch of the returned coordinate. [default: 2000.]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the CelestialCoord corresponding to these galactic coordinates.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="coord.CelestialCoord.from_xyz">
+<em class="property">static </em><code class="descname">from_xyz</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.from_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.from_xyz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a CelestialCoord from a given (x,y,z) position in three dimensions.</p>
+<p>The 3D (x,y,z) position does not need to fall on the unit sphere.  The RA, Dec will
+be inferred from the relations:</p>
+<div class="math">
+\[\begin{split}x &amp;= r \cos(dec) \cos(ra)  \\
+y &amp;= r \cos(dec) \sin(ra)  \\
+z &amp;= r \sin(dec\end{split}\]</div>
+<p>where <span class="math">\(r\)</span> is arbitrary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> – The x position in 3 dimensions.  Corresponds to r cos(dec) cos(ra)</li>
+<li><strong>y</strong> – The y position in 3 dimensions.  Corresponds to r cos(dec) sin(ra)</li>
+<li><strong>z</strong> – The z position in 3 dimensions.  Corresponds to r sin(dec)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a CelestialCoord instance</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.CelestialCoord.galactic">
+<code class="descname">galactic</code><span class="sig-paren">(</span><em>epoch=2000.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.galactic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.galactic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the longitude and latitude in galactic coordinates corresponding to this position.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>epoch</strong> – The epoch of the current coordinate. [default: 2000.]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the longitude and latitude as a tuple (el, b), given as Angle instances.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.CelestialCoord.get_xyz">
+<code class="descname">get_xyz</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.get_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.get_xyz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the (x,y,z) coordinates on the unit sphere corresponding to this (RA, Dec).</p>
+<div class="math">
+\[\begin{split}x &amp;= \cos(dec) \cos(ra)  \\
+y &amp;= \cos(dec) \sin(ra)  \\
+z &amp;= \sin(dec\end{split}\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a tuple (x,y,z)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.CelestialCoord.jac_deproject">
+<code class="descname">jac_deproject</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.jac_deproject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.jac_deproject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the jacobian of the deprojection.</p>
+<p>i.e. if the input position is (u,v) then the return matrix is</p>
+<div class="math">
+\[\begin{split}J &amp;= \begin{bmatrix}
+    d\textrm{ra}/du \cos(\textrm{dec}) &amp; d\textrm{ra}/dv \cos(\textrm{dec})  \\
+            d\textrm{dec}/du             &amp;      d\textrm{dec}/dv 
+     \end{bmatrix}\end{split}\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> – The u position (as an Angle instance) on the tangent plane</li>
+<li><strong>v</strong> – The v position (as an Angle instance) on the tangent plane</li>
+<li><strong>projection</strong> – The name of the projection to be used. [default: gnomonic, see <cite>project</cite>
+docstring for other options]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the matrix as a tuple (J00, J01, J10, J11)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.CelestialCoord.jac_deproject_arcsec">
+<code class="descname">jac_deproject_arcsec</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.jac_deproject_arcsec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.jac_deproject_arcsec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equivalent to <cite>jac_deproject</cite>, but the inputs are in arcsec and may be numpy
+arrays.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> – The u position (in arcsec) on the tangent plane</li>
+<li><strong>v</strong> – The v position (in arcsec) on the tangent plane</li>
+<li><strong>projection</strong> – The name of the projection to be used. [default: gnomonic, see <cite>project</cite>
+docstring for other options]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the matrix as a tuple (J00, J01, J10, J11)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.CelestialCoord.precess">
+<code class="descname">precess</code><span class="sig-paren">(</span><em>from_epoch</em>, <em>to_epoch</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.precess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.precess" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>This function precesses equatorial ra and dec from one epoch to another.</dt>
+<dd>It is adapted from a set of fortran subroutines based on (a) pages 30-34 of
+the Explanatory Supplement to the AE, (b) Lieske, et al. (1977) A&amp;A 58, 1-16,
+and (c) Lieske (1979) A&amp;A 73, 282-284.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>from_epoch</strong> – The epoch of the current coordinate</li>
+<li><strong>to_epoch</strong> – The epoch of the returned precessed coordinate</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a CelestialCoord object corresponding to the precessed position.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.CelestialCoord.project">
+<code class="descname">project</code><span class="sig-paren">(</span><em>coord2</em>, <em>projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use the currect coord as the center point of a tangent plane projection to project
+the <cite>coord2</cite> coordinate onto that plane.</p>
+<p>This function return a tuple (u,v) in the Euclidean coordinate system defined by
+a tangent plane projection around the current coordinate, with +v pointing north and
++u pointing west. (i.e. to the right on the sky if +v is up.)</p>
+<p>There are currently four options for the projection, which you can specify with the
+optional <cite>projection</cite> keyword argument:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">gnomonic:</th><td class="field-body">[default] uses a gnomonic projection (i.e. a projection from the center of
+the sphere, which has the property that all great circles become straight
+lines.  For more information, see
+<a class="reference external" href="http://mathworld.wolfram.com/GnomonicProjection.html">http://mathworld.wolfram.com/GnomonicProjection.html</a>
+This is the usual TAN projection used by most FITS images.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">stereographic:</th><td class="field-body">uses a stereographic proejection, which preserves angles, but
+not area.  For more information, see
+<a class="reference external" href="http://mathworld.wolfram.com/StereographicProjection.html">http://mathworld.wolfram.com/StereographicProjection.html</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">lambert:</th><td class="field-body">uses a Lambert azimuthal projection, which preserves area, but not angles.
+For more information, see
+<a class="reference external" href="http://mathworld.wolfram.com/LambertAzimuthalEqual-AreaProjection.html">http://mathworld.wolfram.com/LambertAzimuthalEqual-AreaProjection.html</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">postel:</th><td class="field-body">uses a Postel equidistant proejection, which preserves distances from
+the projection point, but not area or angles.  For more information, see
+<a class="reference external" href="http://mathworld.wolfram.com/AzimuthalEquidistantProjection.html">http://mathworld.wolfram.com/AzimuthalEquidistantProjection.html</a></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>The distance or angle errors increase with distance from the projection point of course.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>coord2</strong> – The coordinate to project onto the tangent plane.</li>
+<li><strong>projection</strong> – The name of the projection to be used. [default: gnomonic, see above
+for other options]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(u,v) as Angle instances</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.CelestialCoord.project_rad">
+<code class="descname">project_rad</code><span class="sig-paren">(</span><em>ra</em>, <em>dec</em>, <em>projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.project_rad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.project_rad" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is basically identical to the project() function except that the input <cite>ra</cite>, <cite>dec</cite>
+are given in radians rather than packaged as a CelestialCoord object and the returned
+u,v are given in arcsec.</p>
+<p>The main advantage to this is that it will work if <cite>ra</cite> and <cite>dec</cite> are NumPy arrays, in which
+case the output <cite>u</cite>, <cite>v</cite> will also be NumPy arrays.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ra</strong> – The right ascension in radians to project onto the tangent plane.</li>
+<li><strong>dec</strong> – The declination in radians to project onto the tangent plane.</li>
+<li><strong>projection</strong> – The name of the projection to be used. [default: gnomonic, see <cite>project</cite>
+docstring for other options]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(u,v) in arcsec</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="coord.CelestialCoord.ra">
+<code class="descname">ra</code><a class="headerlink" href="#coord.CelestialCoord.ra" title="Permalink to this definition">¶</a></dt>
+<dd><p>A read-only attribute, giving the Right Ascension as an Angle</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="coord._CelestialCoord">
+<code class="descclassname">coord.</code><code class="descname">_CelestialCoord</code><span class="sig-paren">(</span><em>self</em>, <em>ra</em>, <em>dec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#_CelestialCoord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord._CelestialCoord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equivalent to CeletialCoord(ra,dec), but without some of the sanity checks.</p>
+<p>It also doesn’t wrap the RA to [-pi,pi), so if you care about that, you should make sure
+<cite>ra</cite> is wrapped.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ra</strong> – The right ascension.  Must be an Angle instance.</li>
+<li><strong>dec</strong> – The declination.  Must be an Angle instance.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="angle.html"
+                        title="previous chapter">Angles</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="util.html"
+                        title="next chapter">Utility Functions</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/celestial.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="util.html" title="Utility Functions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="angle.html" title="Angles"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Coord 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, LSST DESC.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.2.
+    </div>
+  </body>
+</html>

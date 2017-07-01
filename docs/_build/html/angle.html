@@ -1,0 +1,434 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Angles &#8212; Coord 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Celestial Coordinates" href="celestial.html" />
+    <link rel="prev" title="Angle Units" href="angleunit.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="celestial.html" title="Celestial Coordinates"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="angleunit.html" title="Angle Units"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Coord 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="angles">
+<h1>Angles<a class="headerlink" href="#angles" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="coord.Angle">
+<em class="property">class </em><code class="descclassname">coord.</code><code class="descname">Angle</code><span class="sig-paren">(</span><em>theta</em>, <em>unit=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angle.html#Angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.Angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class representing an Angle.  Angles are a value with an AngleUnit.</p>
+<p><strong>Initialization:</strong></p>
+<blockquote>
+<div><p>You typically create an Angle by multiplying a number by a coord.AngleUnit, for example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pixel</span> <span class="o">=</span> <span class="mf">0.27</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">arcsec</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ra</span> <span class="o">=</span> <span class="mf">13.4</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="o">-</span><span class="mi">32</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">degrees</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">pi</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">pi</span><span class="o">/</span><span class="mf">2.</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">radians</span>
+</pre></div>
+</div>
+<p>You can also initialize explicitly, taking a value and a unit:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">phi</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">Angle</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="n">coord</span><span class="o">.</span><span class="n">degrees</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p><strong>Built-in units:</strong></p>
+<blockquote>
+<div><p>There are five built-in AngleUnits which are always available for use:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">coord.radians:</th><td class="field-body"># = coord.AngleUnit(1.)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">coord.degrees:</th><td class="field-body"># = coord.AngleUnit(pi / 180.)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">coord.hours:</th><td class="field-body"># = coord.AngleUnit(pi / 12.)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">coord.arcmin:</th><td class="field-body"># = coord.AngleUnit(pi / 180. / 60.)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">coord.arcsec:</th><td class="field-body"># = coord.AngleUnit(pi / 180. / 3600.)</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div></blockquote>
+<p><strong>Attribute:</strong></p>
+<blockquote>
+<div><p>Since extracting the value in radians is extremely common, we have a read-only attribute
+to do this quickly:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">rad:</th><td class="field-body">The measure of the unit in radians.</td>
+</tr>
+</tbody>
+</table>
+<p>For example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">rad</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">x</span>
+<span class="go">1.57079632679</span>
+</pre></div>
+</div>
+<p>It is equivalent to the more verbose:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">radians</span>
+</pre></div>
+</div>
+<p>but without actually requiring the floating point operation of dividing by 1.</p>
+</div></blockquote>
+<p><strong>Arithmetic:</strong></p>
+<blockquote>
+<div><p>Allowed arithmetic with Angles include the following:
+(In the list below, <cite>x</cite> is a float, <cite>unit</cite> is a coord.AngleUnit, <cite>theta</cite> is a coord.Angle):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">unit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="n">unit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta3</span> <span class="o">=</span> <span class="n">theta1</span> <span class="o">+</span> <span class="n">theta2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta3</span> <span class="o">=</span> <span class="n">theta1</span> <span class="o">-</span> <span class="n">theta2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta2</span> <span class="o">=</span> <span class="n">theta1</span> <span class="o">*</span> <span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta2</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">theta1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta2</span> <span class="o">=</span> <span class="n">theta1</span> <span class="o">/</span> <span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta2</span> <span class="o">=</span> <span class="o">-</span><span class="n">theta1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta2</span> <span class="o">+=</span> <span class="n">theta1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta2</span> <span class="o">-=</span> <span class="n">theta1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">*=</span> <span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">/=</span> <span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">unit1</span> <span class="o">/</span> <span class="n">unit2</span>   <span class="c1"># equivalent to x = (1 * unit1) / unit2</span>
+</pre></div>
+</div>
+<p>Operations on NumPy arrays containing Angles are permitted, provided that they are within
+the bounds of the allowed operations on Angles listed above (e.g., addition/subtraction of
+Angles, multiplication of an Angle by a float, but not multiplication of Angles together).</p>
+</div></blockquote>
+<p><strong>Trigonometry:</strong></p>
+<blockquote>
+<div><p>There are convenience function for getting the sin, cos, and tan of an angle, along with
+one for getting sin and cos together, which should be more efficient than doing sin and
+cos separately:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sint</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">sin</span><span class="p">()</span>  <span class="c1"># equivalent to sint = math.sin(theta.rad)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cost</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">cos</span><span class="p">()</span>  <span class="c1"># equivalent to cost = math.cos(theta.rad)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tant</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">tan</span><span class="p">()</span>  <span class="c1"># equivalent to tant = math.tan(theta.rad)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sint</span><span class="p">,</span> <span class="n">cost</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">sincos</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p><strong>Wrapping:</strong></p>
+<blockquote>
+<div><p>Depending on the context, theta = 2pi radians and theta = 0 radians are the same thing.
+If you want your angles to be wrapped to [-pi,pi) radians, you can do this by calling</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">wrap</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This could be appropriate before testing for the equality of two angles for example, or
+calculating the difference between them.</p>
+</div></blockquote>
+<dl class="method">
+<dt id="coord.Angle.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>theta</em>, <em>unit=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angle.html#Angle.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.Angle.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>theta</strong> – The numerical value of the angle.</li>
+<li><strong>unit</strong> – The units theta is measured in.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.Angle.cos">
+<code class="descname">cos</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angle.html#Angle.cos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.Angle.cos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the cos of an Angle.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.Angle.dms">
+<code class="descname">dms</code><span class="sig-paren">(</span><em>sep=’:’</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angle.html#Angle.dms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.Angle.dms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a DMS representation of the angle as a string: (+/-)ddmmss.decimal
+An optional <cite>sep</cite> parameter can change the : to something else (e.g. a space or
+nothing at all).</p>
+<p>Note: the reverse process is effected by <cite>from_dms</cite>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">degrees</span> <span class="o">+</span> <span class="mi">13</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">arcmin</span> <span class="o">+</span> <span class="mi">23</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">arcsec</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">angle</span><span class="o">.</span><span class="n">dms</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">dms</span>
+<span class="go">-05:13:23.00000000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">angle2</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">from_dms</span><span class="p">(</span><span class="n">dms</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">degrees</span>
+<span class="go">-5.22305555556</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span> <span class="o">-</span> <span class="n">angle</span>
+<span class="go">0.0 radians</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sep</strong> – The token to put between the dd and mm, and beteen mm and ss. [default: ‘:’]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a string of the DMS representation of the angle.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="coord.Angle.from_dms">
+<em class="property">static </em><code class="descname">from_dms</code><span class="sig-paren">(</span><em>str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angle.html#Angle.from_dms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.Angle.from_dms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a string of the form dd:mm:ss.decimal into an Angle.</p>
+<p>There may be an initial + or - (or neither), then two digits for the degrees, two for the
+minutes, and two for the seconds.  Then there may be a decimal point followed by more
+digits.  There may be a colon separating dd, mm, and ss, or whitespace, or nothing at all.
+In fact, the code will ignore any non-digits between the degrees, minutes, and seconds.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>str</strong> – The string to parse.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the corresponding Angle instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="coord.Angle.from_hms">
+<em class="property">static </em><code class="descname">from_hms</code><span class="sig-paren">(</span><em>str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angle.html#Angle.from_hms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.Angle.from_hms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a string of the form hh:mm:ss.decimal into an Angle.</p>
+<p>There may be an initial + or - (or neither), then two digits for the hours, two for the
+minutes, and two for the seconds.  Then there may be a decimal point followed by more
+digits.  There may be a colon separating hh, mm, and ss, or whitespace, or nothing at all.
+In fact, the code will ignore any non-digits between the hours, minutes, and seconds.</p>
+<p>Note: the reverse process is effected by Angle.hms():</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.357</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span> <span class="o">=</span> <span class="n">angle</span><span class="o">.</span><span class="n">hms</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">hms</span>
+<span class="go">+18:38:34.80000000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">angle2</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">from_hms</span><span class="p">(</span><span class="n">hms</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span>
+<span class="go">18.643</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span> <span class="o">-</span> <span class="mi">24</span>
+<span class="go">-5.357</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span> <span class="o">-</span> <span class="n">angle</span> <span class="o">-</span> <span class="mi">24</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span>
+<span class="go">0.0 radians</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>str</strong> – The string to parse.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the corresponding Angle instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.Angle.hms">
+<code class="descname">hms</code><span class="sig-paren">(</span><em>sep=’:’</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angle.html#Angle.hms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.Angle.hms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an HMS representation of the angle as a string: hh:mm:ss.decimal.</p>
+<p>The returned representation will have 0 &lt;= hh &lt; 24.</p>
+<p>An optional <cite>sep</cite> parameter can change the : to something else (e.g. a space or
+nothing at all).</p>
+<p>Note: the reverse process is effected by <cite>from_hms</cite>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.357</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span> <span class="o">=</span> <span class="n">angle</span><span class="o">.</span><span class="n">hms</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">hms</span>
+<span class="go">+18:38:34.80000000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">angle2</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">from_hms</span><span class="p">(</span><span class="n">hms</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span>
+<span class="go">18.643</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span> <span class="o">-</span> <span class="mi">24</span>
+<span class="go">-5.357</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span> <span class="o">-</span> <span class="n">angle</span> <span class="o">-</span> <span class="mi">24</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span>
+<span class="go">0.0 radians</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sep</strong> – The token to put between the hh and mm, and beteen mm and ss. [default: ‘:’]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a string of the HMS representation of the angle.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="coord.Angle.rad">
+<code class="descname">rad</code><a class="headerlink" href="#coord.Angle.rad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Angle in radians.</p>
+<p>Equivalent to angle / coord.radians</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.Angle.sin">
+<code class="descname">sin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angle.html#Angle.sin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.Angle.sin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the sin of an Angle.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.Angle.sincos">
+<code class="descname">sincos</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angle.html#Angle.sincos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.Angle.sincos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return both the sin and cos of an Angle as a numpy array [sint, cost].</p>
+<p>(On some systems, this may be slightly faster than doing each separately.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.Angle.tan">
+<code class="descname">tan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angle.html#Angle.tan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.Angle.tan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the tan of an Angle.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.Angle.wrap">
+<code class="descname">wrap</code><span class="sig-paren">(</span><em>center=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angle.html#Angle.wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.Angle.wrap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap Angle to lie in the range [-pi, pi) radians.</p>
+<p>Depending on the context, theta = 2pi radians and theta = 0 radians are the same thing.
+If you want your angles to be wrapped to [-pi, pi) radians, you can do this by calling</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">wrap</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This could be appropriate before testing for the equality of two angles for example, or
+calculating the difference between them.</p>
+<p>If you want to wrap to a different range than [-pi, pi), you can set the <cite>center</cite> argument
+to be the desired center of the the range.  e.g. for return values to fall in [0, 2pi),
+you could call</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mf">180.</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">degrees</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>center</strong> – The center point of the wrapped range. [default: 0 radians]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the equivalent angle within the range [center-pi, center+pi)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="coord._Angle">
+<code class="descclassname">coord.</code><code class="descname">_Angle</code><span class="sig-paren">(</span><em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angle.html#_Angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord._Angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equivalent to either <cite>theta * coord.radians</cite> or <cite>Angle(theta, coord.radians)</cite>, but without
+the normal overhead (which isn’t much to be honest, but this is nonetheless slightly quicker).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>theta</strong> – The numerical value of the angle in radians.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="angleunit.html"
+                        title="previous chapter">Angle Units</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="celestial.html"
+                        title="next chapter">Celestial Coordinates</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/angle.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="celestial.html" title="Celestial Coordinates"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="angleunit.html" title="Angle Units"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Coord 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, LSST DESC.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.2.
+    </div>
+  </body>
+</html>

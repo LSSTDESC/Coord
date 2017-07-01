@@ -1,0 +1,207 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Angle Units &#8212; Coord 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Angles" href="angle.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="angle.html" title="Angles"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Coord 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="angle-units">
+<h1>Angle Units<a class="headerlink" href="#angle-units" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="coord.AngleUnit">
+<em class="property">class </em><code class="descclassname">coord.</code><code class="descname">AngleUnit</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angleunit.html#AngleUnit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.AngleUnit" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class for defining angular units used by Angle objects.</p>
+<p><strong>Initialization:</strong></p>
+<blockquote>
+<div><p>An AngleUnit takes a single argument for initialization, a float that specifies the size
+of the desired angular unit in radians.  For example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gradian</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">AngleUnit</span><span class="p">(</span><span class="mf">2.</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">400.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p><strong>Built-in units:</strong></p>
+<blockquote>
+<div><p>There are five built-in AngleUnits which are always available for use:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">coord.radians:</th><td class="field-body">= <cite>coord.AngleUnit(1.)</cite></td>
+</tr>
+<tr class="field-even field"><th class="field-name">coord.degrees:</th><td class="field-body">= <cite>coord.AngleUnit(pi / 180.)</cite></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">coord.hours:</th><td class="field-body">= <cite>coord.AngleUnit(pi / 12.)</cite></td>
+</tr>
+<tr class="field-even field"><th class="field-name">coord.arcmin:</th><td class="field-body">= <cite>coord.AngleUnit(pi / 180. / 60.)</cite></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">coord.arcsec:</th><td class="field-body">= <cite>coord.AngleUnit(pi / 180. / 3600.)</cite></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div></blockquote>
+<p><strong>Attribute:</strong></p>
+<blockquote>
+<div><p>An AngleUnit as the following (read-only) attribute:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">value:</th><td class="field-body">The measure of the unit in radians.</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<dl class="method">
+<dt id="coord.AngleUnit.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angleunit.html#AngleUnit.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.AngleUnit.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> – The measure of the unit in radians.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="coord.AngleUnit.from_name">
+<em class="property">static </em><code class="descname">from_name</code><span class="sig-paren">(</span><em>unit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angleunit.html#AngleUnit.from_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.AngleUnit.from_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a string into the corresponding AngleUnit.</p>
+<p>Only the start of the string is checked, so for instance ‘radian’ or ‘radians’ is
+equivalent to ‘rad’.</p>
+<p>Valid options are:</p>
+<blockquote>
+<div>unit            returns
+—-            ——-
+rad             AngleUnit(1.)
+deg             AngleUnit(pi / 180.)
+hour or hr      AngleUnit(pi / 12.)
+arcmin          AngleUnit(pi / 180. / 60.)
+arcsec          AngleUnit(pi / 180. / 3600.)</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>unit</strong> – The string name of the unit to return</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">an AngleUnit</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="coord.AngleUnit.value">
+<code class="descname">value</code><a class="headerlink" href="#coord.AngleUnit.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>A read-only attribute giving the measure of the AngleUnit in radians.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="previous chapter">Overview</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="angle.html"
+                        title="next chapter">Angles</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/angleunit.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="angle.html" title="Angles"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Coord 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, LSST DESC.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.2.
+    </div>
+  </body>
+</html>
