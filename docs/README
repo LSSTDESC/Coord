@@ -15,6 +15,12 @@ viewcode: y
 githubpages: y
 Create Windows command file: n
 
+Although, when I ran this, it didn't actually create the .nojekyll file, which is needed
+to make sure that directory names with leading underscores are synced properly.  So I
+had to do
+
+touch .nojekyll
+
 
 The *.rst files in the source directory constitute the source files for the documentation.
 As you can see, they mostly consist of importing the inline documentation from the
@@ -29,4 +35,3 @@ _build/html/index.html file that Sphix builds.
 
 
 To update the documentation, run update_docs in this directory, commit and push.
-If this is for a new version, update the version number in the Makefile.
