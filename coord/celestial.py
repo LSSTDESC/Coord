@@ -132,7 +132,7 @@ class CelestialCoord(object):
         return self._x, self._y, self._z
 
     @staticmethod
-    def from_xyz(cls, x, y, z):
+    def from_xyz(x, y, z):
         """Construct a CelestialCoord from a given (x,y,z) position in three dimensions.
 
         The 3D (x,y,z) position does not need to fall on the unit sphere.  The RA, Dec will
@@ -155,7 +155,7 @@ class CelestialCoord(object):
         norm = np.sqrt(x*x + y*y + z*z)
         if norm == 0.:
             raise ValueError("CelestialCoord for position (0,0,0) is undefined.")
-        ret = cls.__new__(cls)
+        ret = CelestialCoord.__new__(CelestialCoord)
         ret._ra = np.arctan2(y, x) * radians
         ret._dec = np.arctan2(z, np.sqrt(x*x + y*y)) * radians
         ret._x = x/norm
