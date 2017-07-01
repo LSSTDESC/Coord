@@ -568,11 +568,11 @@ class CelestialCoord(object):
         :param projection:  The name of the projection to be used. [default: gnomonic, see `project`
                             docstring for other options]
 
-        :returns: the matrix as a tuple (J00, J01, J10, J11)
+        :returns: the Jacobian as a 2x2 numpy array [[J00, J01], [J10, J11]]
         """
         if projection not in CelestialCoord._valid_projections:
             raise ValueError('Unknown projection ' + projection)
-        return self._jac_deproject(self, u.rad(), v.rad(), projection)
+        return self._jac_deproject(u.rad, v.rad, projection)
 
     def jac_deproject_arcsec(self, u, v, projection=None):
         """Equivalent to `jac_deproject`, but the inputs are in arcsec and may be numpy
@@ -583,10 +583,10 @@ class CelestialCoord(object):
         :param projection:  The name of the projection to be used. [default: gnomonic, see `project`
                             docstring for other options]
 
-        :returns: the matrix as a tuple (J00, J01, J10, J11)
+        :returns: the Jacobian as a 2x2 numpy array [[J00, J01], [J10, J11]]
         """
         factor = arcsec / radians
-        return self._jac_deproject(self, u * factor, v * factor, projection)
+        return self._jac_deproject(u*factor, v*factor, projection)
 
     def _jac_deproject(self, u, v, projection):
         # sin(dec) = cos(c) sin(dec0) + v sin(c)/r cos(dec0)
@@ -656,7 +656,7 @@ class CelestialCoord(object):
 
         drdu *= cosdec
         drdv *= cosdec
-        return drdu, drdv, dddu, dddv
+        return np.array([[drdu, drdv], [dddu, dddv]])
 
     def precess(self, from_epoch, to_epoch):
         """This function precesses equatorial ra and dec from one epoch to another.
