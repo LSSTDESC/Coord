@@ -1,0 +1,3 @@
+include *.rst
+include tests/*.py
+recursive-include coord *.h *.py *.so
