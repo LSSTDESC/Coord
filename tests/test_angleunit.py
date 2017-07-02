@@ -85,7 +85,13 @@ def test_pickle():
     equivalent to the original object along with a few other sanity checks such as obj != None.
     So it's a good idea to just run this on every kind of object we have.
     """
-    pass
+    do_pickle(coord.radians)
+    do_pickle(coord.degrees)
+    do_pickle(coord.hours)
+    do_pickle(coord.arcmin)
+    do_pickle(coord.arcsec)
+    gradians = coord.AngleUnit(2.*pi / 400.)
+    do_pickle(gradians)
 
 
 @timer
