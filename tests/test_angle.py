@@ -71,15 +71,22 @@ def test_pickle():
 
 
 @timer
+def test_eq():
+    """Check that equal angles are equal, but unequal ones are not.
+    """
+    pass
+
+
+@timer
 def test_hms():
-    """Test Angle.hms and HMS_Angle functions
+    """Test Angle.hms and from_hms functions
     """
     pass
 
 
 @timer
 def test_dms():
-    """Test Angle.dms and DMS_Angle functions
+    """Test Angle.dms and from_dms functions
     """
     pass
 
@@ -91,5 +98,6 @@ if __name__ == '__main__':
     test_wrap()
     test_trig()
     test_pickle()
+    test_eq()
     test_hms()
     test_dms()

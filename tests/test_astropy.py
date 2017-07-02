@@ -24,6 +24,7 @@
 from __future__ import print_function
 import numpy as np
 import math
+import time
 import coord
 import astropy.coordinates
 from astropy import units

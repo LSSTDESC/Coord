@@ -27,11 +27,18 @@ from helper_util import *
 
 # We'll use these a lot, so just import them.
 from math import pi, sin, cos, tan, acos, sqrt
-from coord import radians, degrees, hours, arcsec
+from coord import radians, degrees, hours, arcmin, arcsec
 
 @timer
 def test_basic():
     """Basic tests of CelestialCoord construction. etc.
+    """
+    pass
+
+
+@timer
+def test_eq():
+    """Check that equal coords are equal, but unequal ones are not.
     """
     pass
 
@@ -108,6 +115,7 @@ def test_ecliptic_date():
 
 if __name__ == '__main__':
     test_basic()
+    test_eq()
     test_distance()
     test_angleBetween()
     test_gnomonic_projection()

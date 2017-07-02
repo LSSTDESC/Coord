@@ -71,6 +71,13 @@ def test_pickle():
 
 
 @timer
+def test_eq():
+    """Check that equal units are equal, but unequal ones are not.
+    """
+    pass
+
+
+@timer
 def test_from_name():
     """Test the AngleUnit from_name static method
 
@@ -85,4 +92,5 @@ if __name__ == '__main__':
     test_invalid()
     test_div()
     test_pickle()
+    test_eq()
     test_from_name()
