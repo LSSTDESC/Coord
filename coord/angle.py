@@ -64,7 +64,7 @@ class Angle(object):
         For example::
 
             >>> theta = 90 * coord.degrees
-            >>> print theta.rad
+            >>> print(theta.rad)
             1.57079632679
 
         It is equivalent to the more verbose::
@@ -262,8 +262,6 @@ class Angle(object):
     def hms(self, sep=":"):
         """Return an HMS representation of the angle as a string: +-hh:mm:ss.decimal.
 
-        The returned representation will have 0 <= hh < 24.
-
         An optional `sep` parameter can change the : to something else (e.g. a space or
         nothing at all).
 
@@ -271,23 +269,17 @@ class Angle(object):
 
             >>> angle = -5.357 * coord.hours
             >>> hms = angle.hms()
-            >>> print hms
-            +18:38:34.80000000
+            >>> print(hms)
+            -05:21:25.20000000
             >>> angle2 = coord.Angle.from_hms(hms)
-            >>> print angle2 / coord.hours
-            18.643
-            >>> print angle2 / coord.hours - 24
+            >>> print(angle2 / coord.hours)
             -5.357
-            >>> print angle2 - angle - 24 * coord.hours
-            0.0 radians
 
         :param sep:     The token to put between the hh and mm and beteen mm and ss. [default: ':']
 
         :returns: a string of the HMS representation of the angle.
         """
-        # HMS convention is usually to have the hours between 0 and 24, not -12 and 12
-        h = self.wrap(12. * hours) / hours
-        return self._make_dms_string(h,sep)
+        return self._make_dms_string(self/hours, sep)
 
     def dms(self, sep=":"):
         """Return a DMS representation of the angle as a string: +-dd:mm:ss.decimal
@@ -296,22 +288,19 @@ class Angle(object):
 
         Note: the reverse process is effected by `from_dms`::
 
-            >>> angle = -(5 * coord.degrees + 13 * coord.arcmin + 23 * coord.arcsec)
+            >>> angle = -(5 * coord.degrees + 21 * coord.arcmin + 25.2 * coord.arcsec)
             >>> dms = angle.dms()
-            >>> print dms
-            -05:13:23.00000000
+            >>> print(dms)
+            -05:21:25.20000000
             >>> angle2 = coord.Angle.from_dms(dms)
-            >>> print angle2 / coord.degrees
-            -5.22305555556
-            >>> print angle2 - angle
-            0.0 radians
+            >>> print(angle2 / coord.degrees)
+            -5.357
 
         :param sep:     The token to put between the dd and mm and beteen mm and ss. [default: ':']
 
         :returns: a string of the DMS representation of the angle.
         """
-        d = self.wrap() / degrees
-        return self._make_dms_string(d,sep)
+        return self._make_dms_string(self/degrees, sep)
 
     @staticmethod
     def from_hms(str):
@@ -326,15 +315,11 @@ class Angle(object):
 
             >>> angle = -5.357 * coord.hours
             >>> hms = angle.hms()
-            >>> print hms
-            +18:38:34.80000000
+            >>> print(hms)
+            -05:32:25.20000000
             >>> angle2 = coord.Angle.from_hms(hms)
-            >>> print angle2 / coord.hours
-            18.643
-            >>> print angle2.wrap() / coord.hours
+            >>> print(angle2 / coord.hours)
             -5.357
-            >>> print (angle2 - angle) / coord.hours
-            24.0
 
         :param str:     The string to parse.
 
@@ -353,15 +338,13 @@ class Angle(object):
 
         Note: the reverse process is effected by Angle.dms():
 
-            >>> angle = -(5 * coord.degrees + 13 * coord.arcmin + 23 * coord.arcsec)
+            >>> angle = -(5 * coord.degrees + 32 * coord.arcmin + 25.2 * coord.arcsec)
             >>> dms = angle.dms()
-            >>> print dms
-            -05:13:23.00000000
+            >>> print(dms)
+            -05:32:25.20000000
             >>> angle2 = coord.Angle.from_dms(dms)
-            >>> print angle2 / coord.degrees
-            -5.22305555556
-            >>> print angle2 - angle
-            0.0 radians
+            >>> print(angle2 / coord.degrees)
+            -5.357
 
         :param str:     The string to parse.
 

@@ -53,8 +53,6 @@ class CelestialCoord(object):
             :ra:        The right ascension (an Angle instance)
             :dec:       The declination (an Angle instance)
 
-        Note: the ra will be wrapped to lie within [-pi, pi) radians.
-
     **Sperical Geometry:**
 
         The basic spherical geometry operations are available to work with spherical triangles
@@ -93,9 +91,9 @@ class CelestialCoord(object):
             raise TypeError("ra must be a coord.Angle")
         if not isinstance(dec, Angle):
             raise TypeError("dec must be a coord.Angle")
-        self._ra = ra.wrap()
         if dec/degrees > 90. or dec/degrees < -90.:
             raise ValueError("dec must be between -90 deg and +90 deg.")
+        self._ra = ra
         self._dec = dec
         self._x = None  # Indicate that x,y,z are not set yet.
 
@@ -156,12 +154,22 @@ class CelestialCoord(object):
         if norm == 0.:
             raise ValueError("CelestialCoord for position (0,0,0) is undefined.")
         ret = CelestialCoord.__new__(CelestialCoord)
-        ret._ra = np.arctan2(y, x) * radians
+        ret._ra = (np.arctan2(y, x) * radians).wrap(_Angle(math.pi))
         ret._dec = np.arctan2(z, np.sqrt(x*x + y*y)) * radians
         ret._x = x/norm
         ret._y = y/norm
         ret._z = z/norm
         return ret
+
+    def normal(self):
+        """Return the coordinate in the "normal" convention of having 0 <= ra < 24 hours.
+
+        This convention is not enforced on construction, so this function exists to make it
+        easy to convert if desired.
+
+        Functions such as `from_galactic` and `from_xyz` will return normal coordinates.
+        """
+        return _CelestialCoord(self.ra.wrap(_Angle(math.pi)), self.dec)
 
     def distanceTo(self, coord2):
         """Returns the great circle distance between this coord and another one.
@@ -706,7 +714,7 @@ class CelestialCoord(object):
         y2 = xy*self._x + yy*self._y + zy*self._z
         z2 = xz*self._x + yz*self._y + zz*self._z
 
-        return CelestialCoord.from_xyz(x2, y2, z2)
+        return CelestialCoord.from_xyz(x2, y2, z2).normal()
 
     def galactic(self, epoch=2000.):
         """Get the longitude and latitude in galactic coordinates corresponding to this position.
@@ -736,7 +744,7 @@ class CelestialCoord(object):
         sb = sind*cosd0 - cosd*sinr*sind0
 
         b = _Angle(math.asin(sb))
-        el = _Angle(math.atan2(cbsl,cbcl)) + el0
+        el = (_Angle(math.atan2(cbsl,cbcl)) + el0).wrap(_Angle(math.pi))
 
         return (el, b)
 
@@ -866,12 +874,9 @@ class CelestialCoord(object):
                 self.ra == other.ra and self.dec == other.dec)
     def __ne__(self, other): return not self.__eq__(other)
 
-def _CelestialCoord(self, ra, dec):
+def _CelestialCoord(ra, dec):
     """
     Equivalent to CeletialCoord(ra,dec), but without some of the sanity checks.
-
-    It also doesn't wrap the RA to [-pi,pi), so if you care about that, you should make sure
-    `ra` is wrapped.
 
     :param ra:       The right ascension.  Must be an Angle instance.
     :param dec:      The declination.  Must be an Angle instance.
