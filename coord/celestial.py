@@ -82,20 +82,29 @@ class CelestialCoord(object):
 
         where u and v are Angles and center and sky_coord are CelestialCoords.
     """
-    def __init__(self, ra, dec):
+    def __init__(self, ra, dec=None):
         """
         :param ra:       The right ascension.  Must be an Angle instance.
         :param dec:      The declination.  Must be an Angle instance.
         """
-        if not isinstance(ra, Angle):
+        if isinstance(ra, CelestialCoord) and dec is None:
+            # Copy constructor
+            self._ra = ra._ra
+            self._dec = ra._dec
+            self._x = None
+        elif ra is None or dec is None:
+            raise TypeError("ra and dec are both required")
+        elif not isinstance(ra, Angle):
             raise TypeError("ra must be a coord.Angle")
-        if not isinstance(dec, Angle):
+        elif not isinstance(dec, Angle):
             raise TypeError("dec must be a coord.Angle")
-        if dec/degrees > 90. or dec/degrees < -90.:
+        elif dec/degrees > 90. or dec/degrees < -90.:
             raise ValueError("dec must be between -90 deg and +90 deg.")
-        self._ra = ra
-        self._dec = dec
-        self._x = None  # Indicate that x,y,z are not set yet.
+        else:
+            # Normal case
+            self._ra = ra
+            self._dec = dec
+            self._x = None  # Indicate that x,y,z are not set yet.
 
     @property
     def ra(self):
@@ -885,7 +894,7 @@ class CelestialCoord(object):
 
 def _CelestialCoord(ra, dec):
     """
-    Equivalent to CeletialCoord(ra,dec), but without some of the sanity checks.
+    Equivalent to CeletialCoord(ra,dec), but without the normal sanity checks.
 
     :param ra:       The right ascension.  Must be an Angle instance.
     :param dec:      The declination.  Must be an Angle instance.
