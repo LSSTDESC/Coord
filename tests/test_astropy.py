@@ -92,8 +92,9 @@ def test_precess():
     #   Precess with Astropy: t =  0.0377740859985
 
     # Make sure we don't get slow like astropy.  ;)
+    # (Travis is a bit slower, but these times should still be safe.)
     assert t1-t0 < 0.0005
-    assert t2-t1 < 0.002
+    assert t2-t1 < 0.005
 
 
 @timer
