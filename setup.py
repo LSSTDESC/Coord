@@ -50,5 +50,5 @@ dist = setup(name="LSSTDESC.Coord",
 # point, so might as well facilitate it.
 lib = os.path.join('coord','_coord.so')
 if os.path.lexists(lib): os.unlink(lib)
-os.link(glob.glob(os.path.join('build','*',lib))[0], lib)
+os.link(glob.glob(os.path.join('build','*','coord','_coord*.so'))[0], lib)
 
