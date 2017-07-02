@@ -260,7 +260,7 @@ class Angle(object):
             sep1 = sep2 = sep
         elif len(sep) == 2:
             sep1, sep2 = sep
-        else:
+        elif len(sep) == 3:
             sep1, sep2, sep3 = sep
 
         # Round to nearest 1.e-8 seconds (or 10**-prec if given)
@@ -415,26 +415,27 @@ class Angle(object):
         """Convert a string of the form dd:mm:ss.decimal into decimal degrees.
         """
         import re
-        tokens = re.split('(\d+)', dms)
+        tokens = re.split('([\.\d]+)', dms.strip())
+        if len(tokens) <= 1:
+            raise ValueError("string is not of the expected format")
         sign = 1
         try:
-            dd = int(tokens[0])
+            dd = float(tokens[0])
         except ValueError:
             if tokens[0].strip() == '-':
                 sign = -1
             tokens = tokens[1:]
-            dd = int(tokens[0])
+            dd = float(tokens[0])
+        if len(tokens) <= 1:
+            raise ValueError("string is not of the expected format")
         if len(tokens) <= 2:
-            raise ValueError("string is not of the expected format")
-        mm = int(tokens[2])
+            return sign * dd
+        mm = float(tokens[2])
         if len(tokens) <= 4:
-            return sign * (dd + mm/60.)
-        ss = int(tokens[4])
-        if len(tokens) <= 6:
-            return sign * (dd + mm/60. + ss/3600.)
-        if tokens[5].strip() not in ['.',',']:
+            return sign * (dd + mm/60)
+        if len(tokens) >= 7:
             raise ValueError("string is not of the expected format")
-        ss = float('.'.join((tokens[4],tokens[6])))
+        ss = float(tokens[4])
         return sign * (dd + mm/60. + ss/3600.)
 
 def _Angle(theta):
