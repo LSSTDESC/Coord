@@ -1,5 +1,9 @@
 .. Coord documentation master file
 
+
+Coord is a Python module that provides basic functionality related to angles and
+celestial coordinates.  It is hosted at https://github.com/LSSTDESC/Coord.
+
 Overview
 ========
 
@@ -7,8 +11,8 @@ Overview
 
     overview
 
-Coord documentation
-===================
+Code Documentation
+==================
 
 .. toctree::
 
