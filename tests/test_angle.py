@@ -32,8 +32,33 @@ from math import pi
 def test_init():
     """Test basic construction and use of Angle classes
     """
-    pass
+    # Various ways to make 45 degrees
+    theta1 = pi/4. * coord.radians
+    theta2 = 45 * coord.degrees
+    theta3 = coord.Angle(3, coord.hours)
+    theta4 = coord.Angle(theta=45 * 60, unit=coord.arcmin)
+    theta5 = coord.Angle(45. * 3600, unit=coord.arcsec)
+    gradians = coord.AngleUnit(2. * pi / 400.)
+    theta6 = 50 * gradians
+    theta7 = coord.Angle(theta1)  # Copy constructor
 
+    # Equivalent ways to access theta in radians
+    assert theta1.rad == pi/4.
+    assert theta1 / coord.radians == pi/4.
+
+    # Others involved a calculation so aren't required to be precisely equal.
+    np.testing.assert_almost_equal(theta2.rad, pi/4., decimal=12)
+    np.testing.assert_almost_equal(theta3.rad, pi/4., decimal=12)
+    np.testing.assert_almost_equal(theta4.rad, pi/4., decimal=12)
+    np.testing.assert_almost_equal(theta5.rad, pi/4., decimal=12)
+    np.testing.assert_almost_equal(theta6.rad, pi/4., decimal=12)
+    np.testing.assert_almost_equal(theta7.rad, pi/4., decimal=12)
+
+    # Access angle in other units
+    np.testing.assert_almost_equal(theta1 / gradians, 50., decimal=12)
+    np.testing.assert_almost_equal(theta3 / gradians, 50., decimal=12)
+    np.testing.assert_almost_equal(theta1 / coord.hours, 3., decimal=12)
+    np.testing.assert_almost_equal(theta5 / coord.hours, 3., decimal=12)
 
 @timer
 def test_invalid():
