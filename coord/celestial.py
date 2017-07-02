@@ -353,7 +353,7 @@ class CelestialCoord(object):
         :returns: (u,v) as Angle instances
         """
         if projection not in CelestialCoord._valid_projections:
-            raise ValueError('Unknown projection ' + projection)
+            raise ValueError('Unknown projection: %s'%projection)
 
         self._set_aux()
         coord2._set_aux()
@@ -380,7 +380,7 @@ class CelestialCoord(object):
         :returns: (u,v) in arcsec
         """
         if projection not in CelestialCoord._valid_projections:
-            raise ValueError('Unknown projection ' + projection)
+            raise ValueError('Unknown projection: %s'%projection)
 
         self._set_aux()
 
@@ -469,7 +469,7 @@ class CelestialCoord(object):
         :returns: the corresponding CelestialCoord for that position.
         """
         if projection not in CelestialCoord._valid_projections:
-            raise ValueError('Unknown projection ' + projection)
+            raise ValueError('Unknown projection: %s'%projection)
 
         # Again, do the core calculations in a helper function
         ra, dec = self._deproject(u / arcsec, v / arcsec, projection)
@@ -492,7 +492,7 @@ class CelestialCoord(object):
         :returns: the corresponding RA, Dec in radians
         """
         if projection not in CelestialCoord._valid_projections:
-            raise ValueError('Unknown projection ' + projection)
+            raise ValueError('Unknown projection: %s'%projection)
 
         return self._deproject(u, v, projection)
 
@@ -590,7 +590,7 @@ class CelestialCoord(object):
         :returns: the Jacobian as a 2x2 numpy array [[J00, J01], [J10, J11]]
         """
         if projection not in CelestialCoord._valid_projections:
-            raise ValueError('Unknown projection ' + projection)
+            raise ValueError('Unknown projection: %s'%projection)
         return self._jac_deproject(u.rad, v.rad, projection)
 
     def jac_deproject_arcsec(self, u, v, projection=None):
@@ -604,6 +604,8 @@ class CelestialCoord(object):
 
         :returns: the Jacobian as a 2x2 numpy array [[J00, J01], [J10, J11]]
         """
+        if projection not in CelestialCoord._valid_projections:
+            raise ValueError('Unknown projection: %s'%projection)
         factor = arcsec / radians
         return self._jac_deproject(u*factor, v*factor, projection)
 
@@ -871,8 +873,6 @@ class CelestialCoord(object):
 
         return CelestialCoord.from_xyz(x_eq, y_eq, z_eq)
 
-
-    def copy(self): return CelestialCoord(self._ra, self._dec)
 
     def __repr__(self): return 'coord.CelestialCoord(%r, %r)'%(self._ra,self._dec)
     def __str__(self): return 'coord.CelestialCoord(%s, %s)'%(self._ra,self._dec)
