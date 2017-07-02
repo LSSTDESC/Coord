@@ -45,10 +45,19 @@ def test_init():
     c3 = coord.CelestialCoord(35. * hours, -37. * degrees)
     np.testing.assert_almost_equal(c3.ra / hours, 35., decimal=12)
     np.testing.assert_almost_equal(c3.dec / degrees, -37., decimal=12)
+    np.testing.assert_almost_equal(c3.normal().ra / hours, 11., decimal=12)
+    np.testing.assert_almost_equal(c3.normal().dec / degrees, -37., decimal=12)
 
     c4 = coord.CelestialCoord(-13. * hours, -37. * degrees)
     np.testing.assert_almost_equal(c4.ra / hours, -13., decimal=12)
     np.testing.assert_almost_equal(c4.dec / degrees, -37., decimal=12)
+    np.testing.assert_almost_equal(c4.normal().ra / hours, 11., decimal=12)
+    np.testing.assert_almost_equal(c4.normal().dec / degrees, -37., decimal=12)
+
+    # copy constructor
+    c5 = coord.CelestialCoord(c2)
+    np.testing.assert_almost_equal(c5.ra / hours, 11., decimal=12)
+    np.testing.assert_almost_equal(c5.dec / degrees, -37., decimal=12)
 
     # We'll test distance later, but for check that these last 3 have distances = 0.
     np.testing.assert_almost_equal(c2.distanceTo(c3).rad, 0., decimal=12)
@@ -59,6 +68,12 @@ def test_init():
     do_pickle(c2)
     do_pickle(c3)
     do_pickle(c4)
+
+    # Check some invalid values
+    np.testing.assert_raises(TypeError, coord.CelestialCoord, 11 * hours)
+    np.testing.assert_raises(TypeError, coord.CelestialCoord, 11 * hours, -37)
+    np.testing.assert_raises(TypeError, coord.CelestialCoord, 11, -37 * degrees)
+    np.testing.assert_raises(ValueError, coord.CelestialCoord, 11. * hours, 99 * degrees)
 
 
 @timer
