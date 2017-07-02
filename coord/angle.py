@@ -243,23 +243,57 @@ class Angle(object):
         return hash(('coord.Angle', self._rad))
 
     @staticmethod
-    def _make_dms_string(decimal, sep):
-        if decimal >= 0:
-            sign = '+'
-        else:
+    def _make_dms_string(decimal, sep, prec, pad, plus_sign):
+        # Account for the sign properly
+        if decimal < 0:
             sign = '-'
             decimal = -decimal
-        # Round to nearest 1.e-8 seconds
-        decimal = int(3600.e8 * decimal + 0.5)
-        d = decimal // 360000000000
-        decimal -= d * 360000000000
-        m = decimal // 6000000000
-        decimal -= m * 6000000000
-        s = decimal // 100000000
-        decimal -= s * 100000000
-        return '%s%02d%s%02d%s%02d.%08d'%(sign,d,sep,m,sep,s,decimal)
+        elif plus_sign:
+            sign = '+'
+        else:
+            sign = ''
 
-    def hms(self, sep=":"):
+        # Figure out the 3 sep tokens
+        sep1 = sep2 = ''
+        sep3 = None
+        if len(sep) == 1:
+            sep1 = sep2 = sep
+        elif len(sep) == 2:
+            sep1, sep2 = sep
+        else:
+            sep1, sep2, sep3 = sep
+
+        # Round to nearest 1.e-8 seconds (or 10**-prec if given)
+        round_prec = 8 if prec is None else prec
+        digits = 10**round_prec
+
+        decimal = int(3600 * digits * decimal + 0.5)
+
+        d = decimal // (3600 * digits)
+        decimal -= d * (3600 * digits)
+        m = decimal // (60 * digits)
+        decimal -= m * (60 * digits)
+        s = decimal // digits
+        decimal -= s * digits
+
+        # Make the string
+        if pad:
+            d_str = '%02d'%d
+            m_str = '%02d'%m
+            s_str = '%02d'%s
+        else:
+            d_str = '%d'%d
+            m_str = '%d'%m
+            s_str = '%d'%s
+        string = '%s%s%s%s%s%s.%0*d'%(sign,d_str,sep1,m_str,sep2,s_str,round_prec,decimal)
+        if not prec:
+            string = string.rstrip('0')
+            string = string.rstrip('.')
+        if sep3:
+            string = string + sep3
+        return string
+
+    def hms(self, sep=":", prec=None, pad=True, plus_sign=False):
         """Return an HMS representation of the angle as a string: +-hh:mm:ss.decimal.
 
         An optional `sep` parameter can change the : to something else (e.g. a space or
@@ -270,18 +304,30 @@ class Angle(object):
             >>> angle = -5.357 * coord.hours
             >>> hms = angle.hms()
             >>> print(hms)
-            -05:21:25.20000000
+            -05:21:25.2
             >>> angle2 = coord.Angle.from_hms(hms)
             >>> print(angle2 / coord.hours)
             -5.357
 
-        :param sep:     The token to put between the hh and mm and beteen mm and ss. [default: ':']
+        :param sep:         The token to put between the hh and mm and beteen mm and ss.  This may
+                            also be a string of 2 or 3 items, e.g. 'hm' or 'hms'.  Or even a
+                            tuple of strings such as ('hours ', 'minutes ', 'seconds').
+                            [default: ':']
+        :param prec:        The number of digits of precision after the decimal point.
+                            [default: None]
+        :param pad:         Whether to pad with a leading 0 if necessary to make h,m,s 2 digits.
+                            [default: True]
+        :param plus_sign:   Whether to use a plus sign for positive angles. [default: False]
 
         :returns: a string of the HMS representation of the angle.
         """
-        return self._make_dms_string(self/hours, sep)
+        if not len(sep) <= 3:
+            raise ValueError("sep must be a string or tuple of length <= 3")
+        if prec is not None and not prec >= 0:
+            raise ValueError("prec must be >= 0")
+        return self._make_dms_string(self/hours, sep, prec, pad, plus_sign)
 
-    def dms(self, sep=":"):
+    def dms(self, sep=":", prec=None, pad=True, plus_sign=False):
         """Return a DMS representation of the angle as a string: +-dd:mm:ss.decimal
         An optional `sep` parameter can change the : to something else (e.g. a space or
         nothing at all).
@@ -291,16 +337,28 @@ class Angle(object):
             >>> angle = -(5 * coord.degrees + 21 * coord.arcmin + 25.2 * coord.arcsec)
             >>> dms = angle.dms()
             >>> print(dms)
-            -05:21:25.20000000
+            -05:21:25.2
             >>> angle2 = coord.Angle.from_dms(dms)
             >>> print(angle2 / coord.degrees)
             -5.357
 
-        :param sep:     The token to put between the dd and mm and beteen mm and ss. [default: ':']
+        :param sep:         The token to put between the hh and mm and beteen mm and ss.  This may
+                            also be a string of 2 or 3 items, e.g. 'dm' or 'dms'.  Or even a
+                            tuple of strings such as ('degrees ', 'minutes ', 'seconds').
+                            [default: ':']
+        :param prec:        The number of digits of precision after the decimal point.
+                            [default: None]
+        :param pad:         Whether to pad with a leading 0 if necessary to make h 2 digits.
+                            [default: True]
+        :param plus_sign:   Whether to use a plus sign for positive angles. [default: False]
 
         :returns: a string of the DMS representation of the angle.
         """
-        return self._make_dms_string(self/degrees, sep)
+        if not len(sep) <= 3:
+            raise ValueError("sep must be a string or tuple of length <= 3")
+        if prec is not None and not prec >= 0:
+            raise ValueError("prec must be >= 0")
+        return self._make_dms_string(self/degrees, sep, prec, pad, plus_sign)
 
     @staticmethod
     def from_hms(str):
@@ -316,7 +374,7 @@ class Angle(object):
             >>> angle = -5.357 * coord.hours
             >>> hms = angle.hms()
             >>> print(hms)
-            -05:32:25.20000000
+            -05:32:25.2
             >>> angle2 = coord.Angle.from_hms(hms)
             >>> print(angle2 / coord.hours)
             -5.357
@@ -341,7 +399,7 @@ class Angle(object):
             >>> angle = -(5 * coord.degrees + 32 * coord.arcmin + 25.2 * coord.arcsec)
             >>> dms = angle.dms()
             >>> print(dms)
-            -05:32:25.20000000
+            -05:32:25.2
             >>> angle2 = coord.Angle.from_dms(dms)
             >>> print(angle2 / coord.degrees)
             -5.357
@@ -354,13 +412,30 @@ class Angle(object):
 
     @staticmethod
     def _parse_dms(dms):
-        """Convert a string of the form dd:mm:ss.decimal into decimal degrees."""
+        """Convert a string of the form dd:mm:ss.decimal into decimal degrees.
+        """
+        import re
+        tokens = re.split('(\d+)', dms)
         sign = 1
-        if dms[0] == '-':
-            sign = -1
-            dms = dms[1:]
-        d, m, s = dms.split(':')
-        return sign * (int(d) + int(m)/60. + float(s)/3600.)
+        try:
+            dd = int(tokens[0])
+        except ValueError:
+            if tokens[0].strip() == '-':
+                sign = -1
+            tokens = tokens[1:]
+            dd = int(tokens[0])
+        if len(tokens) <= 2:
+            raise ValueError("string is not of the expected format")
+        mm = int(tokens[2])
+        if len(tokens) <= 4:
+            return sign * (dd + mm/60.)
+        ss = int(tokens[4])
+        if len(tokens) <= 6:
+            return sign * (dd + mm/60. + ss/3600.)
+        if tokens[5].strip() not in ['.',',']:
+            raise ValueError("string is not of the expected format")
+        ss = float('.'.join((tokens[4],tokens[6])))
+        return sign * (dd + mm/60. + ss/3600.)
 
 def _Angle(theta):
     """Equivalent to ``Angle(theta, coord.radians)``, but without the normal overhead (which isn't
