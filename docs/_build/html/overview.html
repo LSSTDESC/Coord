@@ -95,17 +95,30 @@
 <h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
 <a class="reference external image-reference" href="https://travis-ci.org/LSSTDESC/Coord"><img alt="https://api.travis-ci.org/LSSTDESC/Coord.svg?branch=master" src="https://api.travis-ci.org/LSSTDESC/Coord.svg?branch=master" /></a>
 <a class="reference external image-reference" href="https://codecov.io/gh/LSSTDESC/Coord"><img alt="https://codecov.io/gh/LSSTDESC/Coord/branch/master/graph/badge.svg" src="https://codecov.io/gh/LSSTDESC/Coord/branch/master/graph/badge.svg" /></a>
-<p>Coord is a Python module that provides basic functionality related to angles,
-celestial coordinates, and spherical geometry calculations.</p>
+<p>Coord is a Python module that provides basic functionality related to angles and
+celestial coordinates.</p>
 <p>It is similar in functionality to the astropy.coordinates module, but with more of an
-emphasis on efficiency.  Some functions are up to 10 times faster than the corresponding
+emphasis on efficiency.  Some functions are more than 10 times faster than the corresponding
 functionality in astropy.  On the other hand, the API is somewhat more restrictive than
-the API used by astropy.</p>
-<p>The code was were originally written by Mike Jarvis for TreeCorr and then also used in GalSim.
+the API used by astropy, so the appropriate module to use will depend on your needs.</p>
+<p>Notable functionality:</p>
+<ul class="simple">
+<li>Spherical geometric calculations of the distance between two points, angles in spherical
+triangles, and areas of spherical triangles.</li>
+<li>Tangent-plane projection of a coordinate relative to a given center point of the projection.</li>
+<li>Deprojection back into spherical coordinates.</li>
+<li>Analytic calculation of the jacobian of the tangent projection.</li>
+<li>Precession calculations between different epochs.</li>
+<li>Conversion to galactic and ecliptic coordinate systems (and back).</li>
+</ul>
+<p>The code was originally written by Mike Jarvis for TreeCorr and then also used in GalSim.
 It has been republished here as a stand-alone module to enable others (within the LSST DESC
 or not) to have easier access to these functions.</p>
 <p>In addition, the module will be used as a pedagogical tool at the LSST DESC DE School
 on July 9, 2017.  (See below for more details about this.)</p>
+<p>One missing feature (for which pull requests would be welcome) is conversion between FK5 and ICRS
+systems (never mind FK4).  If you care about the slight differences between these systems, then
+you should probably stick to astropy, which does handle these distinctions.</p>
 </div>
 <div class="section" id="licence">
 <h1>Licence<a class="headerlink" href="#licence" title="Permalink to this headline">¶</a></h1>

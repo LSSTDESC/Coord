@@ -136,7 +136,7 @@ to do this quickly:</p>
 </table>
 <p>For example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="mi">90</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">degrees</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">theta</span><span class="o">.</span><span class="n">rad</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">rad</span><span class="p">)</span>
 <span class="go">1.57079632679</span>
 </pre></div>
 </div>
@@ -274,21 +274,16 @@ you could call</p>
 <dt id="coord.Angle.hms">
 <code class="descname">hms</code><span class="sig-paren">(</span><em>sep=’:’</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/angle.html#Angle.hms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.Angle.hms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return an HMS representation of the angle as a string: +-hh:mm:ss.decimal.</p>
-<p>The returned representation will have 0 &lt;= hh &lt; 24.</p>
 <p>An optional <cite>sep</cite> parameter can change the : to something else (e.g. a space or
 nothing at all).</p>
 <p>Note: the reverse process is effected by <cite>from_hms</cite>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.357</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span> <span class="o">=</span> <span class="n">angle</span><span class="o">.</span><span class="n">hms</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">hms</span>
-<span class="go">+18:38:34.80000000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">hms</span><span class="p">)</span>
+<span class="go">-05:21:25.20000000</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">angle2</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">Angle</span><span class="o">.</span><span class="n">from_hms</span><span class="p">(</span><span class="n">hms</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span>
-<span class="go">18.643</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span> <span class="o">-</span> <span class="mi">24</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">angle2</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span><span class="p">)</span>
 <span class="go">-5.357</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span> <span class="o">-</span> <span class="n">angle</span> <span class="o">-</span> <span class="mi">24</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span>
-<span class="go">0.0 radians</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -310,15 +305,13 @@ nothing at all).</p>
 An optional <cite>sep</cite> parameter can change the : to something else (e.g. a space or
 nothing at all).</p>
 <p>Note: the reverse process is effected by <cite>from_dms</cite>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">degrees</span> <span class="o">+</span> <span class="mi">13</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">arcmin</span> <span class="o">+</span> <span class="mi">23</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">arcsec</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">degrees</span> <span class="o">+</span> <span class="mi">21</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">arcmin</span> <span class="o">+</span> <span class="mf">25.2</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">arcsec</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">angle</span><span class="o">.</span><span class="n">dms</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">dms</span>
-<span class="go">-05:13:23.00000000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">dms</span><span class="p">)</span>
+<span class="go">-05:21:25.20000000</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">angle2</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">Angle</span><span class="o">.</span><span class="n">from_dms</span><span class="p">(</span><span class="n">dms</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">degrees</span>
-<span class="go">-5.22305555556</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span> <span class="o">-</span> <span class="n">angle</span>
-<span class="go">0.0 radians</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">angle2</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">degrees</span><span class="p">)</span>
+<span class="go">-5.357</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -344,15 +337,11 @@ In fact, the code will ignore any non-digits between the hours, minutes, and sec
 <p>Note: the reverse process is effected by Angle.hms():</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.357</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span> <span class="o">=</span> <span class="n">angle</span><span class="o">.</span><span class="n">hms</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">hms</span>
-<span class="go">+18:38:34.80000000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">hms</span><span class="p">)</span>
+<span class="go">-05:32:25.20000000</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">angle2</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">Angle</span><span class="o">.</span><span class="n">from_hms</span><span class="p">(</span><span class="n">hms</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span>
-<span class="go">18.643</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span><span class="o">.</span><span class="n">wrap</span><span class="p">()</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">angle2</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span><span class="p">)</span>
 <span class="go">-5.357</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">angle2</span> <span class="o">-</span> <span class="n">angle</span><span class="p">)</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">hours</span>
-<span class="go">24.0</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -376,15 +365,13 @@ minutes, and two for the seconds.  Then there may be a decimal point followed by
 digits.  There may be a colon separating dd, mm, and ss, or whitespace, or nothing at all.
 In fact, the code will ignore any non-digits between the degrees, minutes, and seconds.</p>
 <p>Note: the reverse process is effected by Angle.dms():</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">degrees</span> <span class="o">+</span> <span class="mi">13</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">arcmin</span> <span class="o">+</span> <span class="mi">23</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">arcsec</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">degrees</span> <span class="o">+</span> <span class="mi">32</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">arcmin</span> <span class="o">+</span> <span class="mf">25.2</span> <span class="o">*</span> <span class="n">coord</span><span class="o">.</span><span class="n">arcsec</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">angle</span><span class="o">.</span><span class="n">dms</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">dms</span>
-<span class="go">-05:13:23.00000000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">dms</span><span class="p">)</span>
+<span class="go">-05:32:25.20000000</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">angle2</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">Angle</span><span class="o">.</span><span class="n">from_dms</span><span class="p">(</span><span class="n">dms</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">degrees</span>
-<span class="go">-5.22305555556</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">angle2</span> <span class="o">-</span> <span class="n">angle</span>
-<span class="go">0.0 radians</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">angle2</span> <span class="o">/</span> <span class="n">coord</span><span class="o">.</span><span class="n">degrees</span><span class="p">)</span>
+<span class="go">-5.357</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">

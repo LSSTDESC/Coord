@@ -112,7 +112,6 @@ spherical triangles, projecting from sky coordinates onto a Euclidean tangent pl
 </tbody>
 </table>
 </div></blockquote>
-<p>Note: the ra will be wrapped to lie within [-pi, pi) radians.</p>
 </div></blockquote>
 <p><strong>Sperical Geometry:</strong></p>
 <blockquote>
@@ -216,6 +215,15 @@ z &amp;= r \sin(dec\end{split}\]</div>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="coord.CelestialCoord.normal">
+<code class="descname">normal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.normal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.normal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the coordinate in the “normal” convention of having 0 &lt;= ra &lt; 24 hours.</p>
+<p>This convention is not enforced on construction, so this function exists to make it
+easy to convert if desired.</p>
+<p>Functions such as <cite>from_galactic</cite> and <cite>from_xyz</cite> will return normal coordinates.</p>
 </dd></dl>
 
 <dl class="method">
@@ -447,7 +455,7 @@ docstring for other options]</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the matrix as a tuple (J00, J01, J10, J11)</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the Jacobian as a 2x2 numpy array [[J00, J01], [J10, J11]]</p>
 </td>
 </tr>
 </tbody>
@@ -471,7 +479,7 @@ docstring for other options]</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the matrix as a tuple (J00, J01, J10, J11)</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the Jacobian as a 2x2 numpy array [[J00, J01], [J10, J11]]</p>
 </td>
 </tr>
 </tbody>
@@ -603,10 +611,8 @@ that date.  If None, then return the true ecliptic coordiantes.
 
 <dl class="function">
 <dt id="coord._CelestialCoord">
-<code class="descclassname">coord.</code><code class="descname">_CelestialCoord</code><span class="sig-paren">(</span><em>self</em>, <em>ra</em>, <em>dec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#_CelestialCoord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord._CelestialCoord" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">coord.</code><code class="descname">_CelestialCoord</code><span class="sig-paren">(</span><em>ra</em>, <em>dec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#_CelestialCoord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord._CelestialCoord" title="Permalink to this definition">¶</a></dt>
 <dd><p>Equivalent to CeletialCoord(ra,dec), but without some of the sanity checks.</p>
-<p>It also doesn’t wrap the RA to [-pi,pi), so if you care about that, you should make sure
-<cite>ra</cite> is wrapped.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
