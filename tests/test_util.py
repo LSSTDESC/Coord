@@ -33,7 +33,25 @@ from helper_util import *
 def test_julian():
     """Test date_to_julian_day function
     """
-    pass
+    # Use Julian Day Number from Date Calculator here:
+    #    http://keisan.casio.com/exec/system/1227779487
+    # The Julian Day for noon on 1/1/2000 is also mentioned here:
+    #    https://en.wikipedia.org/wiki/Julian_day
+    dates = [ datetime.date(1582, 10, 14),
+              datetime.date(2000, 1, 1),
+              datetime.datetime(2000, 1, 1, 12, 0, 0),
+              datetime.datetime(2000, 1, 1, 0, 0, 0),
+              datetime.datetime(2000, 1, 1, 18, 0, 0)
+            ]
+    julian_days = [ 2299160, 2451545, 2451545, 2451544.5, 2451545.25 ]
+
+    for date, jd in zip(dates, julian_days):
+        jd1 = coord.util.date_to_julian_day(date)
+        np.testing.assert_almost_equal(jd1, jd)
+
+    np.testing.assert_raises(ValueError, coord.util.date_to_julian_day, 2000)
+    np.testing.assert_raises(ValueError, coord.util.date_to_julian_day, '1875 AD')
+
 
 
 if __name__ == '__main__':
