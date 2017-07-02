@@ -168,6 +168,43 @@ def test_distance():
         eq4 = coord.CelestialCoord(delta * arcmin, 0 * radians)
         np.testing.assert_allclose(pi - eq3.distanceTo(eq4).rad, eq4.ra.rad, rtol=1.e-7)
 
+@timer
+def test_xyz():
+    """Test get_xyz and from_xyz functions
+    """
+    eq1 = coord.CelestialCoord(0. * radians, 0. * radians)  # point on the equator
+    eq2 = coord.CelestialCoord(1. * radians, 0. * radians)  # 1 radian along equator
+    eq3 = coord.CelestialCoord(pi * radians, 0. * radians) # antipode of eq1
+    north_pole = coord.CelestialCoord(0. * radians, pi/2. * radians)  # north pole
+    south_pole = coord.CelestialCoord(0. * radians, -pi/2. * radians) # south pole
+    c1 = coord.CelestialCoord(0.234 * radians, 0.342 * radians)
+    c2 = coord.CelestialCoord(0.234 * radians, -1.093 * radians)
+    c3 = coord.CelestialCoord((pi + 0.234) * radians, -0.342 * radians)
+    c4 = coord.CelestialCoord((pi + 0.234) * radians, 0.832 * radians)
+    c5 = coord.CelestialCoord(1.832 * radians, -0.723 * radians)
+
+    for c in [c1, c2, c3, c4, c5, eq1, eq2, eq3, north_pole, south_pole]:
+        x, y, z = c.get_xyz()
+        np.testing.assert_almost_equal(x, c.dec.cos() * c.ra.cos(), decimal=12)
+        np.testing.assert_almost_equal(y, c.dec.cos() * c.ra.sin(), decimal=12)
+        np.testing.assert_almost_equal(z, c.dec.sin(), decimal=12)
+
+        cc1 = coord.CelestialCoord.from_xyz(x,y,z)
+        np.testing.assert_almost_equal(cc1.ra.rad, c.ra.rad, decimal=12)
+        np.testing.assert_almost_equal(cc1.dec.rad, c.dec.rad, decimal=12)
+
+        # Works in x,y,z are scaled arbitrarily
+        cc2 = coord.CelestialCoord.from_xyz(x*17,y*17,z*17)
+        np.testing.assert_almost_equal(cc2.ra.rad, c.ra.rad, decimal=12)
+        np.testing.assert_almost_equal(cc2.dec.rad, c.dec.rad, decimal=12)
+
+        cc3 = coord.CelestialCoord.from_xyz(x*1.e-9,y*1.e-9,z*1.e-9)
+        np.testing.assert_almost_equal(cc3.ra.rad, c.ra.rad, decimal=12)
+        np.testing.assert_almost_equal(cc3.dec.rad, c.dec.rad, decimal=12)
+
+    # constructing from x,y,z = 0,0,0 is undefined.
+    np.testing.assert_raises(ValueError, coord.CelestialCoord.from_xyz, 0., 0., 0.)
+
 
 @timer
 def test_xyz():
@@ -312,16 +349,17 @@ def test_gnomonic_projection():
     jac_area = abs(dudx*dvdy - dudy*dvdx)
     np.testing.assert_almost_equal(jac_area, E/area, decimal=5)
 
-    # gnomonic is the default.  Make sure that works right.
-    uA3, vA3 = center.project(cA)
-    uB3, vB3 = center.project(cB)
-    uC3, vC3 = center.project(cC)
-    np.testing.assert_array_almost_equal(uA, uA3 / arcsec, decimal=12)
-    np.testing.assert_array_almost_equal(vA, vA3 / arcsec, decimal=12)
-    np.testing.assert_array_almost_equal(uB, uB3 / arcsec, decimal=12)
-    np.testing.assert_array_almost_equal(vB, vB3 / arcsec, decimal=12)
-    np.testing.assert_array_almost_equal(uC, uC3 / arcsec, decimal=12)
-    np.testing.assert_array_almost_equal(vC, vC3 / arcsec, decimal=12)
+    dudx, dudy, dvdx, dvdy = center.jac_deproject_arcsec(uA, vA, 'gnomonic').ravel()
+    np.testing.assert_almost_equal(jac_area, abs(dudx*dvdy - dudy*dvdx))
+
+    # center projects to 0,0 with unit area
+    u, v = center.project(center, 'gnomonic')
+    np.testing.assert_almost_equal(u.rad, 0., decimal=12)
+    np.testing.assert_almost_equal(v.rad, 0., decimal=12)
+    c2 = center.deproject(u,v, 'gnomonic')
+    np.testing.assert_almost_equal(c2.ra.rad, center.ra.rad, decimal=12)
+    np.testing.assert_almost_equal(c2.dec.rad, center.dec.rad, decimal=12)
+    np.testing.assert_almost_equal(np.linalg.det(center.jac_deproject(u, v, 'gnomonic')), 1.)
 
     # Finally, check the claim that great circles turn into straight lines.
     # Meridians are great circles.  Also symmetric points across the equator.
@@ -346,6 +384,42 @@ def test_gnomonic_projection():
             m1 = (v.rad - v0.rad) / (u.rad - u0.rad)
             print('u,v = ',u,v,', m1 = ',m1)
             np.testing.assert_almost_equal(m1, m0, decimal=12)
+
+    # gnomonic is the default.  Make sure that works right.
+    uA3, vA3 = center.project(cA)
+    uB3, vB3 = center.project(cB)
+    uC3, vC3 = center.project(cC)
+    np.testing.assert_array_almost_equal(uA, uA3 / arcsec, decimal=12)
+    np.testing.assert_array_almost_equal(vA, vA3 / arcsec, decimal=12)
+    np.testing.assert_array_almost_equal(uB, uB3 / arcsec, decimal=12)
+    np.testing.assert_array_almost_equal(vB, vB3 / arcsec, decimal=12)
+    np.testing.assert_array_almost_equal(uC, uC3 / arcsec, decimal=12)
+    np.testing.assert_array_almost_equal(vC, vC3 / arcsec, decimal=12)
+
+    # And make sure that invalid projection strings raise exceptions
+    np.testing.assert_raises(ValueError, center.project, cA, 'TAN')
+    np.testing.assert_raises(ValueError, center.project, cA, projection=3)
+    np.testing.assert_raises(ValueError, center.project, 3, 4)
+    np.testing.assert_raises(ValueError, center.project, u, v)
+    np.testing.assert_raises(ValueError, center.project_rad, 3, 4, 'TAN')
+    np.testing.assert_raises(ValueError, center.project_rad, 3, 4, projection=3)
+    np.testing.assert_raises(TypeError, center.project_rad, cA)
+    np.testing.assert_raises(ValueError, center.deproject, u, v, 'TAN')
+    np.testing.assert_raises(ValueError, center.deproject, u, v, projection=3)
+    np.testing.assert_raises(TypeError, center.deproject, 3, 4)
+    np.testing.assert_raises(TypeError, center.deproject, cA)
+    np.testing.assert_raises(ValueError, center.deproject_rad, 3, 4, 'TAN')
+    np.testing.assert_raises(ValueError, center.deproject_rad, 3, 4, projection=3)
+    np.testing.assert_raises(TypeError, center.deproject_rad, u, v)
+    np.testing.assert_raises(TypeError, center.deproject_rad, cA)
+    np.testing.assert_raises(ValueError, center.jac_deproject, u, v, 'TAN')
+    np.testing.assert_raises(ValueError, center.jac_deproject, u, v, projection=3)
+    np.testing.assert_raises(AttributeError, center.jac_deproject, 3, 4)
+    np.testing.assert_raises(TypeError, center.jac_deproject, cA)
+    np.testing.assert_raises(ValueError, center.jac_deproject_arcsec, 3, 4, 'TAN')
+    np.testing.assert_raises(ValueError, center.jac_deproject_arcsec, 3, 4, projection=3)
+    np.testing.assert_raises(TypeError, center.jac_deproject_arcsec, u, v)
+    np.testing.assert_raises(TypeError, center.jac_deproject_arcsec, cA)
 
 
 @timer
@@ -416,6 +490,18 @@ def test_stereographic_projection():
     dudx, dudy, dvdx, dvdy = center.jac_deproject(uA*arcsec, vA*arcsec, 'stereographic').ravel()
     jac_area = abs(dudx*dvdy - dudy*dvdx)
     np.testing.assert_almost_equal(jac_area, E/area, decimal=5)
+
+    dudx, dudy, dvdx, dvdy = center.jac_deproject_arcsec(uA, vA, 'stereographic').ravel()
+    np.testing.assert_almost_equal(jac_area, abs(dudx*dvdy - dudy*dvdx))
+
+    # center projects to 0,0 with unit area
+    u, v = center.project(center, 'stereographic')
+    np.testing.assert_almost_equal(u.rad, 0., decimal=12)
+    np.testing.assert_almost_equal(v.rad, 0., decimal=12)
+    c2 = center.deproject(u,v, 'stereographic')
+    np.testing.assert_almost_equal(c2.ra.rad, center.ra.rad, decimal=12)
+    np.testing.assert_almost_equal(c2.dec.rad, center.dec.rad, decimal=12)
+    np.testing.assert_almost_equal(np.linalg.det(center.jac_deproject(u, v, 'stereographic')), 1.)
 
 
 @timer
@@ -491,6 +577,18 @@ def test_lambert_projection():
     np.testing.assert_allclose(c2.rad, center.rad, err_msg='(0,0) did not deproject to center')
     np.testing.assert_allclose(np.linalg.det(center.jac_deproject(u, v, 'lambert')), 1.,
                                err_msg='determinant of jac_deproject matrix != 1 at center')
+
+    dudx, dudy, dvdx, dvdy = center.jac_deproject_arcsec(uA, vA, 'lambert').ravel()
+    np.testing.assert_almost_equal(jac_area, abs(dudx*dvdy - dudy*dvdx))
+
+    # center projects to 0,0 with unit area
+    u, v = center.project(center, 'lambert')
+    np.testing.assert_almost_equal(u.rad, 0., decimal=12)
+    np.testing.assert_almost_equal(v.rad, 0., decimal=12)
+    c2 = center.deproject(u,v, 'lambert')
+    np.testing.assert_almost_equal(c2.ra.rad, center.ra.rad, decimal=12)
+    np.testing.assert_almost_equal(c2.dec.rad, center.dec.rad, decimal=12)
+    np.testing.assert_almost_equal(np.linalg.det(center.jac_deproject(u, v, 'lambert')), 1.)
 
 
 @timer
@@ -568,6 +666,18 @@ def test_postel_projection():
     jac_area = abs(dudx*dvdy - dudy*dvdx)
     np.testing.assert_almost_equal(jac_area, E/area, decimal=5)
 
+    dudx, dudy, dvdx, dvdy = center.jac_deproject_arcsec(uA, vA, 'postel').ravel()
+    np.testing.assert_almost_equal(jac_area, abs(dudx*dvdy - dudy*dvdx))
+
+    # center projects to 0,0 with unit area
+    u, v = center.project(center, 'postel')
+    np.testing.assert_almost_equal(u.rad, 0., decimal=12)
+    np.testing.assert_almost_equal(v.rad, 0., decimal=12)
+    c2 = center.deproject(u,v, 'postel')
+    np.testing.assert_almost_equal(c2.ra.rad, center.ra.rad, decimal=12)
+    np.testing.assert_almost_equal(c2.dec.rad, center.dec.rad, decimal=12)
+    np.testing.assert_almost_equal(np.linalg.det(center.jac_deproject(u, v, 'postel')), 1.)
+
 
 @timer
 def test_precess():
@@ -583,6 +693,10 @@ def test_precess():
     c3 = c2.precess(1900., 2000.)
     np.testing.assert_almost_equal(c3.ra.rad, orig.ra.rad, decimal=10)
     np.testing.assert_almost_equal(c3.dec.rad, orig.dec.rad, decimal=10)
+
+    # The no op is exact.
+    c4 = orig.precess(2000., 2000.)
+    assert c4 == orig
 
     # I found a website that does precession calculations, so check that we are
     # consistent with them.
