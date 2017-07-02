@@ -305,23 +305,57 @@
         <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="s1">&#39;coord.Angle&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rad</span><span class="p">))</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_make_dms_string</span><span class="p">(</span><span class="n">decimal</span><span class="p">,</span> <span class="n">sep</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">decimal</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span>
-        <span class="k">else</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_make_dms_string</span><span class="p">(</span><span class="n">decimal</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="n">pad</span><span class="p">,</span> <span class="n">plus_sign</span><span class="p">):</span>
+        <span class="c1"># Account for the sign properly</span>
+        <span class="k">if</span> <span class="n">decimal</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
             <span class="n">decimal</span> <span class="o">=</span> <span class="o">-</span><span class="n">decimal</span>
-        <span class="c1"># Round to nearest 1.e-8 seconds</span>
-        <span class="n">decimal</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">3600.e8</span> <span class="o">*</span> <span class="n">decimal</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">decimal</span> <span class="o">//</span> <span class="mi">360000000000</span>
-        <span class="n">decimal</span> <span class="o">-=</span> <span class="n">d</span> <span class="o">*</span> <span class="mi">360000000000</span>
-        <span class="n">m</span> <span class="o">=</span> <span class="n">decimal</span> <span class="o">//</span> <span class="mi">6000000000</span>
-        <span class="n">decimal</span> <span class="o">-=</span> <span class="n">m</span> <span class="o">*</span> <span class="mi">6000000000</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">decimal</span> <span class="o">//</span> <span class="mi">100000000</span>
-        <span class="n">decimal</span> <span class="o">-=</span> <span class="n">s</span> <span class="o">*</span> <span class="mi">100000000</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s%02d%s%02d%s%02d</span><span class="s1">.</span><span class="si">%08d</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">sign</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">sep</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">sep</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">decimal</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">plus_sign</span><span class="p">:</span>
+            <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 
-<div class="viewcode-block" id="Angle.hms"><a class="viewcode-back" href="../../angle.html#coord.Angle.hms">[docs]</a>    <span class="k">def</span> <span class="nf">hms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">):</span>
+        <span class="c1"># Figure out the 3 sep tokens</span>
+        <span class="n">sep1</span> <span class="o">=</span> <span class="n">sep2</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">sep3</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">sep1</span> <span class="o">=</span> <span class="n">sep2</span> <span class="o">=</span> <span class="n">sep</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">sep1</span><span class="p">,</span> <span class="n">sep2</span> <span class="o">=</span> <span class="n">sep</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">sep1</span><span class="p">,</span> <span class="n">sep2</span><span class="p">,</span> <span class="n">sep3</span> <span class="o">=</span> <span class="n">sep</span>
+
+        <span class="c1"># Round to nearest 1.e-8 seconds (or 10**-prec if given)</span>
+        <span class="n">round_prec</span> <span class="o">=</span> <span class="mi">8</span> <span class="k">if</span> <span class="n">prec</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prec</span>
+        <span class="n">digits</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">round_prec</span>
+
+        <span class="n">decimal</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">3600</span> <span class="o">*</span> <span class="n">digits</span> <span class="o">*</span> <span class="n">decimal</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="n">decimal</span> <span class="o">//</span> <span class="p">(</span><span class="mi">3600</span> <span class="o">*</span> <span class="n">digits</span><span class="p">)</span>
+        <span class="n">decimal</span> <span class="o">-=</span> <span class="n">d</span> <span class="o">*</span> <span class="p">(</span><span class="mi">3600</span> <span class="o">*</span> <span class="n">digits</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">decimal</span> <span class="o">//</span> <span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="n">digits</span><span class="p">)</span>
+        <span class="n">decimal</span> <span class="o">-=</span> <span class="n">m</span> <span class="o">*</span> <span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="n">digits</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">decimal</span> <span class="o">//</span> <span class="n">digits</span>
+        <span class="n">decimal</span> <span class="o">-=</span> <span class="n">s</span> <span class="o">*</span> <span class="n">digits</span>
+
+        <span class="c1"># Make the string</span>
+        <span class="k">if</span> <span class="n">pad</span><span class="p">:</span>
+            <span class="n">d_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%02d</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">d</span>
+            <span class="n">m_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%02d</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">m</span>
+            <span class="n">s_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%02d</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">s</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">d_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">d</span>
+            <span class="n">m_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">m</span>
+            <span class="n">s_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">s</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s%s%s%s%s%s</span><span class="s1">.</span><span class="si">%0*d</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">sign</span><span class="p">,</span><span class="n">d_str</span><span class="p">,</span><span class="n">sep1</span><span class="p">,</span><span class="n">m_str</span><span class="p">,</span><span class="n">sep2</span><span class="p">,</span><span class="n">s_str</span><span class="p">,</span><span class="n">round_prec</span><span class="p">,</span><span class="n">decimal</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">prec</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sep3</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">string</span> <span class="o">+</span> <span class="n">sep3</span>
+        <span class="k">return</span> <span class="n">string</span>
+
+<div class="viewcode-block" id="Angle.hms"><a class="viewcode-back" href="../../angle.html#coord.Angle.hms">[docs]</a>    <span class="k">def</span> <span class="nf">hms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plus_sign</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return an HMS representation of the angle as a string: +-hh:mm:ss.decimal.</span>
 
 <span class="sd">        An optional `sep` parameter can change the : to something else (e.g. a space or</span>
@@ -332,18 +366,30 @@
 <span class="sd">            &gt;&gt;&gt; angle = -5.357 * coord.hours</span>
 <span class="sd">            &gt;&gt;&gt; hms = angle.hms()</span>
 <span class="sd">            &gt;&gt;&gt; print(hms)</span>
-<span class="sd">            -05:21:25.20000000</span>
+<span class="sd">            -05:21:25.2</span>
 <span class="sd">            &gt;&gt;&gt; angle2 = coord.Angle.from_hms(hms)</span>
 <span class="sd">            &gt;&gt;&gt; print(angle2 / coord.hours)</span>
 <span class="sd">            -5.357</span>
 
-<span class="sd">        :param sep:     The token to put between the hh and mm and beteen mm and ss. [default: &#39;:&#39;]</span>
+<span class="sd">        :param sep:         The token to put between the hh and mm and beteen mm and ss.  This may</span>
+<span class="sd">                            also be a string of 2 or 3 items, e.g. &#39;hm&#39; or &#39;hms&#39;.  Or even a</span>
+<span class="sd">                            tuple of strings such as (&#39;hours &#39;, &#39;minutes &#39;, &#39;seconds&#39;).</span>
+<span class="sd">                            [default: &#39;:&#39;]</span>
+<span class="sd">        :param prec:        The number of digits of precision after the decimal point.</span>
+<span class="sd">                            [default: None]</span>
+<span class="sd">        :param pad:         Whether to pad with a leading 0 if necessary to make h,m,s 2 digits.</span>
+<span class="sd">                            [default: True]</span>
+<span class="sd">        :param plus_sign:   Whether to use a plus sign for positive angles. [default: False]</span>
 
 <span class="sd">        :returns: a string of the HMS representation of the angle.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_dms_string</span><span class="p">(</span><span class="bp">self</span><span class="o">/</span><span class="n">hours</span><span class="p">,</span> <span class="n">sep</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;sep must be a string or tuple of length &lt;= 3&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">prec</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;prec must be &gt;= 0&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_dms_string</span><span class="p">(</span><span class="bp">self</span><span class="o">/</span><span class="n">hours</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="n">pad</span><span class="p">,</span> <span class="n">plus_sign</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Angle.dms"><a class="viewcode-back" href="../../angle.html#coord.Angle.dms">[docs]</a>    <span class="k">def</span> <span class="nf">dms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Angle.dms"><a class="viewcode-back" href="../../angle.html#coord.Angle.dms">[docs]</a>    <span class="k">def</span> <span class="nf">dms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plus_sign</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a DMS representation of the angle as a string: +-dd:mm:ss.decimal</span>
 <span class="sd">        An optional `sep` parameter can change the : to something else (e.g. a space or</span>
 <span class="sd">        nothing at all).</span>
@@ -353,16 +399,28 @@
 <span class="sd">            &gt;&gt;&gt; angle = -(5 * coord.degrees + 21 * coord.arcmin + 25.2 * coord.arcsec)</span>
 <span class="sd">            &gt;&gt;&gt; dms = angle.dms()</span>
 <span class="sd">            &gt;&gt;&gt; print(dms)</span>
-<span class="sd">            -05:21:25.20000000</span>
+<span class="sd">            -05:21:25.2</span>
 <span class="sd">            &gt;&gt;&gt; angle2 = coord.Angle.from_dms(dms)</span>
 <span class="sd">            &gt;&gt;&gt; print(angle2 / coord.degrees)</span>
 <span class="sd">            -5.357</span>
 
-<span class="sd">        :param sep:     The token to put between the dd and mm and beteen mm and ss. [default: &#39;:&#39;]</span>
+<span class="sd">        :param sep:         The token to put between the hh and mm and beteen mm and ss.  This may</span>
+<span class="sd">                            also be a string of 2 or 3 items, e.g. &#39;dm&#39; or &#39;dms&#39;.  Or even a</span>
+<span class="sd">                            tuple of strings such as (&#39;degrees &#39;, &#39;minutes &#39;, &#39;seconds&#39;).</span>
+<span class="sd">                            [default: &#39;:&#39;]</span>
+<span class="sd">        :param prec:        The number of digits of precision after the decimal point.</span>
+<span class="sd">                            [default: None]</span>
+<span class="sd">        :param pad:         Whether to pad with a leading 0 if necessary to make h 2 digits.</span>
+<span class="sd">                            [default: True]</span>
+<span class="sd">        :param plus_sign:   Whether to use a plus sign for positive angles. [default: False]</span>
 
 <span class="sd">        :returns: a string of the DMS representation of the angle.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_dms_string</span><span class="p">(</span><span class="bp">self</span><span class="o">/</span><span class="n">degrees</span><span class="p">,</span> <span class="n">sep</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;sep must be a string or tuple of length &lt;= 3&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">prec</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;prec must be &gt;= 0&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_dms_string</span><span class="p">(</span><span class="bp">self</span><span class="o">/</span><span class="n">degrees</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="n">pad</span><span class="p">,</span> <span class="n">plus_sign</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Angle.from_hms"><a class="viewcode-back" href="../../angle.html#coord.Angle.from_hms">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_hms</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
@@ -378,7 +436,7 @@
 <span class="sd">            &gt;&gt;&gt; angle = -5.357 * coord.hours</span>
 <span class="sd">            &gt;&gt;&gt; hms = angle.hms()</span>
 <span class="sd">            &gt;&gt;&gt; print(hms)</span>
-<span class="sd">            -05:32:25.20000000</span>
+<span class="sd">            -05:32:25.2</span>
 <span class="sd">            &gt;&gt;&gt; angle2 = coord.Angle.from_hms(hms)</span>
 <span class="sd">            &gt;&gt;&gt; print(angle2 / coord.hours)</span>
 <span class="sd">            -5.357</span>
@@ -403,7 +461,7 @@
 <span class="sd">            &gt;&gt;&gt; angle = -(5 * coord.degrees + 32 * coord.arcmin + 25.2 * coord.arcsec)</span>
 <span class="sd">            &gt;&gt;&gt; dms = angle.dms()</span>
 <span class="sd">            &gt;&gt;&gt; print(dms)</span>
-<span class="sd">            -05:32:25.20000000</span>
+<span class="sd">            -05:32:25.2</span>
 <span class="sd">            &gt;&gt;&gt; angle2 = coord.Angle.from_dms(dms)</span>
 <span class="sd">            &gt;&gt;&gt; print(angle2 / coord.degrees)</span>
 <span class="sd">            -5.357</span>
@@ -416,13 +474,31 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_dms</span><span class="p">(</span><span class="n">dms</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert a string of the form dd:mm:ss.decimal into decimal degrees.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Convert a string of the form dd:mm:ss.decimal into decimal degrees.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">re</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;([\.\d]+)&#39;</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">strip</span><span class="p">())))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;string is not of the expected format&quot;</span><span class="p">)</span>
         <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">dms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
-            <span class="n">sign</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-            <span class="n">dms</span> <span class="o">=</span> <span class="n">dms</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-        <span class="n">d</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">dms</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">sign</span> <span class="o">*</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">/</span><span class="mf">60.</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">/</span><span class="mf">3600.</span><span class="p">)</span></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">dd</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
+                <span class="n">sign</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="n">dd</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;string is not of the expected format&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">dd</span>
+        <span class="n">mm</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">sign</span> <span class="o">*</span> <span class="p">(</span><span class="n">dd</span> <span class="o">+</span> <span class="n">mm</span><span class="o">/</span><span class="mi">60</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;string is not of the expected format&quot;</span><span class="p">)</span>
+        <span class="n">ss</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">sign</span> <span class="o">*</span> <span class="p">(</span><span class="n">dd</span> <span class="o">+</span> <span class="n">mm</span><span class="o">/</span><span class="mf">60.</span> <span class="o">+</span> <span class="n">ss</span><span class="o">/</span><span class="mf">3600.</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="_Angle"><a class="viewcode-back" href="../../angle.html#coord._Angle">[docs]</a><span class="k">def</span> <span class="nf">_Angle</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Equivalent to ``Angle(theta, coord.radians)``, but without the normal overhead (which isn&#39;t</span>

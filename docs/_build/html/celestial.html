@@ -83,7 +83,7 @@
 <h1>Celestial Coordinates<a class="headerlink" href="#celestial-coordinates" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="coord.CelestialCoord">
-<em class="property">class </em><code class="descclassname">coord.</code><code class="descname">CelestialCoord</code><span class="sig-paren">(</span><em>ra</em>, <em>dec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">coord.</code><code class="descname">CelestialCoord</code><span class="sig-paren">(</span><em>ra</em>, <em>dec=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class defines a position on the celestial sphere, normally given by two angles,
 <cite>ra</cite> and <cite>dec</cite>.</p>
 <p>This class can be used to perform various calculations in spherical coordinates, such
@@ -143,7 +143,7 @@ method:</p>
 </div></blockquote>
 <dl class="method">
 <dt id="coord.CelestialCoord.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>ra</em>, <em>dec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>ra</em>, <em>dec=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -612,7 +612,7 @@ that date.  If None, then return the true ecliptic coordiantes.
 <dl class="function">
 <dt id="coord._CelestialCoord">
 <code class="descclassname">coord.</code><code class="descname">_CelestialCoord</code><span class="sig-paren">(</span><em>ra</em>, <em>dec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#_CelestialCoord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord._CelestialCoord" title="Permalink to this definition">¶</a></dt>
-<dd><p>Equivalent to CeletialCoord(ra,dec), but without some of the sanity checks.</p>
+<dd><p>Equivalent to CeletialCoord(ra,dec), but without the normal sanity checks.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

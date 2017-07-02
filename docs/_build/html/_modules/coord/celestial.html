@@ -144,20 +144,29 @@
 
 <span class="sd">        where u and v are Angles and center and sky_coord are CelestialCoords.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="CelestialCoord.__init__"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">):</span>
+<div class="viewcode-block" id="CelestialCoord.__init__"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param ra:       The right ascension.  Must be an Angle instance.</span>
 <span class="sd">        :param dec:      The declination.  Must be an Angle instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">Angle</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">CelestialCoord</span><span class="p">)</span> <span class="ow">and</span> <span class="n">dec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Copy constructor</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span> <span class="o">=</span> <span class="n">ra</span><span class="o">.</span><span class="n">_ra</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span> <span class="o">=</span> <span class="n">ra</span><span class="o">.</span><span class="n">_dec</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">ra</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">dec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;ra and dec are both required&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">Angle</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;ra must be a coord.Angle&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dec</span><span class="p">,</span> <span class="n">Angle</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dec</span><span class="p">,</span> <span class="n">Angle</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;dec must be a coord.Angle&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">dec</span><span class="o">/</span><span class="n">degrees</span> <span class="o">&gt;</span> <span class="mf">90.</span> <span class="ow">or</span> <span class="n">dec</span><span class="o">/</span><span class="n">degrees</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">90.</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">dec</span><span class="o">/</span><span class="n">degrees</span> <span class="o">&gt;</span> <span class="mf">90.</span> <span class="ow">or</span> <span class="n">dec</span><span class="o">/</span><span class="n">degrees</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">90.</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dec must be between -90 deg and +90 deg.&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span> <span class="o">=</span> <span class="n">ra</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span> <span class="o">=</span> <span class="n">dec</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Indicate that x,y,z are not set yet.</span></div>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Normal case</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span> <span class="o">=</span> <span class="n">ra</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span> <span class="o">=</span> <span class="n">dec</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Indicate that x,y,z are not set yet.</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ra</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -415,7 +424,7 @@
 <span class="sd">        :returns: (u,v) as Angle instances</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">projection</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CelestialCoord</span><span class="o">.</span><span class="n">_valid_projections</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown projection &#39;</span> <span class="o">+</span> <span class="n">projection</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown projection: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">projection</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_aux</span><span class="p">()</span>
         <span class="n">coord2</span><span class="o">.</span><span class="n">_set_aux</span><span class="p">()</span>
@@ -442,7 +451,7 @@
 <span class="sd">        :returns: (u,v) in arcsec</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">projection</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CelestialCoord</span><span class="o">.</span><span class="n">_valid_projections</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown projection &#39;</span> <span class="o">+</span> <span class="n">projection</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown projection: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">projection</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_aux</span><span class="p">()</span>
 
@@ -531,7 +540,7 @@
 <span class="sd">        :returns: the corresponding CelestialCoord for that position.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">projection</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CelestialCoord</span><span class="o">.</span><span class="n">_valid_projections</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown projection &#39;</span> <span class="o">+</span> <span class="n">projection</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown projection: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">projection</span><span class="p">)</span>
 
         <span class="c1"># Again, do the core calculations in a helper function</span>
         <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deproject</span><span class="p">(</span><span class="n">u</span> <span class="o">/</span> <span class="n">arcsec</span><span class="p">,</span> <span class="n">v</span> <span class="o">/</span> <span class="n">arcsec</span><span class="p">,</span> <span class="n">projection</span><span class="p">)</span>
@@ -554,7 +563,7 @@
 <span class="sd">        :returns: the corresponding RA, Dec in radians</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">projection</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CelestialCoord</span><span class="o">.</span><span class="n">_valid_projections</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown projection &#39;</span> <span class="o">+</span> <span class="n">projection</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown projection: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">projection</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deproject</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">projection</span><span class="p">)</span></div>
 
@@ -652,7 +661,7 @@
 <span class="sd">        :returns: the Jacobian as a 2x2 numpy array [[J00, J01], [J10, J11]]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">projection</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CelestialCoord</span><span class="o">.</span><span class="n">_valid_projections</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown projection &#39;</span> <span class="o">+</span> <span class="n">projection</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown projection: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">projection</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_jac_deproject</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">rad</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">rad</span><span class="p">,</span> <span class="n">projection</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CelestialCoord.jac_deproject_arcsec"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.jac_deproject_arcsec">[docs]</a>    <span class="k">def</span> <span class="nf">jac_deproject_arcsec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -666,6 +675,8 @@
 
 <span class="sd">        :returns: the Jacobian as a 2x2 numpy array [[J00, J01], [J10, J11]]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">projection</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CelestialCoord</span><span class="o">.</span><span class="n">_valid_projections</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown projection: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">projection</span><span class="p">)</span>
         <span class="n">factor</span> <span class="o">=</span> <span class="n">arcsec</span> <span class="o">/</span> <span class="n">radians</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_jac_deproject</span><span class="p">(</span><span class="n">u</span><span class="o">*</span><span class="n">factor</span><span class="p">,</span> <span class="n">v</span><span class="o">*</span><span class="n">factor</span><span class="p">,</span> <span class="n">projection</span><span class="p">)</span></div>
 
@@ -934,8 +945,6 @@
         <span class="k">return</span> <span class="n">CelestialCoord</span><span class="o">.</span><span class="n">from_xyz</span><span class="p">(</span><span class="n">x_eq</span><span class="p">,</span> <span class="n">y_eq</span><span class="p">,</span> <span class="n">z_eq</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ra</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span><span class="p">)</span>
-
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="s1">&#39;coord.CelestialCoord(</span><span class="si">%r</span><span class="s1">, </span><span class="si">%r</span><span class="s1">)&#39;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ra</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_dec</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="s1">&#39;coord.CelestialCoord(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ra</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_dec</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
@@ -947,7 +956,7 @@
 
 <div class="viewcode-block" id="_CelestialCoord"><a class="viewcode-back" href="../../celestial.html#coord._CelestialCoord">[docs]</a><span class="k">def</span> <span class="nf">_CelestialCoord</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Equivalent to CeletialCoord(ra,dec), but without some of the sanity checks.</span>
+<span class="sd">    Equivalent to CeletialCoord(ra,dec), but without the normal sanity checks.</span>
 
 <span class="sd">    :param ra:       The right ascension.  Must be an Angle instance.</span>
 <span class="sd">    :param dec:      The declination.  Must be an Angle instance.</span>
