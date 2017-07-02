@@ -734,21 +734,20 @@ class CelestialCoord(object):
 
         :returns: the longitude and latitude as a tuple (el, b), given as Angle instances.
         """
-        # The formulae are implemented in terms of the 1950 coordinates, so we need to
-        # precess from the current epoch to 1950.
-        temp = self.precess(epoch, 1950.)
-
         # cf. Lang, Astrophysical Formulae, page 13
         # cos(b) cos(el-33) = cos(dec) cos(ra-282.25)
         # cos(b) sin(el-33) = sin(dec) sin(62.6) + cos(dec) sin(ra-282.25) cos(62.6)
         #            sin(b) = sin(dec) cos(62.6) - cos(dec) sin(ra-282.25) sin(62.6)
-        el0 = 33. * degrees
-        r0 = 282.25 * degrees
-        d0 = 62.6 * degrees
+        #
+        # Those formulae were for the 1950 epoch.  The corresponding numbers for J2000 are:
+        # (cf. https://arxiv.org/pdf/1010.3773.pdf)
+        el0 = 32.93191857 * degrees
+        r0 = 282.859481208 * degrees
+        d0 = 62.8717488056 * degrees
         sind0, cosd0 = d0.sincos()
 
-        sind, cosd = temp.dec.sincos()
-        sinr, cosr = (temp.ra-r0).sincos()
+        sind, cosd = self.dec.sincos()
+        sinr, cosr = (self.ra-r0).sincos()
 
         cbcl = cosd*cosr
         cbsl = sind*sind0 + cosd*sinr*cosd0
@@ -770,9 +769,9 @@ class CelestialCoord(object):
 
         :returns: the CelestialCoord corresponding to these galactic coordinates.
         """
-        el0 = 33. * degrees
-        r0 = 282.25 * degrees
-        d0 = 62.6 * degrees
+        el0 = 32.93191857 * degrees
+        r0 = 282.859481208 * degrees
+        d0 = 62.8717488056 * degrees
         sind0, cosd0 = d0.sincos()
 
         sinb, cosb = b.sincos()
@@ -786,8 +785,7 @@ class CelestialCoord(object):
         z2 = y1 * sind0 + z1 * cosd0
 
         temp = CelestialCoord.from_xyz(x2, y2, z2)
-        c1950 = CelestialCoord(temp.ra + r0, temp.dec)
-        return c1950.precess(1950., epoch)
+        return CelestialCoord(temp.ra + r0, temp.dec).normal()
 
 
     def ecliptic(self, epoch=2000., date=None):
