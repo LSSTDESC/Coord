@@ -108,6 +108,14 @@ def test_arith():
     theta2 /= -2
     np.testing.assert_almost_equal(theta2.rad, -pi, decimal=12)
 
+    # Check invalid arithmetic
+    np.testing.assert_raises(TypeError, coord.Angle.__add__, theta1, 23)
+    np.testing.assert_raises(TypeError, coord.Angle.__sub__, theta1, 23)
+    np.testing.assert_raises(TypeError, coord.Angle.__add__, theta1, coord.degrees)
+    np.testing.assert_raises(TypeError, coord.Angle.__sub__, theta1, coord.degrees)
+    np.testing.assert_raises(TypeError, coord.Angle.__mul__, theta1, 23*coord.degrees)
+    np.testing.assert_raises(TypeError, coord.Angle.__div__, theta1, 23*coord.degrees)
+    np.testing.assert_raises(TypeError, coord.Angle.__mul__, theta1, coord.degrees)
 
 @timer
 def test_wrap():
@@ -219,9 +227,9 @@ def test_hms():
     assert hms1 == '03:00:00'
 
     theta2 = 0 * coord.degrees
-    hms2 = theta2.hms(plus_sign=True, prec=8)
+    hms2 = theta2.hms(plus_sign=True, prec=8, sep='hm')
     print('hms2 = ',hms2)
-    assert hms2 == '+00:00:00.00000000'
+    assert hms2 == '+00h00m00.00000000'
 
     # Check that 360 degres is 24 hours
     theta3 = 360 * coord.degrees
@@ -243,12 +251,49 @@ def test_hms():
     theta5b = float(h) + float(m)/60. + float(s)/3600.
     np.testing.assert_almost_equal(theta5 / coord.hours, theta5b, decimal=12)
 
+    # Negative angles < 1 degree are tricky
+    theta6 = -6.112479 * coord.arcmin
+    hms6 = theta6.hms(prec=2)
+    print('hms6 = ',hms6)
+    assert hms6 == '-00:00:24.45'
+    alt_theta6 = -6.1125 * coord.arcmin
+
     # Check round trip
     np.testing.assert_almost_equal(theta1.rad, coord.Angle.from_hms(hms1).rad, decimal=12)
     np.testing.assert_almost_equal(theta2.rad, coord.Angle.from_hms(hms2).rad, decimal=12)
     np.testing.assert_almost_equal(theta3.rad, coord.Angle.from_hms(hms3).rad, decimal=12)
     np.testing.assert_almost_equal(theta4.rad, coord.Angle.from_hms(hms4).rad, decimal=12)
     np.testing.assert_almost_equal(theta5.rad, coord.Angle.from_hms(hms5).rad, decimal=12)
+    np.testing.assert_almost_equal(alt_theta6.rad, coord.Angle.from_hms(hms6).rad, decimal=12)
+
+    # This one doesn't round trip, but it is valid -> hms
+    theta7 = 1.2345 * coord.radians
+    hms7 = theta7.hms(sep='', prec=0)
+    print('hms7 = ',hms7)
+    assert hms7 == '044256'
+
+    # These aren't constructible from hms() but they parse correctly
+    theta8 = 17.3 * coord.hours
+    hms8a = '+17h18'
+    hms8b = '+17h18m'
+    hms8c = '+17.3h'
+    hms8d = '+17.1h12m'  # Weird, but allowed.  Maybe it shouldn't be.
+    np.testing.assert_almost_equal(theta8.rad, coord.Angle.from_hms(hms8a).rad, decimal=12)
+    np.testing.assert_almost_equal(theta8.rad, coord.Angle.from_hms(hms8b).rad, decimal=12)
+    np.testing.assert_almost_equal(theta8.rad, coord.Angle.from_hms(hms8c).rad, decimal=12)
+    np.testing.assert_almost_equal(theta8.rad, coord.Angle.from_hms(hms8d).rad, decimal=12)
+
+    # Check invalid calls
+    np.testing.assert_raises(ValueError, theta1.hms, sep='hmsss')
+    np.testing.assert_raises(TypeError, theta1.hms, sep=coord.hours)
+    np.testing.assert_raises(ValueError, theta1.hms, prec=-1)
+    np.testing.assert_raises(TypeError, theta1.hms, prec='lots')
+    np.testing.assert_raises(ValueError, coord.Angle.from_hms, 'a')
+    np.testing.assert_raises(ValueError, coord.Angle.from_hms, '-')
+    np.testing.assert_raises(ValueError, coord.Angle.from_hms, '+')
+    np.testing.assert_raises(ValueError, coord.Angle.from_hms, '')
+    np.testing.assert_raises(ValueError, coord.Angle.from_hms, '01:21:31:15')
+
 
 
 @timer
@@ -261,9 +306,9 @@ def test_dms():
     assert dms1 == '45:00:00'
 
     theta2 = 0 * coord.degrees
-    dms2 = theta2.dms(plus_sign=True, prec=8)
+    dms2 = theta2.dms(plus_sign=True, prec=8, sep='dm')
     print('dms2 = ',dms2)
-    assert dms2 == '+00:00:00.00000000'
+    assert dms2 == '+00d00m00.00000000'
 
     theta3 = 360 * coord.degrees
     dms3 = theta3.dms(sep='dms', prec=0)
@@ -297,6 +342,34 @@ def test_dms():
     np.testing.assert_almost_equal(theta4.rad, coord.Angle.from_dms(dms4).rad, decimal=12)
     np.testing.assert_almost_equal(theta5.rad, coord.Angle.from_dms(dms5).rad, decimal=12)
     np.testing.assert_almost_equal(alt_theta6.rad, coord.Angle.from_dms(dms6).rad, decimal=12)
+
+    # This one doesn't round trip, but it is valid -> hms
+    theta7 = 1.2345 * coord.radians
+    dms7 = theta7.dms(sep='', prec=0)
+    print('dms7 = ',dms7)
+    assert dms7 == '704354'
+
+    # These aren't constructible from dms() but they parse correctly
+    theta8 = 17.3 * coord.degrees
+    dms8a = '+17d18'
+    dms8b = '+17d18m'
+    dms8c = '+17.3d'
+    dms8d = '+17.1d12m'  # Weird, but allowed.  Maybe it shouldn't be.
+    np.testing.assert_almost_equal(theta8.rad, coord.Angle.from_dms(dms8a).rad, decimal=12)
+    np.testing.assert_almost_equal(theta8.rad, coord.Angle.from_dms(dms8b).rad, decimal=12)
+    np.testing.assert_almost_equal(theta8.rad, coord.Angle.from_dms(dms8c).rad, decimal=12)
+    np.testing.assert_almost_equal(theta8.rad, coord.Angle.from_dms(dms8d).rad, decimal=12)
+
+    # Check invalid calls
+    np.testing.assert_raises(ValueError, theta1.dms, sep='dmsss')
+    np.testing.assert_raises(TypeError, theta1.dms, sep=coord.degrees)
+    np.testing.assert_raises(ValueError, theta1.dms, prec=-1)
+    np.testing.assert_raises(TypeError, theta1.dms, prec='lots')
+    np.testing.assert_raises(ValueError, coord.Angle.from_dms, 'a')
+    np.testing.assert_raises(ValueError, coord.Angle.from_dms, '-')
+    np.testing.assert_raises(ValueError, coord.Angle.from_dms, '+')
+    np.testing.assert_raises(ValueError, coord.Angle.from_dms, '')
+    np.testing.assert_raises(ValueError, coord.Angle.from_dms, '01:21:31:15')
 
 
 if __name__ == '__main__':
