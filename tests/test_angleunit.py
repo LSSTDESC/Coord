@@ -32,7 +32,17 @@ from math import pi
 def test_init():
     """Test the AngleUnit initializer
     """
-    pass
+    # This is from the AngleUnit doc string.  Make sure it works!
+    gradians = coord.AngleUnit(2.*pi / 400.)
+    assert gradians.value == 2.*pi / 400.
+
+    # Can also use named keyword argument
+    np.testing.assert_almost_equal(coord.AngleUnit(value=17).value, 17, decimal=12)
+
+    # Other types are ok as the value argument so long as they are convertible to float.
+    np.testing.assert_almost_equal(coord.AngleUnit(np.float64(0.17)).value, 0.17, decimal=12)
+    np.testing.assert_almost_equal(coord.AngleUnit(np.float32(0.23)).value, 0.23, decimal=8)
+    np.testing.assert_almost_equal(coord.AngleUnit('1.7').value, 1.7, decimal=12)
 
 
 @timer
