@@ -3,20 +3,34 @@
 .. image:: https://codecov.io/gh/LSSTDESC/Coord/branch/master/graph/badge.svg
         :target: https://codecov.io/gh/LSSTDESC/Coord
 
-Coord is a Python module that provides basic functionality related to angles,
-celestial coordinates, and spherical geometry calculations.
+Coord is a Python module that provides basic functionality related to angles and
+celestial coordinates.
 
 It is similar in functionality to the astropy.coordinates module, but with more of an
-emphasis on efficiency.  Some functions are up to 10 times faster than the corresponding
+emphasis on efficiency.  Some functions are more than 10 times faster than the corresponding
 functionality in astropy.  On the other hand, the API is somewhat more restrictive than
-the API used by astropy.
+the API used by astropy, so the appropriate module to use will depend on your needs.
 
-The code was were originally written by Mike Jarvis for TreeCorr and then also used in GalSim.
+Notable functionality:
+
+* Spherical geometric calculations of the distance between two points, angles in spherical
+  triangles, and areas of spherical triangles.
+* Tangent-plane projection of a coordinate relative to a given center point of the projection.
+* Deprojection back into spherical coordinates.
+* Analytic calculation of the jacobian of the tangent projection.
+* Precession calculations between different epochs.
+* Conversion to galactic and ecliptic coordinate systems (and back).
+
+The code was originally written by Mike Jarvis for TreeCorr and then also used in GalSim.
 It has been republished here as a stand-alone module to enable others (within the LSST DESC
 or not) to have easier access to these functions.
 
 In addition, the module will be used as a pedagogical tool at the LSST DESC DE School
 on July 9, 2017.  (See below for more details about this.)
+
+One missing feature (for which pull requests would be welcome) is conversion between FK5 and ICRS
+systems (never mind FK4).  If you care about the slight differences between these systems, then
+you should probably stick to astropy, which does handle these distinctions.
 
 Licence
 =======
