@@ -18,10 +18,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""@file angleunit.py
-A class for defining an angular unit (radians, degrees, arcmin, etc.)
-"""
-
 import math
 
 class AngleUnit(object):

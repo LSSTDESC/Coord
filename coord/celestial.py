@@ -18,10 +18,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""@file celestial.py
-The CelestialCoord class describing coordinates on the celestial sphere.
-"""
-
 import numpy as np
 import math
 import datetime

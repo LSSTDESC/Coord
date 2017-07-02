@@ -18,10 +18,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""@file angle.py
-A class for handling Angles with proper angular units
-"""
-
 import math
 import numpy as np
 
