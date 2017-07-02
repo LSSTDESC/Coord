@@ -44,3 +44,11 @@ dist = setup(name="LSSTDESC.Coord",
       package_data={'coord' : headers },
       ext_modules=[ext],
       install_requires=required)
+
+# setup.py doesn't put the .so file in the coord directory, so this bit makes it possible to
+# import coord from the root directory.  Not really advisable, but everyone does it at some
+# point, so might as well facilitate it.
+lib = os.path.join('coord','_coord.so')
+if os.path.lexists(lib): os.unlink(lib)
+os.link(glob.glob(os.path.join('build','*',lib))[0], lib)
+
