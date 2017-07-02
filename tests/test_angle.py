@@ -99,8 +99,25 @@ def test_pickle():
 def test_eq():
     """Check that equal angles are equal, but unequal ones are not.
     """
-    pass
+    theta1 = pi/4. * coord.radians
+    theta2 = 45 * coord.degrees
+    assert theta1 == theta2
 
+    theta3 = theta1.wrap()
+    assert theta1 == theta3
+
+    theta4 = coord.Angle(theta1)  # Copy constructor
+    assert theta4 == theta1
+
+    # These should all test as unequal.  Note some non-Angles in the list.
+    diff_list = [ theta1,
+                  14 * coord.degrees,
+                  -theta1,
+                  theta1 * 2.,
+                  theta1 + 360. * coord.degrees,
+                  theta1 - 360. * coord.degrees,
+                  pi/4., coord.Angle, None ]
+    all_obj_diff(diff_list)
 
 @timer
 def test_hms():
