@@ -34,4 +34,4 @@ gh-pages site, so I use an index.html in this directory that just redirects to t
 _build/html/index.html file that Sphix builds.
 
 
-To update the documentation, run update_docs in this directory, commit and push.
+To update the documentation, run update_docs in the root directory, commit and push.

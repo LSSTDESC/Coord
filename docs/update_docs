@@ -1,6 +1,0 @@
-# Note: to 
-
-#sphinx-apidoc -f -o . ../treecorr/
-make clean
-make html
-echo "Don't forget to go to gh-pages directory and push the changes."
