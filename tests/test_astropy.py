@@ -59,7 +59,41 @@ def test_distance():
 def test_precess():
     """Test precession between epochs.
     """
-    pass
+    t0 = time.time()
+    c1 = coord.CelestialCoord(0.234 * coord.radians, 0.342 * coord.radians)
+    t1 = time.time()
+    c2 = c1.precess(2000, 1950)
+    c3 = c2.precess(1950, 1900)
+    t2 = time.time()
+
+    a1 = astropy.coordinates.SkyCoord(0.234, 0.342, unit=units.radian,
+                                      frame=astropy.coordinates.FK5(equinox='J2000'))
+    t3 = time.time()
+    a2 = a1.transform_to(astropy.coordinates.FK5(equinox='J1950'))
+    a3 = a2.transform_to(astropy.coordinates.FK5(equinox='J1900'))
+    t4 = time.time()
+
+    np.testing.assert_almost_equal(c1.ra.rad, a1.ra.rad, decimal=6)
+    np.testing.assert_almost_equal(c1.dec.rad, a1.dec.rad, decimal=6)
+    np.testing.assert_almost_equal(c2.ra.rad, a2.ra.rad, decimal=6)
+    np.testing.assert_almost_equal(c2.dec.rad, a2.dec.rad, decimal=6)
+    np.testing.assert_almost_equal(c3.ra.rad, a3.ra.rad, decimal=6)
+    np.testing.assert_almost_equal(c3.dec.rad, a3.dec.rad, decimal=6)
+
+    print('Compare times for precession calculations:')
+    print('  Make CelestialCoords: t = ',t1-t0)
+    print('  Make SkyCoords: t = ',t3-t2)
+    print('  Precess with Coord: t = ',t2-t1)
+    print('  Precess with Astropy: t = ',t4-t3)
+    # On my laptop, these times are
+    #   Make CelestialCoords: t =  9.10758972168e-05
+    #   Make SkyCoords: t =  0.00361394882202
+    #   Precess with Coord: t =  0.000560998916626
+    #   Precess with Astropy: t =  0.0377740859985
+
+    # Make sure we don't get slow like astropy.  ;)
+    assert t1-t0 < 0.0005
+    assert t2-t1 < 0.002
 
 
 @timer
