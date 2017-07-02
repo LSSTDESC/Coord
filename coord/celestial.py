@@ -210,7 +210,6 @@ class CelestialCoord(object):
             return _Angle(theta)
 
         else:
-            theta = 2. * math.asin(0.5 * math.sqrt(dsq))
             # Points are nearly antipodes where the accuracy of this formula starts to break down.
             # But in this case, the cross product provides an accurate distance.
             crosssq = ((coord2._y * self._z - coord2._z * self._y)**2 +
