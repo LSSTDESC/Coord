@@ -109,12 +109,16 @@ def test_arith():
 
     # Check invalid arithmetic
     np.testing.assert_raises(TypeError, coord.Angle.__add__, theta1, 23)
-    np.testing.assert_raises(TypeError, coord.Angle.__sub__, theta1, 23)
+    np.testing.assert_raises(TypeError, coord.Angle.__add__, theta1, '23')
     np.testing.assert_raises(TypeError, coord.Angle.__add__, theta1, coord.degrees)
+    np.testing.assert_raises(TypeError, coord.Angle.__sub__, theta1, 23)
+    np.testing.assert_raises(TypeError, coord.Angle.__sub__, theta1, '23')
     np.testing.assert_raises(TypeError, coord.Angle.__sub__, theta1, coord.degrees)
+    np.testing.assert_raises(TypeError, coord.Angle.__mul__, theta1, '23')
     np.testing.assert_raises(TypeError, coord.Angle.__mul__, theta1, 23*coord.degrees)
-    np.testing.assert_raises(TypeError, coord.Angle.__div__, theta1, 23*coord.degrees)
     np.testing.assert_raises(TypeError, coord.Angle.__mul__, theta1, coord.degrees)
+    np.testing.assert_raises(TypeError, coord.Angle.__div__, theta1, 23*coord.degrees)
+    np.testing.assert_raises(TypeError, coord.Angle.__div__, theta1, '23')
 
 @timer
 def test_wrap():
@@ -271,9 +275,9 @@ def test_hms():
 
     # These aren't constructible from hms() but they parse correctly
     theta8 = 17.3 * coord.hours
-    hms8a = '+17h18'
+    hms8a = '17h18'
     hms8b = '+17h18m'
-    hms8c = '+17.3h'
+    hms8c = '17.3h'
     hms8d = '+17.1h12m'  # Weird, but allowed.  Maybe it shouldn't be.
     np.testing.assert_almost_equal(theta8.rad, coord.Angle.from_hms(hms8a).rad, decimal=12)
     np.testing.assert_almost_equal(theta8.rad, coord.Angle.from_hms(hms8b).rad, decimal=12)
@@ -288,6 +292,7 @@ def test_hms():
     np.testing.assert_raises(ValueError, coord.Angle.from_hms, 'a')
     np.testing.assert_raises(ValueError, coord.Angle.from_hms, '-')
     np.testing.assert_raises(ValueError, coord.Angle.from_hms, '+')
+    np.testing.assert_raises(ValueError, coord.Angle.from_dms, '-17')
     np.testing.assert_raises(ValueError, coord.Angle.from_hms, '')
     np.testing.assert_raises(ValueError, coord.Angle.from_hms, '01:21:31:15')
 
@@ -349,9 +354,9 @@ def test_dms():
     # These aren't constructible from dms() but they parse correctly
     theta8 = 17.3 * coord.degrees
     dms8a = '+17d18'
-    dms8b = '+17d18m'
+    dms8b = '17d18m'
     dms8c = '+17.3d'
-    dms8d = '+17.1d12m'  # Weird, but allowed.  Maybe it shouldn't be.
+    dms8d = '17.1d12m'  # Weird, but allowed.  Maybe it shouldn't be.
     np.testing.assert_almost_equal(theta8.rad, coord.Angle.from_dms(dms8a).rad, decimal=12)
     np.testing.assert_almost_equal(theta8.rad, coord.Angle.from_dms(dms8b).rad, decimal=12)
     np.testing.assert_almost_equal(theta8.rad, coord.Angle.from_dms(dms8c).rad, decimal=12)
@@ -365,6 +370,7 @@ def test_dms():
     np.testing.assert_raises(ValueError, coord.Angle.from_dms, 'a')
     np.testing.assert_raises(ValueError, coord.Angle.from_dms, '-')
     np.testing.assert_raises(ValueError, coord.Angle.from_dms, '+')
+    np.testing.assert_raises(ValueError, coord.Angle.from_dms, '+17')
     np.testing.assert_raises(ValueError, coord.Angle.from_dms, '')
     np.testing.assert_raises(ValueError, coord.Angle.from_dms, '01:21:31:15')
 
