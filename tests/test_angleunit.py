@@ -56,7 +56,15 @@ def test_builtin_units():
 def test_invalid():
     """Check that invalid constructors raise the appropriate exceptions.
     """
-    pass
+    # Wrong type of value argument
+    np.testing.assert_raises(TypeError, coord.AngleUnit, coord.degrees)
+    # Also wrong type, but strings give a ValueError
+    np.testing.assert_raises(ValueError, coord.AngleUnit, 'spam')
+    # Wrong number of arguments
+    np.testing.assert_raises(TypeError, coord.AngleUnit, 1, 3)
+    np.testing.assert_raises(TypeError, coord.AngleUnit)
+    # Wrong keyword argument
+    np.testing.assert_raises(TypeError, coord.AngleUnit, the_value=0.2)
 
 
 @timer
