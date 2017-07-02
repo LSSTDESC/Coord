@@ -195,7 +195,7 @@ class CelestialCoord(object):
         self._set_aux()
         coord2._set_aux()
 
-        # The the direct distance between the two points is
+        # The direct distance between the two points is
         #
         # d^2 = (x1-x2)^2 + (y1-y2)^2 + (z1-z2)^2
 
@@ -207,7 +207,6 @@ class CelestialCoord(object):
             #
             # sin(theta/2) = d/2
             theta = 2. * math.asin(0.5 * math.sqrt(dsq))
-            return _Angle(theta)
 
         else:
             # Points are nearly antipodes where the accuracy of this formula starts to break down.
@@ -216,7 +215,8 @@ class CelestialCoord(object):
                        (coord2._z * self._x - coord2._x * self._z)**2 +
                        (coord2._x * self._y - coord2._y * self._x)**2)
             theta = math.pi - math.asin(math.sqrt(crosssq))
-            return _Angle(theta)
+
+        return _Angle(theta)
 
     def angleBetween(self, coord2, coord3):
         """Find the open angle at the location of the current coord between `coord2` and `coord3`.
