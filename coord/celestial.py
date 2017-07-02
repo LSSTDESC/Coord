@@ -196,12 +196,23 @@ class CelestialCoord(object):
 
         dsq = (self._x-coord2._x)**2 + (self._y-coord2._y)**2 + (self._z-coord2._z)**2
 
-        # This direct distance can then be converted to a great circle distance via
-        #
-        # sin(theta/2) = d/2
+        if dsq < 3.99:
+            # (The usual case.  This formula is perfectly stable here.)
+            # This direct distance can then be converted to a great circle distance via
+            #
+            # sin(theta/2) = d/2
+            theta = 2. * math.asin(0.5 * math.sqrt(dsq))
+            return _Angle(theta)
 
-        theta = 2. * math.asin(0.5 * math.sqrt(dsq))
-        return _Angle(theta)
+        else:
+            theta = 2. * math.asin(0.5 * math.sqrt(dsq))
+            # Points are nearly antipodes where the accuracy of this formula starts to break down.
+            # But in this case, the cross product provides an accurate distance.
+            crosssq = ((coord2._y * self._z - coord2._z * self._y)**2 +
+                       (coord2._z * self._x - coord2._x * self._z)**2 +
+                       (coord2._x * self._y - coord2._y * self._x)**2)
+            theta = math.pi - math.asin(math.sqrt(crosssq))
+            return _Angle(theta)
 
     def angleBetween(self, coord2, coord3):
         """Find the open angle at the location of the current coord between `coord2` and `coord3`.
