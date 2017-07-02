@@ -37,6 +37,18 @@ def test_basic():
 
 
 @timer
+def test_pickle():
+    """Check picklability of CelestialCoords
+    """
+
+
+@timer
+def test_invalid():
+    """Check some invalid initializations of CelestialCoord
+    """
+
+
+@timer
 def test_eq():
     """Check that equal coords are equal, but unequal ones are not.
     """
@@ -48,6 +60,12 @@ def test_distance():
     """Test calculations of distances on the sphere.
     """
     pass
+
+
+@timer
+def test_xyz():
+    """Test get_xyz and from_xyz functions
+    """
 
 
 @timer
