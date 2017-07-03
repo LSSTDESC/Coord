@@ -238,13 +238,13 @@ class CelestialCoord(object):
         (Although note that the triple product is invariant to the ordering modulo a sign.)
         """
         # Note, the scalar triple product, (AxC).B, is the determinant of the 3x3 matrix
-        #     [ xA xB xC ]
-        #     [ yA yB yC ]
-        #     [ zA zB zC ]
+        #     [ xA yA zA ]
+        #     [ xC yC zC ]
+        #     [ xB yB zB ]
         # Furthermore, it is more stable to calculate it that way than computing the cross
         # product by hand and then dotting it to the other vector.
-        return np.linalg.det([ [   self._x,   self._y,   self._z ],
-                               [ coord2._x, coord2._y, coord2._z ],
+        return np.linalg.det([ [ coord2._x, coord2._y, coord2._z ],
+                               [   self._x,   self._y,   self._z ],
                                [ coord3._x, coord3._y, coord3._z ] ])
 
 
