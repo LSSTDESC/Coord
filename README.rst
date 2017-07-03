@@ -91,7 +91,7 @@ DESC DE School
 ==============
 
 For a DE School lesson on July 10, 2017, we will be designing some tests for this module, so
-I have intentionally not ported over any of the existing tests that I have in the TreeCorr and
+I have intentionally not ported over many of the existing tests that I have in the TreeCorr and
 GalSim repositories related to that version of the code.  If you are planning to participate in
 the DE School lesson, then you are on your honor not to look at those tests.
 
