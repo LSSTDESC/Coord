@@ -112,6 +112,17 @@ spherical triangles, projecting from sky coordinates onto a Euclidean tangent pl
 </tbody>
 </table>
 </div></blockquote>
+<p>In addition there is a convenience access property that returns ra and dec in radians.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">rad:</th><td class="field-body">A tuple (ra.rad, dec.rad)</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
 </div></blockquote>
 <p><strong>Sperical Geometry:</strong></p>
 <blockquote>
@@ -168,6 +179,12 @@ method:</p>
 <dt id="coord.CelestialCoord.dec">
 <code class="descname">dec</code><a class="headerlink" href="#coord.CelestialCoord.dec" title="Permalink to this definition">¶</a></dt>
 <dd><p>A read-only attribute, giving the Declination as an Angle</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="coord.CelestialCoord.rad">
+<code class="descname">rad</code><a class="headerlink" href="#coord.CelestialCoord.rad" title="Permalink to this definition">¶</a></dt>
+<dd><p>A convenience property, giving a tuple (ra.rad, dec.rad)</p>
 </dd></dl>
 
 <dl class="method">
@@ -355,7 +372,7 @@ for other options]</li>
 <code class="descname">project_rad</code><span class="sig-paren">(</span><em>ra</em>, <em>dec</em>, <em>projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.project_rad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.project_rad" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is basically identical to the project() function except that the input <cite>ra</cite>, <cite>dec</cite>
 are given in radians rather than packaged as a CelestialCoord object and the returned
-u,v are given in arcsec.</p>
+u,v are given in radians.</p>
 <p>The main advantage to this is that it will work if <cite>ra</cite> and <cite>dec</cite> are NumPy arrays, in which
 case the output <cite>u</cite>, <cite>v</cite> will also be NumPy arrays.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -370,7 +387,7 @@ docstring for other options]</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(u,v) in arcsec</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(u,v) in radians</p>
 </td>
 </tr>
 </tbody>
@@ -410,7 +427,7 @@ docstring for other options]</li>
 <code class="descname">deproject_rad</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.deproject_rad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.deproject_rad" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is basically identical to the deproject() function except that the output <cite>ra</cite>,
 <cite>dec</cite> are returned as a tuple (ra, dec) in radians rather than packaged as a CelestialCoord
-object and <cite>u</cite> and <cite>v</cite> are in arcsec rather than Angle instances.</p>
+object and <cite>u</cite> and <cite>v</cite> are in radians rather than Angle instances.</p>
 <p>The main advantage to this is that it will work if <cite>u</cite> and <cite>v</cite> are NumPy arrays, in which
 case the output <cite>ra</cite>, <cite>dec</cite> will also be NumPy arrays.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -418,8 +435,8 @@ case the output <cite>ra</cite>, <cite>dec</cite> will also be NumPy arrays.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>u</strong> – The u position in arcsec on the tangent plane to deproject</li>
-<li><strong>v</strong> – The v position in arcsec on the tangent plane to deproject</li>
+<li><strong>u</strong> – The u position in radians on the tangent plane to deproject</li>
+<li><strong>v</strong> – The v position in radians on the tangent plane to deproject</li>
 <li><strong>projection</strong> – The name of the projection to be used. [default: gnomonic, see <cite>project</cite>
 docstring for other options]</li>
 </ul>
@@ -463,17 +480,17 @@ docstring for other options]</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="coord.CelestialCoord.jac_deproject_arcsec">
-<code class="descname">jac_deproject_arcsec</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.jac_deproject_arcsec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.jac_deproject_arcsec" title="Permalink to this definition">¶</a></dt>
-<dd><p>Equivalent to <cite>jac_deproject</cite>, but the inputs are in arcsec and may be numpy
+<dt id="coord.CelestialCoord.jac_deproject_rad">
+<code class="descname">jac_deproject_rad</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.jac_deproject_rad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.jac_deproject_rad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equivalent to <cite>jac_deproject</cite>, but the inputs are in radians and may be numpy
 arrays.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>u</strong> – The u position (in arcsec) on the tangent plane</li>
-<li><strong>v</strong> – The v position (in arcsec) on the tangent plane</li>
+<li><strong>u</strong> – The u position (in radians) on the tangent plane</li>
+<li><strong>v</strong> – The v position (in radians) on the tangent plane</li>
 <li><strong>projection</strong> – The name of the projection to be used. [default: gnomonic, see <cite>project</cite>
 docstring for other options]</li>
 </ul>
