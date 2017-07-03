@@ -307,10 +307,10 @@ def test_gnomonic_projection():
     # Gnomonic projections turn great circles into straight lines.
     center = coord.CelestialCoord(0.234 * radians, 0.342 * radians)
     cA = coord.CelestialCoord(-0.193 * radians, 0.882 * radians)
-    cB = coord.CelestialCoord((-0.193 + 1.7e-6) * radians,
-                               (0.882 + 1.2e-6) * radians)
-    cC = coord.CelestialCoord((-0.193 - 2.4e-6) * radians,
-                               (0.882 + 3.1e-6) * radians)
+    cB = coord.CelestialCoord((-0.193 + 1.7e-8) * radians,
+                               (0.882 + 1.2e-8) * radians)
+    cC = coord.CelestialCoord((-0.193 - 2.4e-8) * radians,
+                               (0.882 + 3.1e-8) * radians)
 
     a = cB.distanceTo(cC).rad
     b = cC.distanceTo(cA).rad
@@ -323,58 +323,50 @@ def test_gnomonic_projection():
     uA, vA = center.project(cA, projection='gnomonic')
     uB, vB = center.project(cB, projection='gnomonic')
     uC, vC = center.project(cC, projection='gnomonic')
-    uA = uA / arcsec
-    vA = vA / arcsec
-    uB = uB / arcsec
-    vB = vB / arcsec
-    uC = uC / arcsec
-    vC = vC / arcsec
 
     # Check that project_rad does the same thing
     uA2, vA2 = center.project_rad(cA.ra.rad, cA.dec.rad, projection='gnomonic')
-    np.testing.assert_array_almost_equal(uA, uA2, decimal=12)
-    np.testing.assert_array_almost_equal(vA, vA2, decimal=12)
+    np.testing.assert_allclose([uA2,vA2], [uA.rad,vA.rad], rtol=1.e-8,
+                               err_msg="project_rad not equivalent")
 
     # Check the deprojection
-    cA2 = center.deproject(uA*arcsec, vA*arcsec, projection='gnomonic')
-    np.testing.assert_almost_equal(cA.ra.rad, cA2.ra.rad, decimal=12)
-    np.testing.assert_almost_equal(cA.dec.rad, cA2.dec.rad, decimal=12)
-    cA3 = center.deproject_rad(uA, vA, projection='gnomonic')
-    np.testing.assert_array_almost_equal([cA.ra.rad, cA.dec.rad], cA3, decimal=12)
+    cA2 = center.deproject(uA, vA, projection='gnomonic')
+    np.testing.assert_allclose(cA2.rad, cA.rad, err_msg="deproject didn't return to orig")
+    cA3 = center.deproject_rad(uA.rad, vA.rad, projection='gnomonic')
+    np.testing.assert_allclose(cA3, cA.rad, err_msg="deproject_rad not equivalent")
 
     # The angles are not preserved
-    a = sqrt( (uB-uC)**2 + (vB-vC)**2 )
-    b = sqrt( (uC-uA)**2 + (vC-vA)**2 )
-    c = sqrt( (uA-uB)**2 + (vA-vB)**2 )
-    cosA = ((uB-uA)*(uC-uA) + (vB-vA)*(vC-vA)) / (b*c)
-    cosB = ((uC-uB)*(uA-uB) + (vC-vB)*(vA-vB)) / (c*a)
-    cosC = ((uA-uC)*(uB-uC) + (vA-vC)*(vB-vC)) / (a*b)
+    a = sqrt( (uB.rad-uC.rad)**2 + (vB.rad-vC.rad)**2 )
+    b = sqrt( (uC.rad-uA.rad)**2 + (vC.rad-vA.rad)**2 )
+    c = sqrt( (uA.rad-uB.rad)**2 + (vA.rad-vB.rad)**2 )
+    cosA = ((uB.rad-uA.rad)*(uC.rad-uA.rad) + (vB.rad-vA.rad)*(vC.rad-vA.rad)) / (b*c)
+    cosB = ((uC.rad-uB.rad)*(uA.rad-uB.rad) + (vC.rad-vB.rad)*(vA.rad-vB.rad)) / (c*a)
+    cosC = ((uA.rad-uC.rad)*(uB.rad-uC.rad) + (vA.rad-vC.rad)*(vB.rad-vC.rad)) / (a*b)
 
     print('gnomonic cosA = ',cosA,cos(A))
     print('gnomonic cosB = ',cosB,cos(B))
     print('gnomonic cosC = ',cosC,cos(C))
 
     # The area is not preserved
-    area = 0.5 * abs( (uB-uA)*(vC-vA) - (uC-uA)*(vB-vA) )
-    area *= (arcsec / radians)**2
+    area = 0.5 * abs( (uB.rad-uA.rad) * (vC.rad-vA.rad) - (uC.rad-uA.rad) * (vB.rad-vA.rad) )
     print('gnomonic area = ',area,E)
 
     # The deproject jacobian should tell us how the area changes
-    dudx, dudy, dvdx, dvdy = center.jac_deproject(uA*arcsec, vA*arcsec, 'gnomonic').ravel()
+    dudx, dudy, dvdx, dvdy = center.jac_deproject(uA, vA, 'gnomonic').ravel()
     jac_area = abs(dudx*dvdy - dudy*dvdx)
-    np.testing.assert_almost_equal(jac_area, E/area, decimal=5)
+    np.testing.assert_allclose(jac_area, E/area, err_msg='jac_deproject gave wrong area')
 
-    dudx, dudy, dvdx, dvdy = center.jac_deproject_arcsec(uA, vA, 'gnomonic').ravel()
-    np.testing.assert_almost_equal(jac_area, abs(dudx*dvdy - dudy*dvdx))
+    dudx, dudy, dvdx, dvdy = center.jac_deproject_rad(uA.rad, vA.rad, 'gnomonic').ravel()
+    np.testing.assert_allclose(jac_area, abs(dudx*dvdy - dudy*dvdx),
+                               err_msg='jac_deproject_rad not equivalent')
 
     # center projects to 0,0 with unit area
     u, v = center.project(center, 'gnomonic')
-    np.testing.assert_almost_equal(u.rad, 0., decimal=12)
-    np.testing.assert_almost_equal(v.rad, 0., decimal=12)
+    np.testing.assert_allclose([u.rad, v.rad], 0., err_msg='center did not project to (0,0)')
     c2 = center.deproject(u,v, 'gnomonic')
-    np.testing.assert_almost_equal(c2.ra.rad, center.ra.rad, decimal=12)
-    np.testing.assert_almost_equal(c2.dec.rad, center.dec.rad, decimal=12)
-    np.testing.assert_almost_equal(np.linalg.det(center.jac_deproject(u, v, 'gnomonic')), 1.)
+    np.testing.assert_allclose(c2.rad, center.rad, err_msg='(0,0) did not deproject to center')
+    np.testing.assert_allclose(np.linalg.det(center.jac_deproject(u, v, 'gnomonic')), 1.,
+                               err_msg='determinant of jac_deproject matrix != 1 at center')
 
     # Finally, check the claim that great circles turn into straight lines.
     # Meridians are great circles.  Also symmetric points across the equator.
@@ -404,12 +396,9 @@ def test_gnomonic_projection():
     uA3, vA3 = center.project(cA)
     uB3, vB3 = center.project(cB)
     uC3, vC3 = center.project(cC)
-    np.testing.assert_array_almost_equal(uA, uA3 / arcsec, decimal=12)
-    np.testing.assert_array_almost_equal(vA, vA3 / arcsec, decimal=12)
-    np.testing.assert_array_almost_equal(uB, uB3 / arcsec, decimal=12)
-    np.testing.assert_array_almost_equal(vB, vB3 / arcsec, decimal=12)
-    np.testing.assert_array_almost_equal(uC, uC3 / arcsec, decimal=12)
-    np.testing.assert_array_almost_equal(vC, vC3 / arcsec, decimal=12)
+    np.testing.assert_array_almost_equal([uA3.rad, vA3.rad], [uA.rad, vA.rad], decimal=12)
+    np.testing.assert_array_almost_equal([uB3.rad, vB3.rad], [uB.rad, vB.rad], decimal=12)
+    np.testing.assert_array_almost_equal([uB3.rad, vB3.rad], [uB.rad, vB.rad], decimal=12)
 
     # And make sure that invalid projection strings raise exceptions
     np.testing.assert_raises(ValueError, center.project, cA, 'TAN')
@@ -431,10 +420,10 @@ def test_gnomonic_projection():
     np.testing.assert_raises(ValueError, center.jac_deproject, u, v, projection=3)
     np.testing.assert_raises(AttributeError, center.jac_deproject, 3, 4)
     np.testing.assert_raises(TypeError, center.jac_deproject, cA)
-    np.testing.assert_raises(ValueError, center.jac_deproject_arcsec, 3, 4, 'TAN')
-    np.testing.assert_raises(ValueError, center.jac_deproject_arcsec, 3, 4, projection=3)
-    np.testing.assert_raises(TypeError, center.jac_deproject_arcsec, u, v)
-    np.testing.assert_raises(TypeError, center.jac_deproject_arcsec, cA)
+    np.testing.assert_raises(ValueError, center.jac_deproject_rad, 3, 4, 'TAN')
+    np.testing.assert_raises(ValueError, center.jac_deproject_rad, 3, 4, projection=3)
+    np.testing.assert_raises(TypeError, center.jac_deproject_rad, u, v)
+    np.testing.assert_raises(TypeError, center.jac_deproject_rad, cA)
 
 
 @timer
@@ -445,10 +434,10 @@ def test_stereographic_projection():
     # Stereographic projections preserve angles, but not area.
     center = coord.CelestialCoord(0.234 * radians, 0.342 * radians)
     cA = coord.CelestialCoord(-0.193 * radians, 0.882 * radians)
-    cB = coord.CelestialCoord((-0.193 + 1.7e-6) * radians,
-                               (0.882 + 1.2e-6) * radians)
-    cC = coord.CelestialCoord((-0.193 - 2.4e-6) * radians,
-                               (0.882 + 3.1e-6) * radians)
+    cB = coord.CelestialCoord((-0.193 + 1.7e-8) * radians,
+                               (0.882 + 1.2e-8) * radians)
+    cC = coord.CelestialCoord((-0.193 - 2.4e-8) * radians,
+                               (0.882 + 3.1e-8) * radians)
 
     a = cB.distanceTo(cC).rad
     b = cC.distanceTo(cA).rad
@@ -461,62 +450,54 @@ def test_stereographic_projection():
     uA, vA = center.project(cA, projection='stereographic')
     uB, vB = center.project(cB, projection='stereographic')
     uC, vC = center.project(cC, projection='stereographic')
-    uA = uA / arcsec
-    vA = vA / arcsec
-    uB = uB / arcsec
-    vB = vB / arcsec
-    uC = uC / arcsec
-    vC = vC / arcsec
 
     # The easiest way to compute the angles is from the dot products:
     # a.b = ab cos(C)
-    a = sqrt( (uB-uC)**2 + (vB-vC)**2 )
-    b = sqrt( (uC-uA)**2 + (vC-vA)**2 )
-    c = sqrt( (uA-uB)**2 + (vA-vB)**2 )
-    cosA = ((uB-uA)*(uC-uA) + (vB-vA)*(vC-vA)) / (b*c)
-    cosB = ((uC-uB)*(uA-uB) + (vC-vB)*(vA-vB)) / (c*a)
-    cosC = ((uA-uC)*(uB-uC) + (vA-vC)*(vB-vC)) / (a*b)
+    a = sqrt( (uB.rad-uC.rad)**2 + (vB.rad-vC.rad)**2 )
+    b = sqrt( (uC.rad-uA.rad)**2 + (vC.rad-vA.rad)**2 )
+    c = sqrt( (uA.rad-uB.rad)**2 + (vA.rad-vB.rad)**2 )
+    cosA = ((uB.rad-uA.rad)*(uC.rad-uA.rad) + (vB.rad-vA.rad)*(vC.rad-vA.rad)) / (b*c)
+    cosB = ((uC.rad-uB.rad)*(uA.rad-uB.rad) + (vC.rad-vB.rad)*(vA.rad-vB.rad)) / (c*a)
+    cosC = ((uA.rad-uC.rad)*(uB.rad-uC.rad) + (vA.rad-vC.rad)*(vB.rad-vC.rad)) / (a*b)
 
     print('stereographic cosA = ',cosA,cos(A))
     print('stereographic cosB = ',cosB,cos(B))
     print('stereographic cosC = ',cosC,cos(C))
-    np.testing.assert_almost_equal(cosA, cos(A), decimal=5)
-    np.testing.assert_almost_equal(cosB, cos(B), decimal=5)
-    np.testing.assert_almost_equal(cosC, cos(C), decimal=5)
+    np.testing.assert_allclose(cosA, cos(A))
+    np.testing.assert_allclose(cosB, cos(B))
+    np.testing.assert_allclose(cosC, cos(C))
 
     # Check that project_rad does the same thing
     uA2, vA2 = center.project_rad(cA.ra.rad, cA.dec.rad, projection='stereographic')
-    np.testing.assert_array_almost_equal(uA, uA2, decimal=10)
-    np.testing.assert_array_almost_equal(vA, vA2, decimal=10)
+    np.testing.assert_allclose([uA2,vA2], [uA.rad,vA.rad], rtol=1.e-8,
+                               err_msg="project_rad not equivalent")
 
     # Check the deprojection
-    cA2 = center.deproject(uA*arcsec, vA*arcsec, projection='stereographic')
-    np.testing.assert_almost_equal(cA.ra.rad, cA2.ra.rad, decimal=12)
-    np.testing.assert_almost_equal(cA.dec.rad, cA2.dec.rad, decimal=12)
-    cA3 = center.deproject_rad(uA, vA, projection='stereographic')
-    np.testing.assert_array_almost_equal([cA.ra.rad, cA.dec.rad], cA3, decimal=12)
+    cA2 = center.deproject(uA, vA, projection='stereographic')
+    np.testing.assert_allclose(cA2.rad, cA.rad, err_msg="deproject didn't return to orig")
+    cA3 = center.deproject_rad(uA.rad, vA.rad, projection='stereographic')
+    np.testing.assert_allclose(cA3, cA.rad, err_msg="deproject_rad not equivalent")
 
     # The area is not preserved
-    area = 0.5 * abs( (uB-uA) * (vC-vA) - (uC-uA) * (vB-vA) )
-    area *= (arcsec / radians)**2
+    area = 0.5 * abs( (uB.rad-uA.rad) * (vC.rad-vA.rad) - (uC.rad-uA.rad) * (vB.rad-vA.rad) )
     print('stereographic area = ',area,E)
 
     # The deproject jacobian should tell us how the area changes
-    dudx, dudy, dvdx, dvdy = center.jac_deproject(uA*arcsec, vA*arcsec, 'stereographic').ravel()
+    dudx, dudy, dvdx, dvdy = center.jac_deproject(uA, vA, 'stereographic').ravel()
     jac_area = abs(dudx*dvdy - dudy*dvdx)
-    np.testing.assert_almost_equal(jac_area, E/area, decimal=5)
+    np.testing.assert_allclose(jac_area, E/area, err_msg='jac_deproject gave wrong area')
 
-    dudx, dudy, dvdx, dvdy = center.jac_deproject_arcsec(uA, vA, 'stereographic').ravel()
-    np.testing.assert_almost_equal(jac_area, abs(dudx*dvdy - dudy*dvdx))
+    dudx, dudy, dvdx, dvdy = center.jac_deproject_rad(uA.rad, vA.rad, 'stereographic').ravel()
+    np.testing.assert_allclose(jac_area, abs(dudx*dvdy - dudy*dvdx),
+                               err_msg='jac_deproject_rad not equivalent')
 
     # center projects to 0,0 with unit area
     u, v = center.project(center, 'stereographic')
-    np.testing.assert_almost_equal(u.rad, 0., decimal=12)
-    np.testing.assert_almost_equal(v.rad, 0., decimal=12)
+    np.testing.assert_allclose([u.rad, v.rad], 0., err_msg='center did not project to (0,0)')
     c2 = center.deproject(u,v, 'stereographic')
-    np.testing.assert_almost_equal(c2.ra.rad, center.ra.rad, decimal=12)
-    np.testing.assert_almost_equal(c2.dec.rad, center.dec.rad, decimal=12)
-    np.testing.assert_almost_equal(np.linalg.det(center.jac_deproject(u, v, 'stereographic')), 1.)
+    np.testing.assert_allclose(c2.rad, center.rad, err_msg='(0,0) did not deproject to center')
+    np.testing.assert_allclose(np.linalg.det(center.jac_deproject(u, v, 'stereographic')), 1.,
+                               err_msg='determinant of jac_deproject matrix != 1 at center')
 
 
 @timer
@@ -593,18 +574,6 @@ def test_lambert_projection():
     np.testing.assert_allclose(np.linalg.det(center.jac_deproject(u, v, 'lambert')), 1.,
                                err_msg='determinant of jac_deproject matrix != 1 at center')
 
-    dudx, dudy, dvdx, dvdy = center.jac_deproject_arcsec(uA, vA, 'lambert').ravel()
-    np.testing.assert_almost_equal(jac_area, abs(dudx*dvdy - dudy*dvdx))
-
-    # center projects to 0,0 with unit area
-    u, v = center.project(center, 'lambert')
-    np.testing.assert_almost_equal(u.rad, 0., decimal=12)
-    np.testing.assert_almost_equal(v.rad, 0., decimal=12)
-    c2 = center.deproject(u,v, 'lambert')
-    np.testing.assert_almost_equal(c2.ra.rad, center.ra.rad, decimal=12)
-    np.testing.assert_almost_equal(c2.dec.rad, center.dec.rad, decimal=12)
-    np.testing.assert_almost_equal(np.linalg.det(center.jac_deproject(u, v, 'lambert')), 1.)
-
 
 @timer
 def test_postel_projection():
@@ -614,10 +583,10 @@ def test_postel_projection():
     # Postel projections preserve distance from the center.
     center = coord.CelestialCoord(0.234 * radians, 0.342 * radians)
     cA = coord.CelestialCoord(-0.193 * radians, 0.882 * radians)
-    cB = coord.CelestialCoord((-0.193 + 1.7e-6) * radians,
-                               (0.882 + 1.2e-6) * radians)
-    cC = coord.CelestialCoord((-0.193 - 2.4e-6) * radians,
-                               (0.882 + 3.1e-6) * radians)
+    cB = coord.CelestialCoord((-0.193 + 1.7e-8) * radians,
+                               (0.882 + 1.2e-8) * radians)
+    cC = coord.CelestialCoord((-0.193 - 2.4e-8) * radians,
+                               (0.882 + 3.1e-8) * radians)
 
     a = cB.distanceTo(cC).rad
     b = cC.distanceTo(cA).rad
@@ -630,68 +599,60 @@ def test_postel_projection():
     uA, vA = center.project(cA, projection='postel')
     uB, vB = center.project(cB, projection='postel')
     uC, vC = center.project(cC, projection='postel')
-    uA = uA / arcsec
-    vA = vA / arcsec
-    uB = uB / arcsec
-    vB = vB / arcsec
-    uC = uC / arcsec
-    vC = vC / arcsec
 
-    dA = sqrt( uA**2 + vA**2 )
-    dB = sqrt( uB**2 + vB**2 )
-    dC = sqrt( uC**2 + vC**2 )
+    dA = sqrt( uA.rad**2 + vA.rad**2 )
+    dB = sqrt( uB.rad**2 + vB.rad**2 )
+    dC = sqrt( uC.rad**2 + vC.rad**2 )
     print('postel dA = ',dA,center.distanceTo(cA))
     print('postel dB = ',dB,center.distanceTo(cB))
     print('postel dC = ',dC,center.distanceTo(cC))
-    np.testing.assert_almost_equal(dA, center.distanceTo(cA) / arcsec, decimal=10)
-    np.testing.assert_almost_equal(dB, center.distanceTo(cB) / arcsec, decimal=10)
-    np.testing.assert_almost_equal(dC, center.distanceTo(cC) / arcsec, decimal=10)
+    np.testing.assert_allclose(dA, center.distanceTo(cA).rad)
+    np.testing.assert_allclose(dB, center.distanceTo(cB).rad)
+    np.testing.assert_allclose(dC, center.distanceTo(cC).rad)
 
     # Check that project_rad does the same thing
     uA2, vA2 = center.project_rad(cA.ra.rad, cA.dec.rad, projection='postel')
-    np.testing.assert_array_almost_equal(uA, uA2, decimal=10)
-    np.testing.assert_array_almost_equal(vA, vA2, decimal=10)
+    np.testing.assert_allclose([uA2,vA2], [uA.rad,vA.rad], rtol=1.e-8,
+                               err_msg="project_rad not equivalent")
 
     # Check the deprojection
-    cA2 = center.deproject(uA*arcsec, vA*arcsec, projection='postel')
-    np.testing.assert_almost_equal(cA.ra.rad, cA2.ra.rad, decimal=12)
-    np.testing.assert_almost_equal(cA.dec.rad, cA2.dec.rad, decimal=12)
-    cA3 = center.deproject_rad(uA, vA, projection='postel')
-    np.testing.assert_array_almost_equal([cA.ra.rad, cA.dec.rad], cA3, decimal=12)
+    cA2 = center.deproject(uA, vA, projection='postel')
+    np.testing.assert_allclose(cA2.rad, cA.rad, err_msg="deproject didn't return to orig")
+    cA3 = center.deproject_rad(uA.rad, vA.rad, projection='postel')
+    np.testing.assert_allclose(cA3, cA.rad, err_msg="deproject_rad not equivalent")
 
     # The angles are not preserved
-    a = sqrt( (uB-uC)**2 + (vB-vC)**2 )
-    b = sqrt( (uC-uA)**2 + (vC-vA)**2 )
-    c = sqrt( (uA-uB)**2 + (vA-vB)**2 )
-    cosA = ((uB-uA)*(uC-uA) + (vB-vA)*(vC-vA)) / (b*c)
-    cosB = ((uC-uB)*(uA-uB) + (vC-vB)*(vA-vB)) / (c*a)
-    cosC = ((uA-uC)*(uB-uC) + (vA-vC)*(vB-vC)) / (a*b)
+    a = sqrt( (uB.rad-uC.rad)**2 + (vB.rad-vC.rad)**2 )
+    b = sqrt( (uC.rad-uA.rad)**2 + (vC.rad-vA.rad)**2 )
+    c = sqrt( (uA.rad-uB.rad)**2 + (vA.rad-vB.rad)**2 )
+    cosA = ((uB.rad-uA.rad)*(uC.rad-uA.rad) + (vB.rad-vA.rad)*(vC.rad-vA.rad)) / (b*c)
+    cosB = ((uC.rad-uB.rad)*(uA.rad-uB.rad) + (vC.rad-vB.rad)*(vA.rad-vB.rad)) / (c*a)
+    cosC = ((uA.rad-uC.rad)*(uB.rad-uC.rad) + (vA.rad-vC.rad)*(vB.rad-vC.rad)) / (a*b)
 
     print('postel cosA = ',cosA,cos(A))
     print('postel cosB = ',cosB,cos(B))
     print('postel cosC = ',cosC,cos(C))
 
     # The area is not preserved
-    area = 0.5 * abs( (uB-uA)*(vC-vA) - (uC-uA)*(vB-vA) )
-    area *= (arcsec / radians)**2
+    area = 0.5 * abs( (uB.rad-uA.rad) * (vC.rad-vA.rad) - (uC.rad-uA.rad) * (vB.rad-vA.rad) )
     print('postel area = ',area,E)
 
     # The deproject jacobian should tell us how the area changes
-    dudx, dudy, dvdx, dvdy = center.jac_deproject(uA*arcsec, vA*arcsec, 'postel').ravel()
+    dudx, dudy, dvdx, dvdy = center.jac_deproject(uA, vA, 'postel').ravel()
     jac_area = abs(dudx*dvdy - dudy*dvdx)
-    np.testing.assert_almost_equal(jac_area, E/area, decimal=5)
+    np.testing.assert_allclose(jac_area, E/area, err_msg='jac_deproject gave wrong area')
 
-    dudx, dudy, dvdx, dvdy = center.jac_deproject_arcsec(uA, vA, 'postel').ravel()
-    np.testing.assert_almost_equal(jac_area, abs(dudx*dvdy - dudy*dvdx))
+    dudx, dudy, dvdx, dvdy = center.jac_deproject_rad(uA.rad, vA.rad, 'postel').ravel()
+    np.testing.assert_allclose(jac_area, abs(dudx*dvdy - dudy*dvdx),
+                               err_msg='jac_deproject_rad not equivalent')
 
     # center projects to 0,0 with unit area
     u, v = center.project(center, 'postel')
-    np.testing.assert_almost_equal(u.rad, 0., decimal=12)
-    np.testing.assert_almost_equal(v.rad, 0., decimal=12)
+    np.testing.assert_allclose([u.rad, v.rad], 0., err_msg='center did not project to (0,0)')
     c2 = center.deproject(u,v, 'postel')
-    np.testing.assert_almost_equal(c2.ra.rad, center.ra.rad, decimal=12)
-    np.testing.assert_almost_equal(c2.dec.rad, center.dec.rad, decimal=12)
-    np.testing.assert_almost_equal(np.linalg.det(center.jac_deproject(u, v, 'postel')), 1.)
+    np.testing.assert_allclose(c2.rad, center.rad, err_msg='(0,0) did not deproject to center')
+    np.testing.assert_allclose(np.linalg.det(center.jac_deproject(u, v, 'postel')), 1.,
+                               err_msg='determinant of jac_deproject matrix != 1 at center')
 
 
 @timer
@@ -720,15 +681,15 @@ def test_precess():
     ddec_1950 = -(16. + 16.3/60.)/60. * degrees / radians
     print('delta from website: ',dra_1950,ddec_1950)
     print('delta from precess: ',(c1.ra-orig.ra),(c1.dec-orig.dec))
-    np.testing.assert_almost_equal(dra_1950, c1.ra.rad-orig.ra.rad, decimal=5)
-    np.testing.assert_almost_equal(ddec_1950, c1.dec.rad-orig.dec.rad, decimal=5)
+    np.testing.assert_almost_equal(dra_1950, c1.ra.rad-orig.ra.rad, decimal=6)
+    np.testing.assert_almost_equal(ddec_1950, c1.dec.rad-orig.dec.rad, decimal=6)
 
     dra_1900 = -(5. + 17.74/60.)/60. * hours / radians
     ddec_1900 = -(32. + 35.4/60.)/60. * degrees / radians
     print('delta from website: ',dra_1900,ddec_1900)
     print('delta from precess: ',(c2.ra-orig.ra),(c2.dec-orig.dec))
-    np.testing.assert_almost_equal(dra_1900, c2.ra.rad-orig.ra.rad, decimal=5)
-    np.testing.assert_almost_equal(ddec_1900, c2.dec.rad-orig.dec.rad, decimal=5)
+    np.testing.assert_almost_equal(dra_1900, c2.ra.rad-orig.ra.rad, decimal=6)
+    np.testing.assert_almost_equal(ddec_1900, c2.dec.rad-orig.dec.rad, decimal=6)
 
 
 @timer
@@ -748,8 +709,7 @@ def test_galactic():
 
     # Go back from galactic coords to CelestialCoord
     center2 = coord.CelestialCoord.from_galactic(el,b)
-    np.testing.assert_almost_equal(center2.ra.rad, center.ra.rad, decimal=10)
-    np.testing.assert_almost_equal(center2.dec.rad, center.dec.rad, decimal=10)
+    np.testing.assert_allclose(center2.rad, center.rad)
 
     # The north pole is at 12h:51.4m, 27.13d again with more precise values from the above paper.
     north = coord.CelestialCoord(
@@ -757,20 +717,18 @@ def test_galactic():
         coord.Angle.from_dms('27:07:41.7043'))
     print('north.galactic = ',north.galactic())
     el,b = north.galactic()
-    np.testing.assert_almost_equal(b.rad, pi/2., decimal=8)
+    np.testing.assert_allclose(b.rad, pi/2.)
     north2 = coord.CelestialCoord.from_galactic(el,b)
-    np.testing.assert_almost_equal(north2.ra.rad, north.ra.rad, decimal=10)
-    np.testing.assert_almost_equal(north2.dec.rad, north.dec.rad, decimal=10)
+    np.testing.assert_allclose(north2.rad, north.rad)
 
     south = coord.CelestialCoord(
         coord.Angle.from_hms('00:51:26.27549'),
         coord.Angle.from_dms('-27:07:41.7043'))
     print('south.galactic = ',south.galactic())
     el,b = south.galactic()
-    np.testing.assert_almost_equal(b.rad, -pi/2., decimal=8)
+    np.testing.assert_allclose(b.rad, -pi/2.)
     south2 = coord.CelestialCoord.from_galactic(el,b)
-    np.testing.assert_almost_equal(south2.ra.rad, south.ra.rad, decimal=10)
-    np.testing.assert_almost_equal(south2.dec.rad, south.dec.rad, decimal=10)
+    np.testing.assert_allclose(south2.rad, south.rad)
 
     anticenter = coord.CelestialCoord(
         coord.Angle.from_hms('05:45:37.1991'),
@@ -780,8 +738,7 @@ def test_galactic():
     np.testing.assert_almost_equal(el.rad, pi, decimal=8)
     np.testing.assert_almost_equal(b.rad, 0., decimal=8)
     anticenter2 = coord.CelestialCoord.from_galactic(el,b)
-    np.testing.assert_almost_equal(anticenter2.ra.rad, anticenter.ra.rad, decimal=10)
-    np.testing.assert_almost_equal(anticenter2.dec.rad, anticenter.dec.rad, decimal=10)
+    np.testing.assert_allclose(anticenter2.rad, anticenter.rad)
 
 
 @timer
