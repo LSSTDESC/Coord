@@ -93,13 +93,11 @@ def test_basic():
     """
     a1 = astropy.coordinates.SkyCoord(10.625 * units.degree, 41.2 * units.degree)
     c1 = coord.CelestialCoord(10.625 * coord.degrees, 41.2 * coord.degrees)
-    np.testing.assert_almost_equal(c1.ra.rad, a1.ra.rad, decimal=12)
-    np.testing.assert_almost_equal(c1.dec.rad, a1.dec.rad, decimal=12)
+    np.testing.assert_almost_equal(c1.rad, [a1.ra.rad, a1.dec.rad], decimal=12)
 
     a2 = astropy.coordinates.SkyCoord('00:42.5 +41:12', unit=(units.hourangle, units.deg))
     c2 = coord.CelestialCoord(coord.Angle.from_hms('00:42:30'), coord.Angle.from_dms('41:12:00'))
-    np.testing.assert_almost_equal(c2.ra.rad, a2.ra.rad, decimal=12)
-    np.testing.assert_almost_equal(c2.dec.rad, a2.dec.rad, decimal=12)
+    np.testing.assert_almost_equal(c2.rad, [a2.ra.rad, a2.dec.rad], decimal=12)
 
     # astropy made different choices for the HMS and DMS string representations, but we can
     # make it match our choice without too much trouble.
@@ -207,7 +205,7 @@ def test_galactic():
     random = coord.CelestialCoord(0.234 * coord.radians, 0.342 * coord.radians)
 
     for c1 in [center, north, south, anticenter, random]:
-        a1 = astropy.coordinates.SkyCoord(c1.ra.rad, c1.dec.rad, unit=units.rad, frame='fk5')
+        a1 = astropy.coordinates.SkyCoord(*c1.rad, unit=units.rad, frame='fk5')
         #print('c1.galactic() = ',c1.galactic())
         #print('a1.galactic = ',a1.galactic)
         el, b = c1.galactic()
@@ -242,7 +240,7 @@ def test_ecliptic():
     random = coord.CelestialCoord(0.234 * coord.radians, 0.342 * coord.radians)
 
     for c1 in [north, south, vernal, autumnal, random]:
-        a1 = astropy.coordinates.SkyCoord(c1.ra.rad, c1.dec.rad, unit=units.rad, frame='fk5')
+        a1 = astropy.coordinates.SkyCoord(*c1.rad, unit=units.rad, frame='fk5')
         eclip =  a1.transform_to('geocentrictrueecliptic')
         #print('c1.ecliptic() = ',c1.ecliptic())
         #print('a1.ecliptic = ',eclip)
