@@ -123,21 +123,23 @@ def test_lambert_projection():
     # The shoelace formula gives the area of a triangle given coordinates:
     # A = 1/2 abs( (x2-x1)*(y3-y1) - (x3-x1)*(y2-y1) )
     area = 0.5 * abs( (uB-uA) * (vC-vA) - (uC-uA) * (vB-vA) )
-    area *= (arcsec / radians)**2
+    # Convert E to arcsec^2
+    E *= (radians / arcsec)**2
     print('lambert area = ',area,E)
-    np.testing.assert_almost_equal(area / E, 1, decimal=5)
+    np.testing.assert_almost_equal(area, E, decimal=6, err_msg="lambert didn't preserve area")
 
     # Check that project_rad does the same thing
     uA2, vA2 = center.project_rad(cA.ra.rad, cA.dec.rad, projection='lambert')
-    np.testing.assert_array_almost_equal(uA, uA2, decimal=10)
-    np.testing.assert_array_almost_equal(vA, vA2, decimal=10)
+    np.testing.assert_array_almost_equal(uA, uA2, 10, "project_rad not equivalent u")
+    np.testing.assert_array_almost_equal(vA, vA2, 10, "project_rad not equivalent v")
 
     # Check the deprojection
     cA2 = center.deproject(uA*arcsec, vA*arcsec, projection='lambert')
-    np.testing.assert_almost_equal(cA.ra.rad, cA2.ra.rad, decimal=12)
-    np.testing.assert_almost_equal(cA.dec.rad, cA2.dec.rad, decimal=12)
+    np.testing.assert_almost_equal(cA.ra.rad, cA2.ra.rad, 12, "deproject didn't return to orig ra")
+    np.testing.assert_almost_equal(cA.dec.rad, cA2.dec.rad, 12, "deproject didn't return to orig dec")
     cA3 = center.deproject_rad(uA, vA, projection='lambert')
-    np.testing.assert_array_almost_equal([cA.ra.rad, cA.dec.rad], cA3, decimal=12)
+    np.testing.assert_array_almost_equal([cA.ra.rad, cA.dec.rad], cA3, 12,
+                                         "deproject_rad not equivalent")
 
     # The angles are not preserved
     a = sqrt( (uB-uC)**2 + (vB-vC)**2 )
@@ -154,19 +156,20 @@ def test_lambert_projection():
     # The deproject jacobian should tell us how the area changes
     dudx, dudy, dvdx, dvdy = center.jac_deproject(uA*arcsec, vA*arcsec, 'lambert').ravel()
     jac_area = abs(dudx*dvdy - dudy*dvdx)
-    np.testing.assert_almost_equal(jac_area, E/area, decimal=5)
+    np.testing.assert_almost_equal(jac_area, E/area, 6, 'jac_deproject gave wrong area')
 
     dudx, dudy, dvdx, dvdy = center.jac_deproject_arcsec(uA, vA, 'lambert').ravel()
-    np.testing.assert_almost_equal(jac_area, abs(dudx*dvdy - dudy*dvdx))
+    np.testing.assert_almost_equal(jac_area, abs(dudx*dvdy - dudy*dvdx), 12,
+                                   'jac_deproject_arcsec not equivalent')
 
     # center projects to 0,0 with unit area
     u, v = center.project(center, 'lambert')
-    np.testing.assert_almost_equal(u.rad, 0., decimal=12)
-    np.testing.assert_almost_equal(v.rad, 0., decimal=12)
+    np.testing.assert_almost_equal([u.rad, v.rad], 0., 12, 'center did not project to (0,0)')
     c2 = center.deproject(u,v, 'lambert')
-    np.testing.assert_almost_equal(c2.ra.rad, center.ra.rad, decimal=12)
-    np.testing.assert_almost_equal(c2.dec.rad, center.dec.rad, decimal=12)
-    np.testing.assert_almost_equal(np.linalg.det(center.jac_deproject(u, v, 'lambert')), 1.)
+    np.testing.assert_almost_equal(c2.ra.rad, center.ra.rad, 12, '(0,0) did not deproject to center')
+    np.testing.assert_almost_equal(c2.dec.rad, center.dec.rad, 12, '(0,0) did not deproject to center')
+    np.testing.assert_almost_equal(np.linalg.det(center.jac_deproject(u, v, 'lambert')), 1., 12,
+                                   'determinant of jac_deproject matrix != 1 at center')
 
 
 @timer

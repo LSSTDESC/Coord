@@ -43,22 +43,22 @@ def test_init():
     theta7 = coord.Angle(theta1)  # Copy constructor
 
     # Equivalent ways to access theta in radians
-    assert theta1.rad == pi/4.
-    assert theta1 / coord.radians == pi/4.
+    assert theta1.rad == pi/4., "(pi/4 radians).rad != pi/4"
+    assert theta1 / coord.radians == pi/4., "(pi/4 radians) / radians != pi/4"
 
     # Others involved a calculation so aren't required to be precisely equal.
-    np.testing.assert_almost_equal(theta2.rad, pi/4., decimal=12)
-    np.testing.assert_almost_equal(theta3.rad, pi/4., decimal=12)
-    np.testing.assert_almost_equal(theta4.rad, pi/4., decimal=12)
-    np.testing.assert_almost_equal(theta5.rad, pi/4., decimal=12)
-    np.testing.assert_almost_equal(theta6.rad, pi/4., decimal=12)
-    np.testing.assert_almost_equal(theta7.rad, pi/4., decimal=12)
+    np.testing.assert_almost_equal(theta2.rad, pi/4., decimal=12, err_msg='45 degrees != pi/4 rad')
+    np.testing.assert_almost_equal(theta3.rad, pi/4., decimal=12, err_msg='3 hours != pi/4 rad')
+    np.testing.assert_almost_equal(theta4.rad, pi/4., decimal=12, err_msg='45*60 arcmin != pi/4 rad')
+    np.testing.assert_almost_equal(theta5.rad, pi/4., decimal=12, err_msg='45*3600 arcsec != pi/4 rad')
+    np.testing.assert_almost_equal(theta6.rad, pi/4., decimal=12, err_msg='50 grad != pi/4 rad')
+    np.testing.assert_almost_equal(theta7.rad, pi/4., decimal=12, err_msg='copy != pi/4 rad')
 
     # Access angle in other units
-    np.testing.assert_almost_equal(theta1 / gradians, 50., decimal=12)
-    np.testing.assert_almost_equal(theta3 / gradians, 50., decimal=12)
-    np.testing.assert_almost_equal(theta1 / coord.hours, 3., decimal=12)
-    np.testing.assert_almost_equal(theta5 / coord.hours, 3., decimal=12)
+    np.testing.assert_almost_equal(theta1 / gradians, 50., 12, 'pi/4 rad / gradians != 50')
+    np.testing.assert_almost_equal(theta3 / gradians, 50., 12, '3 hours / gradians != 50')
+    np.testing.assert_almost_equal(theta1 / coord.hours, 3., 12, 'pi/4 rad / hours != 3')
+    np.testing.assert_almost_equal(theta5 / coord.hours, 3., 12, '45*3600 arcsec / hours != 3')
 
 @timer
 def test_invalid():
@@ -101,13 +101,13 @@ def test_eq():
     """
     theta1 = pi/4. * coord.radians
     theta2 = 45 * coord.degrees
-    assert theta1 == theta2
+    assert theta1 == theta2, "pi/4 rad != 45 deg"
 
     theta3 = theta1.wrap()
-    assert theta1 == theta3
+    assert theta1 == theta3, "(pi/4 rad).wrap() != pi/4 rad"
 
     theta4 = coord.Angle(theta1)  # Copy constructor
-    assert theta4 == theta1
+    assert theta4 == theta1, "copy not == to original"
 
     # These should all test as unequal.  Note some non-Angles in the list.
     diff_list = [ theta1,
@@ -116,7 +116,9 @@ def test_eq():
                   theta1 * 2.,
                   theta1 + 360. * coord.degrees,
                   theta1 - 360. * coord.degrees,
-                  pi/4., coord.Angle, None ]
+                  pi/4.,
+                  coord.Angle,
+                  None ]
     all_obj_diff(diff_list)
 
 @timer

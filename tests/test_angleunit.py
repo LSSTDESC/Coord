@@ -34,15 +34,19 @@ def test_init():
     """
     # This is from the AngleUnit doc string.  Make sure it works!
     gradians = coord.AngleUnit(2.*pi / 400.)
-    assert gradians.value == 2.*pi / 400.
+    assert gradians.value == 2.*pi / 400., 'gradians value not 2pi/400'
 
     # Can also use named keyword argument
-    np.testing.assert_almost_equal(coord.AngleUnit(value=17).value, 17, decimal=12)
+    np.testing.assert_almost_equal(coord.AngleUnit(value=17).value, 17, decimal=12,
+                                   err_msg='using value kwarg failed')
 
     # Other types are ok as the value argument so long as they are convertible to float.
-    np.testing.assert_almost_equal(coord.AngleUnit(np.float64(0.17)).value, 0.17, decimal=12)
-    np.testing.assert_almost_equal(coord.AngleUnit(np.float32(0.23)).value, 0.23, decimal=8)
-    np.testing.assert_almost_equal(coord.AngleUnit('1.7').value, 1.7, decimal=12)
+    np.testing.assert_almost_equal(coord.AngleUnit(np.float64(0.17)).value, 0.17, decimal=12,
+                                   err_msg='using np.float64 for value failed')
+    np.testing.assert_almost_equal(coord.AngleUnit(np.float32(0.23)).value, 0.23, decimal=8,
+                                   err_msg='using np.float32 for value failed')
+    np.testing.assert_almost_equal(coord.AngleUnit('1.7').value, 1.7, decimal=12,
+                                   err_msg='using string "1.7" for value failed')
 
 
 @timer

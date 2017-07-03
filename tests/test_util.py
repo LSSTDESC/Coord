@@ -47,7 +47,7 @@ def test_julian():
 
     for date, jd in zip(dates, julian_days):
         jd1 = coord.util.date_to_julian_day(date)
-        np.testing.assert_almost_equal(jd1, jd)
+        np.testing.assert_almost_equal(jd1, jd, 6, 'Julian day not as expected for %s'%date)
 
     np.testing.assert_raises(ValueError, coord.util.date_to_julian_day, 2000)
     np.testing.assert_raises(ValueError, coord.util.date_to_julian_day, '1875 AD')

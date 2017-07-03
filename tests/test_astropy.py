@@ -73,12 +73,12 @@ def test_precess():
     a3 = a2.transform_to(astropy.coordinates.FK5(equinox='J1900'))
     t4 = time.time()
 
-    np.testing.assert_almost_equal(c1.ra.rad, a1.ra.rad, decimal=6)
-    np.testing.assert_almost_equal(c1.dec.rad, a1.dec.rad, decimal=6)
-    np.testing.assert_almost_equal(c2.ra.rad, a2.ra.rad, decimal=6)
-    np.testing.assert_almost_equal(c2.dec.rad, a2.dec.rad, decimal=6)
-    np.testing.assert_almost_equal(c3.ra.rad, a3.ra.rad, decimal=6)
-    np.testing.assert_almost_equal(c3.dec.rad, a3.dec.rad, decimal=6)
+    np.testing.assert_almost_equal(c1.ra.rad, a1.ra.rad, 6, 'starting coords different ra')
+    np.testing.assert_almost_equal(c1.dec.rad, a1.dec.rad, 6, 'starting coords different dec')
+    np.testing.assert_almost_equal(c2.ra.rad, a2.ra.rad, 6, 'different ra after 2000->1950')
+    np.testing.assert_almost_equal(c2.dec.rad, a2.dec.rad, 6, 'different dec after 2000->1950')
+    np.testing.assert_almost_equal(c3.ra.rad, a3.ra.rad, 6, 'different dec after 1950->1900')
+    np.testing.assert_almost_equal(c3.dec.rad, a3.dec.rad, 6, 'different dec after 1950->1900')
 
     print('Compare times for precession calculations:')
     print('  Make CelestialCoords: t = ',t1-t0)
@@ -92,9 +92,9 @@ def test_precess():
     #   Precess with Astropy: t =  0.0377740859985
 
     # Make sure we don't get slow like astropy.  ;)
-    # (Travis is a bit slower, but these times should still be safe.)
-    assert t1-t0 < 0.0005
-    assert t2-t1 < 0.005
+    # (Travis is a bit slower than the above times, but these limits should still be safe.)
+    assert t1-t0 < 0.0005, 'Building CelestialCoord is too slow'
+    assert t2-t1 < 0.005, 'CelestialCoord.precess is too slow'
 
 
 @timer

@@ -52,18 +52,18 @@ def do_pickle(obj, func=(lambda x : x), copyable=True, reprable=True):
     # Test pickle round-trip returns an equivalent (but not identical) object
     print('Try pickling ',obj)  # Note: this implicitly checks that str(obj) works.
     obj2 = pickle.loads(pickle.dumps(obj))
-    assert obj2 is not obj
+    assert obj2 is not obj, "Obj %s not identical after pickling"%obj
     f1 = func(obj)
     f2 = func(obj2)
     assert f2 == f1, "func(obj) = %r\nfunc(obj2) = %r"%(f1, f2)
 
     # Test the hash values are equal for two equivalent objects.
     if isinstance(obj, Hashable):
-        assert hash(obj) == hash(obj2)
+        assert hash(obj) == hash(obj2), "Objects %s and %s have different hashes"%(obj,obj2)
 
     # Test that copy makes an equivalent copy.
     obj3 = copy.copy(obj)
-    assert obj3 is not obj
+    assert obj3 is not obj, "Obj %s not identical after copy"%obj
     if copyable:
         f1 = func(obj)  # Might need to redo this in case function changes an internal state.
         f3 = func(obj3)
@@ -71,7 +71,7 @@ def do_pickle(obj, func=(lambda x : x), copyable=True, reprable=True):
 
     # A deepcopy should always work.
     obj4 = copy.deepcopy(obj)
-    assert obj4 is not obj
+    assert obj4 is not obj, "Obj %s not identical after deep copy"%obj
     f1 = func(obj)
     f4 = func(obj4)
     assert f4 == f1, "func(obj) = %r\nfunc(obj4) = %r"%(f1, f4)
@@ -111,7 +111,7 @@ def all_obj_diff(objs):
         return
     hashes = [hash(obj) for obj in objs]
     try:
-        assert len(hashes) == len(set(hashes))
+        assert len(hashes) == len(set(hashes)), "At least two of the hashes are equal"
     except AssertionError as e:
         for k, v in Counter(hashes).items():
             if v <= 1:
