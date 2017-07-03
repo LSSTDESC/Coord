@@ -73,12 +73,9 @@ def test_precess():
     a3 = a2.transform_to(astropy.coordinates.FK5(equinox='J1900'))
     t4 = time.time()
 
-    np.testing.assert_almost_equal(c1.ra.rad, a1.ra.rad, 6, 'starting coords different ra')
-    np.testing.assert_almost_equal(c1.dec.rad, a1.dec.rad, 6, 'starting coords different dec')
-    np.testing.assert_almost_equal(c2.ra.rad, a2.ra.rad, 6, 'different ra after 2000->1950')
-    np.testing.assert_almost_equal(c2.dec.rad, a2.dec.rad, 6, 'different dec after 2000->1950')
-    np.testing.assert_almost_equal(c3.ra.rad, a3.ra.rad, 6, 'different dec after 1950->1900')
-    np.testing.assert_almost_equal(c3.dec.rad, a3.dec.rad, 6, 'different dec after 1950->1900')
+    np.testing.assert_allclose(c1.rad, a1.rad, err_msg='starting coords different ra')
+    np.testing.assert_allclose(c2.rad, a2.rad, err_msg='coord/astropy different after 2000->1950')
+    np.testing.assert_allclose(c3.rad, a3.rad, err_msg='different dec after 1950->1900')
 
     print('Compare times for precession calculations:')
     print('  Make CelestialCoords: t = ',t1-t0)

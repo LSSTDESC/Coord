@@ -166,10 +166,9 @@ def test_lambert_projection():
     u, v = center.project(center, 'lambert')
     np.testing.assert_almost_equal([u.rad, v.rad], 0., 12, 'center did not project to (0,0)')
     c2 = center.deproject(u,v, 'lambert')
-    np.testing.assert_almost_equal(c2.ra.rad, center.ra.rad, 12, '(0,0) did not deproject to center')
-    np.testing.assert_almost_equal(c2.dec.rad, center.dec.rad, 12, '(0,0) did not deproject to center')
-    np.testing.assert_almost_equal(np.linalg.det(center.jac_deproject(u, v, 'lambert')), 1., 12,
-                                   'determinant of jac_deproject matrix != 1 at center')
+    np.testing.assert_allclose(c2.rad, center.rad, err_msg='(0,0) did not deproject to center')
+    np.testing.assert_allclose(np.linalg.det(center.jac_deproject(u, v, 'lambert')), 1.,
+                               err_msg='determinant of jac_deproject matrix != 1 at center')
 
 
 @timer

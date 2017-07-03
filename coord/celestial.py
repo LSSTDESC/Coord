@@ -49,6 +49,10 @@ class CelestialCoord(object):
             :ra:        The right ascension (an Angle instance)
             :dec:       The declination (an Angle instance)
 
+        In addition there is a convenience access property that returns ra and dec in radians.
+
+            :rad:       A tuple (ra.rad, dec.rad)
+
     **Sperical Geometry:**
 
         The basic spherical geometry operations are available to work with spherical triangles
@@ -111,6 +115,12 @@ class CelestialCoord(object):
     def dec(self):
         """A read-only attribute, giving the Declination as an Angle"""
         return self._dec
+
+    @property
+    def rad(self):
+        """A convenience property, giving a tuple (ra.rad, dec.rad)
+        """
+        return (self._ra.rad, self._dec.rad)
 
     def _set_aux(self):
         if self._x is None:
