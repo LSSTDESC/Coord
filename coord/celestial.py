@@ -407,12 +407,12 @@ class CelestialCoord(object):
         u, v = self._project(coord2._cosra, coord2._sinra, coord2._cosdec, coord2._sindec,
                              projection)
 
-        return u * arcsec, v * arcsec
+        return u * radians, v * radians
 
     def project_rad(self, ra, dec, projection=None):
         """This is basically identical to the project() function except that the input `ra`, `dec`
         are given in radians rather than packaged as a CelestialCoord object and the returned
-        u,v are given in arcsec.
+        u,v are given in radians.
 
         The main advantage to this is that it will work if `ra` and `dec` are NumPy arrays, in which
         case the output `u`, `v` will also be NumPy arrays.
@@ -422,7 +422,7 @@ class CelestialCoord(object):
         :param projection:  The name of the projection to be used. [default: gnomonic, see `project`
                             docstring for other options]
 
-        :returns: (u,v) in arcsec
+        :returns: (u,v) in radians
         """
         if projection not in CelestialCoord._valid_projections:
             raise ValueError('Unknown projection: %s'%projection)
@@ -483,15 +483,10 @@ class CelestialCoord(object):
 
         # u = k * cosdec * sindra
         # v = k * ( self._cosdec * sindec - self._sindec * cosdec * cosdra )
-        # (Save k multiplication for later when we also multiply by factor.)
         u = cosdec * sindra
         v = cosdec * cosdra
         v *= -self._sindec
         v += self._cosdec * sindec
-
-        # Convert to arcsec
-        factor = radians / arcsec
-        k *= factor
         u *= k
         v *= k
 
@@ -517,20 +512,20 @@ class CelestialCoord(object):
             raise ValueError('Unknown projection: %s'%projection)
 
         # Again, do the core calculations in a helper function
-        ra, dec = self._deproject(u / arcsec, v / arcsec, projection)
+        ra, dec = self._deproject(u / radians, v / radians, projection)
 
         return CelestialCoord(_Angle(ra), _Angle(dec))
 
     def deproject_rad(self, u, v, projection=None):
         """This is basically identical to the deproject() function except that the output `ra`,
         `dec` are returned as a tuple (ra, dec) in radians rather than packaged as a CelestialCoord
-        object and `u` and `v` are in arcsec rather than Angle instances.
+        object and `u` and `v` are in radians rather than Angle instances.
 
         The main advantage to this is that it will work if `u` and `v` are NumPy arrays, in which
         case the output `ra`, `dec` will also be NumPy arrays.
 
-        :param u:           The u position in arcsec on the tangent plane to deproject
-        :param v:           The v position in arcsec on the tangent plane to deproject
+        :param u:           The u position in radians on the tangent plane to deproject
+        :param v:           The v position in radians on the tangent plane to deproject
         :param projection:  The name of the projection to be used. [default: gnomonic, see `project`
                             docstring for other options]
 
@@ -554,11 +549,6 @@ class CelestialCoord(object):
         # c = 2 tan^(-1)(r/2) for stereographic
         # c = 2 sin^(-1)(r/2) for lambert
         # c = r               for postel
-
-        # Convert from arcsec to radians
-        factor = arcsec / radians
-        u = u * factor
-        v = v * factor
 
         # Note that we can rewrite the formulae as:
         #
@@ -638,12 +628,12 @@ class CelestialCoord(object):
             raise ValueError('Unknown projection: %s'%projection)
         return self._jac_deproject(u.rad, v.rad, projection)
 
-    def jac_deproject_arcsec(self, u, v, projection=None):
-        """Equivalent to `jac_deproject`, but the inputs are in arcsec and may be numpy
+    def jac_deproject_rad(self, u, v, projection=None):
+        """Equivalent to `jac_deproject`, but the inputs are in radians and may be numpy
         arrays.
 
-        :param u:           The u position (in arcsec) on the tangent plane
-        :param v:           The v position (in arcsec) on the tangent plane
+        :param u:           The u position (in radians) on the tangent plane
+        :param v:           The v position (in radians) on the tangent plane
         :param projection:  The name of the projection to be used. [default: gnomonic, see `project`
                             docstring for other options]
 
@@ -651,8 +641,7 @@ class CelestialCoord(object):
         """
         if projection not in CelestialCoord._valid_projections:
             raise ValueError('Unknown projection: %s'%projection)
-        factor = arcsec / radians
-        return self._jac_deproject(u*factor, v*factor, projection)
+        return self._jac_deproject(u, v, projection)
 
     def _jac_deproject(self, u, v, projection):
         # sin(dec) = cos(c) sin(dec0) + v sin(c)/r cos(dec0)

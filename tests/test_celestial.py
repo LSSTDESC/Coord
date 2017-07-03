@@ -113,58 +113,48 @@ def test_lambert_projection():
     uA, vA = center.project(cA, projection='lambert')
     uB, vB = center.project(cB, projection='lambert')
     uC, vC = center.project(cC, projection='lambert')
-    uA = uA / arcsec  # Easier to just deal with these in arcsec
-    vA = vA / arcsec
-    uB = uB / arcsec
-    vB = vB / arcsec
-    uC = uC / arcsec
-    vC = vC / arcsec
 
     # The shoelace formula gives the area of a triangle given coordinates:
     # A = 1/2 abs( (x2-x1)*(y3-y1) - (x3-x1)*(y2-y1) )
-    area = 0.5 * abs( (uB-uA) * (vC-vA) - (uC-uA) * (vB-vA) )
-    # Convert E to arcsec^2
-    E *= (radians / arcsec)**2
+    area = 0.5 * abs( (uB.rad-uA.rad) * (vC.rad-vA.rad) - (uC.rad-uA.rad) * (vB.rad-vA.rad) )
     print('lambert area = ',area,E)
-    np.testing.assert_almost_equal(area, E, decimal=6, err_msg="lambert didn't preserve area")
+    np.testing.assert_allclose(area, E, err_msg="lambert didn't preserve area")
 
     # Check that project_rad does the same thing
     uA2, vA2 = center.project_rad(cA.ra.rad, cA.dec.rad, projection='lambert')
-    np.testing.assert_array_almost_equal(uA, uA2, 10, "project_rad not equivalent u")
-    np.testing.assert_array_almost_equal(vA, vA2, 10, "project_rad not equivalent v")
+    np.testing.assert_allclose([uA2,vA2], [uA.rad,vA.rad], rtol=1.e-8,
+                               err_msg="project_rad not equivalent")
 
     # Check the deprojection
-    cA2 = center.deproject(uA*arcsec, vA*arcsec, projection='lambert')
-    np.testing.assert_almost_equal(cA.ra.rad, cA2.ra.rad, 12, "deproject didn't return to orig ra")
-    np.testing.assert_almost_equal(cA.dec.rad, cA2.dec.rad, 12, "deproject didn't return to orig dec")
-    cA3 = center.deproject_rad(uA, vA, projection='lambert')
-    np.testing.assert_array_almost_equal([cA.ra.rad, cA.dec.rad], cA3, 12,
-                                         "deproject_rad not equivalent")
+    cA2 = center.deproject(uA, vA, projection='lambert')
+    np.testing.assert_allclose(cA2.rad, cA.rad, err_msg="deproject didn't return to orig")
+    cA3 = center.deproject_rad(uA.rad, vA.rad, projection='lambert')
+    np.testing.assert_allclose(cA3, cA.rad, err_msg="deproject_rad not equivalent")
 
     # The angles are not preserved
-    a = sqrt( (uB-uC)**2 + (vB-vC)**2 )
-    b = sqrt( (uC-uA)**2 + (vC-vA)**2 )
-    c = sqrt( (uA-uB)**2 + (vA-vB)**2 )
-    cosA = ((uB-uA)*(uC-uA) + (vB-vA)*(vC-vA)) / (b*c)
-    cosB = ((uC-uB)*(uA-uB) + (vC-vB)*(vA-vB)) / (c*a)
-    cosC = ((uA-uC)*(uB-uC) + (vA-vC)*(vB-vC)) / (a*b)
+    a = sqrt( (uB.rad-uC.rad)**2 + (vB.rad-vC.rad)**2 )
+    b = sqrt( (uC.rad-uA.rad)**2 + (vC.rad-vA.rad)**2 )
+    c = sqrt( (uA.rad-uB.rad)**2 + (vA.rad-vB.rad)**2 )
+    cosA = ((uB.rad-uA.rad)*(uC.rad-uA.rad) + (vB.rad-vA.rad)*(vC.rad-vA.rad)) / (b*c)
+    cosB = ((uC.rad-uB.rad)*(uA.rad-uB.rad) + (vC.rad-vB.rad)*(vA.rad-vB.rad)) / (c*a)
+    cosC = ((uA.rad-uC.rad)*(uB.rad-uC.rad) + (vA.rad-vC.rad)*(vB.rad-vC.rad)) / (a*b)
 
     print('lambert cosA = ',cosA,cos(A))
     print('lambert cosB = ',cosB,cos(B))
     print('lambert cosC = ',cosC,cos(C))
 
     # The deproject jacobian should tell us how the area changes
-    dudx, dudy, dvdx, dvdy = center.jac_deproject(uA*arcsec, vA*arcsec, 'lambert').ravel()
+    dudx, dudy, dvdx, dvdy = center.jac_deproject(uA, vA, 'lambert').ravel()
     jac_area = abs(dudx*dvdy - dudy*dvdx)
-    np.testing.assert_almost_equal(jac_area, E/area, 6, 'jac_deproject gave wrong area')
+    np.testing.assert_allclose(jac_area, E/area, err_msg='jac_deproject gave wrong area')
 
-    dudx, dudy, dvdx, dvdy = center.jac_deproject_arcsec(uA, vA, 'lambert').ravel()
-    np.testing.assert_almost_equal(jac_area, abs(dudx*dvdy - dudy*dvdx), 12,
-                                   'jac_deproject_arcsec not equivalent')
+    dudx, dudy, dvdx, dvdy = center.jac_deproject_rad(uA.rad, vA.rad, 'lambert').ravel()
+    np.testing.assert_allclose(jac_area, abs(dudx*dvdy - dudy*dvdx),
+                               err_msg='jac_deproject_rad not equivalent')
 
     # center projects to 0,0 with unit area
     u, v = center.project(center, 'lambert')
-    np.testing.assert_almost_equal([u.rad, v.rad], 0., 12, 'center did not project to (0,0)')
+    np.testing.assert_allclose([u.rad, v.rad], 0., err_msg='center did not project to (0,0)')
     c2 = center.deproject(u,v, 'lambert')
     np.testing.assert_allclose(c2.rad, center.rad, err_msg='(0,0) did not deproject to center')
     np.testing.assert_allclose(np.linalg.det(center.jac_deproject(u, v, 'lambert')), 1.,
