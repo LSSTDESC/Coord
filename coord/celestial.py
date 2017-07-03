@@ -228,6 +228,48 @@ class CelestialCoord(object):
 
         return _Angle(theta)
 
+
+    def _triple(self, coord2, coord3):
+        """Compute the scalar triple product of the three vectors:
+
+                (A x C). B = sina sinb sinC
+
+        where C = self, A = coord2, B = coord3.  This is used by both angleBetween and area.
+        (Although note that the triple product is invariant to the ordering modulo a sign.)
+        """
+        # Note, the scalar triple product, (AxC).B, is the determinant of the 3x3 matrix
+        #     [ xA xB xC ]
+        #     [ yA yB yC ]
+        #     [ zA zB zC ]
+        # Furthermore, it is more stable to calculate it that way than computing the cross
+        # product by hand and then dotting it to the other vector.
+        return np.linalg.det([ [   self._x,   self._y,   self._z ],
+                               [ coord2._x, coord2._y, coord2._z ],
+                               [ coord3._x, coord3._y, coord3._z ] ])
+
+
+    def _alt_triple(self, coord2, coord3):
+        """Compute a different triple product of the three vectors:
+
+                (A x C). (B x C) = sina sinb cosC
+
+        where C = self, A = coord2, B = coord3.  This is used by both angleBetween and area.
+        """
+        # We can simplify (AxC).(BxC) as follows:
+        #     (A x C) . (B x C)
+        #     = (C x (BxC)) . A         Rotation of triple product with (BxC) one of the vectors
+        #     = ((C.C)B - (C.B)C) . A   Vector triple product identity
+        #     = A.B - (A.C) (B.C)       C.C = 1
+        # Dot products for nearby coordinates are not very accurate.  Better to use the distances
+        # between the points: A.B = 1 - d_AB^2/2
+        #     = 1 - d_AB^2/2 - (1-d_AC^2/2) (1-d_BC^2/2)
+        #     = d_AC^2 / 2 + d_BC^2 / 2 - d_AB^2 / 2 - d_AC^2 d_BC^2 / 4
+        dsq_AC = (self._x-coord2._x)**2 + (self._y-coord2._y)**2 + (self._z-coord2._z)**2
+        dsq_BC = (self._x-coord3._x)**2 + (self._y-coord3._y)**2 + (self._z-coord3._z)**2
+        dsq_AB = (coord3._x-coord2._x)**2 + (coord3._y-coord2._y)**2 + (coord3._z-coord2._z)**2
+        return 0.5 * (dsq_AC + dsq_BC - dsq_AB - 0.5 * dsq_AC * dsq_BC)
+
+
     def angleBetween(self, coord2, coord3):
         """Find the open angle at the location of the current coord between `coord2` and `coord3`.
 
@@ -261,14 +303,9 @@ class CelestialCoord(object):
         coord2._set_aux()
         coord3._set_aux()
 
-        AxC = ( coord2._y * self._z - coord2._z * self._y ,
-                coord2._z * self._x - coord2._x * self._z ,
-                coord2._x * self._y - coord2._y * self._x )
-        BxC = ( coord3._y * self._z - coord3._z * self._y ,
-                coord3._z * self._x - coord3._x * self._z ,
-                coord3._x * self._y - coord3._y * self._x )
-        sinC = AxC[0] * coord3._x + AxC[1] * coord3._y + AxC[2] * coord3._z
-        cosC = AxC[0] * BxC[0] + AxC[1] * BxC[1] + AxC[2] * BxC[2]
+        sinC = self._triple(coord2, coord3)
+        cosC = self._alt_triple(coord2, coord3)
+
         C = math.atan2(sinC, cosC)
         return _Angle(C)
 
@@ -315,14 +352,8 @@ class CelestialCoord(object):
         coord2._set_aux()
         coord3._set_aux()
 
-        AxC = ( coord2._y * self._z - coord2._z * self._y ,
-                coord2._z * self._x - coord2._x * self._z ,
-                coord2._x * self._y - coord2._y * self._x )
-        BxC = ( coord3._y * self._z - coord3._z * self._y ,
-                coord3._z * self._x - coord3._x * self._z ,
-                coord3._x * self._y - coord3._y * self._x )
-        F = AxC[0] * coord3._x + AxC[1] * coord3._y + AxC[2] * coord3._z
-        G = AxC[0] * BxC[0] + AxC[1] * BxC[1] + AxC[2] * BxC[2]
+        F = self._triple(coord2, coord3)
+        G = self._alt_triple(coord2, coord3)
         dasq = (self._x-coord2._x)**2 + (self._y-coord2._y)**2 + (self._z-coord2._z)**2
         dbsq = (self._x-coord3._x)**2 + (self._y-coord3._y)**2 + (self._z-coord3._z)**2
 

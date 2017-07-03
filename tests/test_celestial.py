@@ -97,10 +97,10 @@ def test_lambert_projection():
     # Lambert projections preserve area, but not angles.
     center = coord.CelestialCoord(0.234 * radians, 0.342 * radians)
     cA = coord.CelestialCoord(-0.193 * radians, 0.882 * radians)
-    cB = coord.CelestialCoord((-0.193 + 1.7e-6) * radians,
-                               (0.882 + 1.2e-6) * radians)
-    cC = coord.CelestialCoord((-0.193 - 2.4e-6) * radians,
-                               (0.882 + 3.1e-6) * radians)
+    cB = coord.CelestialCoord((-0.193 + 1.7e-8) * radians,
+                               (0.882 + 1.2e-8) * radians)
+    cC = coord.CelestialCoord((-0.193 - 2.4e-8) * radians,
+                               (0.882 + 3.1e-8) * radians)
 
     a = cB.distanceTo(cC).rad
     b = cC.distanceTo(cA).rad
