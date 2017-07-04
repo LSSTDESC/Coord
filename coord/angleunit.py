@@ -18,6 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from __future__ import print_function
 import math
 
 class AngleUnit(object):
@@ -29,8 +30,9 @@ class AngleUnit(object):
         An AngleUnit takes a single argument for initialization, a float that specifies the size
         of the desired angular unit in radians.  For example::
 
-            >>> import math
-            >>> gradian = coord.AngleUnit(2. * math.pi / 400.)
+            >>> gradian = AngleUnit(2. * math.pi / 400.)
+            >>> print(gradian)
+            coord.AngleUnit(0.015707963267948967)
 
     **Built-in units:**
 

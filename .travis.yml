@@ -29,7 +29,8 @@ cache:
 script: 
     - python setup.py install --prefix=$PYHOME
     - cd tests
-    - nosetests -v --with-coverage --cover-package=coord --with-doctest
+    - nosetests -v --with-coverage --cover-package=coord
+    - nosetests -v --with-coverage --cover-package=coord --with-doctest --where=../coord
 
 after_success:
     - codecov

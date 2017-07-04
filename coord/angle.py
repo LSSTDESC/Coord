@@ -21,7 +21,7 @@
 import math
 import numpy as np
 
-from .angleunit import AngleUnit, radians, degrees, hours
+from .angleunit import AngleUnit, radians, degrees, hours, arcmin, arcsec
 
 class Angle(object):
     """A class representing an Angle.  Angles are a value with an AngleUnit.
@@ -30,15 +30,16 @@ class Angle(object):
 
         You typically create an Angle by multiplying a number by a coord.AngleUnit, for example::
 
-            >>> pixel = 0.27 * coord.arcsec
-            >>> ra = 13.4 * coord.hours
-            >>> dec = -32 * coord.degrees
+            >>> pixel = 0.27 * arcsec
+            >>> ra = 13.4 * hours
+            >>> dec = -32 * degrees
             >>> from math import pi
-            >>> theta = pi/2. * coord.radians
+            >>> theta = pi/2. * radians
 
         You can also initialize explicitly, taking a value and a unit::
 
-            >>> phi = coord.Angle(90, coord.degrees)
+            >>> unit = AngleUnit(math.pi / 100)  # gradians
+            >>> phi = Angle(90, unit)
 
     **Built-in units:**
 
@@ -59,35 +60,37 @@ class Angle(object):
 
         For example::
 
-            >>> theta = 90 * coord.degrees
+            >>> theta = 90 * degrees
             >>> print(theta.rad)
             1.57079632679
 
         It is equivalent to the more verbose::
 
-            >>> x = theta / coord.radians
+            >>> x = theta / radians
+            >>> print(x)
+            1.57079632679
 
         but without actually requiring the floating point operation of dividing by 1.
 
     **Arithmetic:**
 
         Allowed arithmetic with Angles include the following.
-        In the list below, ``x`` is a ``float``, ``unit`` is a ``coord.AngleUnit``, and
-        ``theta`` is a ``coord.Angle``::
+        In the list below, ``x`` can be any ``float``, ``unit`` is any ``coord.AngleUnit``, and
+        ``theta`` is any ``coord.Angle``::
 
             >>> theta = x * unit
             >>> x = theta / unit
-            >>> theta3 = theta1 + theta2
-            >>> theta3 = theta1 - theta2
-            >>> theta2 = theta1 * x
-            >>> theta2 = x * theta1
-            >>> theta2 = theta1 / x
-            >>> theta2 = -theta1
-            >>> theta2 += theta1
-            >>> theta2 -= theta1
+            >>> theta = theta + theta
+            >>> theta = theta - theta
+            >>> theta = theta * x
+            >>> theta = x * theta
+            >>> theta = theta / x
+            >>> theta = -theta
+            >>> theta += theta
+            >>> theta -= theta
             >>> theta *= x
             >>> theta /= x
-            >>> x = unit1 / unit2   # equivalent to x = (1 * unit1) / unit2
+            >>> x = unit / unit   # equivalent to x = (1 * unit1) / unit2
 
         The above operations on NumPy arrays containing Angles are permitted as well.
 
@@ -96,6 +99,11 @@ class Angle(object):
         There are convenience function for getting the sin, cos, and tan of an angle, along with
         one for getting sin and cos together, which should be more efficient than doing sin and
         cos separately:
+
+            - :meth:`coord.Angle.sin`
+            - :meth:`coord.Angle.cos`
+            - :meth:`coord.Angle.tan`
+            - :meth:`coord.Angle.sincos`
 
             >>> sint = theta.sin()  # equivalent to sint = math.sin(theta.rad)
             >>> cost = theta.cos()  # equivalent to cost = math.cos(theta.rad)
@@ -106,6 +114,8 @@ class Angle(object):
 
         Depending on the context, theta = 2pi radians and theta = 0 radians may mean the same thing.
         If you want your angles to be wrapped to [-pi,pi) radians, you can do this by calling
+
+            - :meth:`coord.Angle.wrap`
 
             >>> theta = theta.wrap()
 
@@ -175,9 +185,12 @@ class Angle(object):
         """Wrap Angle to lie in the range [-pi, pi) radians (or other range  of 2pi radians)
 
         Depending on the context, theta = 2pi radians and theta = 0 radians are the same thing.
-        If you want your angles to be wrapped to [-pi, pi) radians, you can do this by calling
+        If you want your angles to be wrapped to [-pi, pi) radians, you can do this as follows::
 
+            >>> theta = Angle(700 * degrees)
             >>> theta = theta.wrap()
+            >>> print(theta / degrees)
+            -20.0
 
         This could be appropriate before testing for the equality of two angles for example, or
         calculating the difference between them.
@@ -186,7 +199,9 @@ class Angle(object):
         to be the desired center of the the range.  e.g. for return values to fall in [0, 2pi),
         you could call
 
-            >>> theta = theta.wrap(center=180. * coord.degrees)
+            >>> theta = theta.wrap(center=180. * degrees)
+            >>> print(theta / degrees)
+            340.0
 
         :param center:  The center point of the wrapped range. [default: 0 radians]
 
@@ -297,12 +312,12 @@ class Angle(object):
 
         Note: the reverse process is effected by `from_hms`::
 
-            >>> angle = -5.357 * coord.hours
+            >>> angle = -5.357 * hours
             >>> hms = angle.hms()
             >>> print(hms)
             -05:21:25.2
-            >>> angle2 = coord.Angle.from_hms(hms)
-            >>> print(angle2 / coord.hours)
+            >>> angle2 = Angle.from_hms(hms)
+            >>> print(angle2 / hours)
             -5.357
 
         :param sep:         The token to put between the hh and mm and beteen mm and ss.  This may
@@ -330,12 +345,12 @@ class Angle(object):
 
         Note: the reverse process is effected by `from_dms`::
 
-            >>> angle = -(5 * coord.degrees + 21 * coord.arcmin + 25.2 * coord.arcsec)
+            >>> angle = -(5 * degrees + 21 * arcmin + 25.2 * arcsec)
             >>> dms = angle.dms()
             >>> print(dms)
             -05:21:25.2
-            >>> angle2 = coord.Angle.from_dms(dms)
-            >>> print(angle2 / coord.degrees)
+            >>> angle2 = Angle.from_dms(dms)
+            >>> print(angle2 / degrees)
             -5.357
 
         :param sep:         The token to put between the hh and mm and beteen mm and ss.  This may
@@ -367,12 +382,12 @@ class Angle(object):
 
         Note: the reverse process is effected by Angle.hms():
 
-            >>> angle = -5.357 * coord.hours
+            >>> angle = -5.357 * hours
             >>> hms = angle.hms()
             >>> print(hms)
-            -05:32:25.2
-            >>> angle2 = coord.Angle.from_hms(hms)
-            >>> print(angle2 / coord.hours)
+            -05:21:25.2
+            >>> angle2 = Angle.from_hms(hms)
+            >>> print(angle2 / hours)
             -5.357
 
         :param str:     The string to parse.
@@ -392,12 +407,12 @@ class Angle(object):
 
         Note: the reverse process is effected by Angle.dms():
 
-            >>> angle = -(5 * coord.degrees + 32 * coord.arcmin + 25.2 * coord.arcsec)
+            >>> angle = -(5 * degrees + 21 * arcmin + 25.2 * arcsec)
             >>> dms = angle.dms()
             >>> print(dms)
-            -05:32:25.2
-            >>> angle2 = coord.Angle.from_dms(dms)
-            >>> print(angle2 / coord.degrees)
+            -05:21:25.2
+            >>> angle2 = Angle.from_dms(dms)
+            >>> print(angle2 / degrees)
             -5.357
 
         :param str:     The string to parse.

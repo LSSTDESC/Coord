@@ -18,12 +18,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from __future__ import print_function
 import numpy as np
 import math
 import datetime
 
 from .angle import Angle, _Angle
-from .angleunit import radians, degrees, arcsec
+from .angleunit import radians, degrees, hours, arcsec
 from . import util
 
 class CelestialCoord(object):
@@ -38,9 +39,11 @@ class CelestialCoord(object):
 
         A `CelestialCoord` object is constructed from the right ascension and declination::
 
-            >>> c = coord.CelestialCoord(ra, dec)
+            ``coord.CelestialCoord.(ra, dec)``
 
-        where ra and dec must be `coord.Angle` instances.
+            >>> c = CelestialCoord(ra=12*hours, dec=31*degrees)
+            >>> print(c)
+            coord.CelestialCoord(3.14159265359 radians, 0.541052068118 radians)
 
     **Attributes:**
 
@@ -49,36 +52,62 @@ class CelestialCoord(object):
             :ra:        The right ascension (an Angle instance)
             :dec:       The declination (an Angle instance)
 
+            >>> print(c.ra / degrees, c.dec / degrees)
+            180.0 31.0
+
         In addition there is a convenience access property that returns ra and dec in radians.
 
             :rad:       A tuple (ra.rad, dec.rad)
+
+            >>> print(c.rad)
+            (3.141592653589793, 0.5410520681182421)
 
     **Sperical Geometry:**
 
         The basic spherical geometry operations are available to work with spherical triangles
 
         For three coordinates cA, cB, cC making a spherical triangle, one can calculate the
-        sides and angles via::
+        sides and angles via:
 
+            - :meth:`coord.CelestialCoord.distanceTo`
+            - :meth:`coord.CelestialCoord.angleBetween`
+
+            >>> cA = CelestialCoord(0 * degrees, 0 * degrees)
+            >>> cB = CelestialCoord(0 * degrees, 10 * degrees)
+            >>> cC = CelestialCoord(10 * degrees, 0 * degrees)
             >>> a = cB.distanceTo(cC)
             >>> b = cC.distanceTo(cA)
             >>> c = cA.distanceTo(cB)
+            >>> print(a / degrees, b / degrees, c / degrees)
+            14.1060442606 10.0 10.0
             >>> A = cA.angleBetween(cB, cC)
-            >>> B = cA.angleBetween(cC, cA)
-            >>> C = cA.angleBetween(cA, cB)
-
-        All of these return values are coord.Angle instances.
+            >>> B = cB.angleBetween(cC, cA)
+            >>> C = cC.angleBetween(cA, cB)
+            >>> print(A / degrees, B / degrees, C / degrees)
+            90.0 45.4385485867 45.4385485867
 
     **Projections:**
 
         Local tangent plane projections of an area of the sky can be performed using the project
         method::
 
+            - :meth:`coord.CelestialCoord.project`
+
+            >>> center = CelestialCoord(ra=10*hours, dec=30*degrees)
+            >>> sky_coord = CelestialCoord(ra=10.5*hours, dec=31*degrees)
+            >>> print(sky_coord)
+            coord.CelestialCoord(2.74889357189 radians, 0.541052068118 radians)
             >>> u, v = center.project(sky_coord)
+            >>> print(u / degrees, v / degrees)
+            -6.45237127534 1.21794987289
 
         and back::
 
+            - :meth:`coord.CelestialCoord.deproject`
+
             >>> sky_coord = center.deproject(u,v)
+            >>> print(sky_coord)
+            coord.CelestialCoord(2.74889357189 radians, 0.541052068118 radians)
 
         where u and v are Angles and center and sky_coord are CelestialCoords.
     """

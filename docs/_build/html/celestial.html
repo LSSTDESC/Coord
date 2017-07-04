@@ -92,10 +92,13 @@ spherical triangles, projecting from sky coordinates onto a Euclidean tangent pl
 <p><strong>Initialization:</strong></p>
 <blockquote>
 <div><p>A <cite>CelestialCoord</cite> object is constructed from the right ascension and declination:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">CelestialCoord</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>``coord.CelestialCoord.(ra, dec)``
+
+&gt;&gt;&gt; c = CelestialCoord(ra=12*hours, dec=31*degrees)
+&gt;&gt;&gt; print(c)
+coord.CelestialCoord(3.14159265359 radians, 0.541052068118 radians)
 </pre></div>
 </div>
-<p>where ra and dec must be <cite>coord.Angle</cite> instances.</p>
 </div></blockquote>
 <p><strong>Attributes:</strong></p>
 <blockquote>
@@ -111,6 +114,10 @@ spherical triangles, projecting from sky coordinates onto a Euclidean tangent pl
 </tr>
 </tbody>
 </table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">ra</span> <span class="o">/</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">dec</span> <span class="o">/</span> <span class="n">degrees</span><span class="p">)</span>
+<span class="go">180.0 31.0</span>
+</pre></div>
+</div>
 </div></blockquote>
 <p>In addition there is a convenience access property that returns ra and dec in radians.</p>
 <blockquote>
@@ -122,6 +129,10 @@ spherical triangles, projecting from sky coordinates onto a Euclidean tangent pl
 </tr>
 </tbody>
 </table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">rad</span><span class="p">)</span>
+<span class="go">(3.141592653589793, 0.5410520681182421)</span>
+</pre></div>
+</div>
 </div></blockquote>
 </div></blockquote>
 <p><strong>Sperical Geometry:</strong></p>
@@ -129,25 +140,49 @@ spherical triangles, projecting from sky coordinates onto a Euclidean tangent pl
 <div><p>The basic spherical geometry operations are available to work with spherical triangles</p>
 <p>For three coordinates cA, cB, cC making a spherical triangle, one can calculate the
 sides and angles via:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">cB</span><span class="o">.</span><span class="n">distanceTo</span><span class="p">(</span><span class="n">cC</span><span class="p">)</span>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#coord.CelestialCoord.distanceTo" title="coord.CelestialCoord.distanceTo"><code class="xref py py-meth docutils literal"><span class="pre">coord.CelestialCoord.distanceTo()</span></code></a></li>
+<li><a class="reference internal" href="#coord.CelestialCoord.angleBetween" title="coord.CelestialCoord.angleBetween"><code class="xref py py-meth docutils literal"><span class="pre">coord.CelestialCoord.angleBetween()</span></code></a></li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cA</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">,</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cB</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cC</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">,</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">cB</span><span class="o">.</span><span class="n">distanceTo</span><span class="p">(</span><span class="n">cC</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">cC</span><span class="o">.</span><span class="n">distanceTo</span><span class="p">(</span><span class="n">cA</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">cA</span><span class="o">.</span><span class="n">distanceTo</span><span class="p">(</span><span class="n">cB</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">a</span> <span class="o">/</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">b</span> <span class="o">/</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">c</span> <span class="o">/</span> <span class="n">degrees</span><span class="p">)</span>
+<span class="go">14.1060442606 10.0 10.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">cA</span><span class="o">.</span><span class="n">angleBetween</span><span class="p">(</span><span class="n">cB</span><span class="p">,</span> <span class="n">cC</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">cA</span><span class="o">.</span><span class="n">angleBetween</span><span class="p">(</span><span class="n">cC</span><span class="p">,</span> <span class="n">cA</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="n">cA</span><span class="o">.</span><span class="n">angleBetween</span><span class="p">(</span><span class="n">cA</span><span class="p">,</span> <span class="n">cB</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">cB</span><span class="o">.</span><span class="n">angleBetween</span><span class="p">(</span><span class="n">cC</span><span class="p">,</span> <span class="n">cA</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="n">cC</span><span class="o">.</span><span class="n">angleBetween</span><span class="p">(</span><span class="n">cA</span><span class="p">,</span> <span class="n">cB</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span> <span class="o">/</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">B</span> <span class="o">/</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">C</span> <span class="o">/</span> <span class="n">degrees</span><span class="p">)</span>
+<span class="go">90.0 45.4385485867 45.4385485867</span>
 </pre></div>
 </div>
-<p>All of these return values are coord.Angle instances.</p>
+</div></blockquote>
 </div></blockquote>
 <p><strong>Projections:</strong></p>
 <blockquote>
 <div><p>Local tangent plane projections of an area of the sky can be performed using the project
 method:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">center</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">sky_coord</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>- :meth:`coord.CelestialCoord.project`
+
+&gt;&gt;&gt; center = CelestialCoord(ra=10*hours, dec=30*degrees)
+&gt;&gt;&gt; sky_coord = CelestialCoord(ra=10.5*hours, dec=31*degrees)
+&gt;&gt;&gt; print(sky_coord)
+coord.CelestialCoord(2.74889357189 radians, 0.541052068118 radians)
+&gt;&gt;&gt; u, v = center.project(sky_coord)
+&gt;&gt;&gt; print(u / degrees, v / degrees)
+-6.45237127534 1.21794987289
 </pre></div>
 </div>
 <p>and back:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sky_coord</span> <span class="o">=</span> <span class="n">center</span><span class="o">.</span><span class="n">deproject</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>- :meth:`coord.CelestialCoord.deproject`
+
+&gt;&gt;&gt; sky_coord = center.deproject(u,v)
+&gt;&gt;&gt; print(sky_coord)
+coord.CelestialCoord(2.74889357189 radians, 0.541052068118 radians)
 </pre></div>
 </div>
 <p>where u and v are Angles and center and sky_coord are CelestialCoords.</p>

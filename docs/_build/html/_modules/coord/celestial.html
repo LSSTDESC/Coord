@@ -80,12 +80,13 @@
 <span class="c1"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
 <span class="c1"># SOFTWARE.</span>
 
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 
 <span class="kn">from</span> <span class="nn">.angle</span> <span class="k">import</span> <span class="n">Angle</span><span class="p">,</span> <span class="n">_Angle</span>
-<span class="kn">from</span> <span class="nn">.angleunit</span> <span class="k">import</span> <span class="n">radians</span><span class="p">,</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">arcsec</span>
+<span class="kn">from</span> <span class="nn">.angleunit</span> <span class="k">import</span> <span class="n">radians</span><span class="p">,</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">arcsec</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">util</span>
 
 <div class="viewcode-block" id="CelestialCoord"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord">[docs]</a><span class="k">class</span> <span class="nc">CelestialCoord</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -100,9 +101,11 @@
 
 <span class="sd">        A `CelestialCoord` object is constructed from the right ascension and declination::</span>
 
-<span class="sd">            &gt;&gt;&gt; c = coord.CelestialCoord(ra, dec)</span>
+<span class="sd">            ``coord.CelestialCoord.(ra, dec)``</span>
 
-<span class="sd">        where ra and dec must be `coord.Angle` instances.</span>
+<span class="sd">            &gt;&gt;&gt; c = CelestialCoord(ra=12*hours, dec=31*degrees)</span>
+<span class="sd">            &gt;&gt;&gt; print(c)</span>
+<span class="sd">            coord.CelestialCoord(3.14159265359 radians, 0.541052068118 radians)</span>
 
 <span class="sd">    **Attributes:**</span>
 
@@ -111,36 +114,62 @@
 <span class="sd">            :ra:        The right ascension (an Angle instance)</span>
 <span class="sd">            :dec:       The declination (an Angle instance)</span>
 
+<span class="sd">            &gt;&gt;&gt; print(c.ra / degrees, c.dec / degrees)</span>
+<span class="sd">            180.0 31.0</span>
+
 <span class="sd">        In addition there is a convenience access property that returns ra and dec in radians.</span>
 
 <span class="sd">            :rad:       A tuple (ra.rad, dec.rad)</span>
+
+<span class="sd">            &gt;&gt;&gt; print(c.rad)</span>
+<span class="sd">            (3.141592653589793, 0.5410520681182421)</span>
 
 <span class="sd">    **Sperical Geometry:**</span>
 
 <span class="sd">        The basic spherical geometry operations are available to work with spherical triangles</span>
 
 <span class="sd">        For three coordinates cA, cB, cC making a spherical triangle, one can calculate the</span>
-<span class="sd">        sides and angles via::</span>
+<span class="sd">        sides and angles via:</span>
 
+<span class="sd">            - :meth:`coord.CelestialCoord.distanceTo`</span>
+<span class="sd">            - :meth:`coord.CelestialCoord.angleBetween`</span>
+
+<span class="sd">            &gt;&gt;&gt; cA = CelestialCoord(0 * degrees, 0 * degrees)</span>
+<span class="sd">            &gt;&gt;&gt; cB = CelestialCoord(0 * degrees, 10 * degrees)</span>
+<span class="sd">            &gt;&gt;&gt; cC = CelestialCoord(10 * degrees, 0 * degrees)</span>
 <span class="sd">            &gt;&gt;&gt; a = cB.distanceTo(cC)</span>
 <span class="sd">            &gt;&gt;&gt; b = cC.distanceTo(cA)</span>
 <span class="sd">            &gt;&gt;&gt; c = cA.distanceTo(cB)</span>
+<span class="sd">            &gt;&gt;&gt; print(a / degrees, b / degrees, c / degrees)</span>
+<span class="sd">            14.1060442606 10.0 10.0</span>
 <span class="sd">            &gt;&gt;&gt; A = cA.angleBetween(cB, cC)</span>
-<span class="sd">            &gt;&gt;&gt; B = cA.angleBetween(cC, cA)</span>
-<span class="sd">            &gt;&gt;&gt; C = cA.angleBetween(cA, cB)</span>
-
-<span class="sd">        All of these return values are coord.Angle instances.</span>
+<span class="sd">            &gt;&gt;&gt; B = cB.angleBetween(cC, cA)</span>
+<span class="sd">            &gt;&gt;&gt; C = cC.angleBetween(cA, cB)</span>
+<span class="sd">            &gt;&gt;&gt; print(A / degrees, B / degrees, C / degrees)</span>
+<span class="sd">            90.0 45.4385485867 45.4385485867</span>
 
 <span class="sd">    **Projections:**</span>
 
 <span class="sd">        Local tangent plane projections of an area of the sky can be performed using the project</span>
 <span class="sd">        method::</span>
 
+<span class="sd">            - :meth:`coord.CelestialCoord.project`</span>
+
+<span class="sd">            &gt;&gt;&gt; center = CelestialCoord(ra=10*hours, dec=30*degrees)</span>
+<span class="sd">            &gt;&gt;&gt; sky_coord = CelestialCoord(ra=10.5*hours, dec=31*degrees)</span>
+<span class="sd">            &gt;&gt;&gt; print(sky_coord)</span>
+<span class="sd">            coord.CelestialCoord(2.74889357189 radians, 0.541052068118 radians)</span>
 <span class="sd">            &gt;&gt;&gt; u, v = center.project(sky_coord)</span>
+<span class="sd">            &gt;&gt;&gt; print(u / degrees, v / degrees)</span>
+<span class="sd">            -6.45237127534 1.21794987289</span>
 
 <span class="sd">        and back::</span>
 
+<span class="sd">            - :meth:`coord.CelestialCoord.deproject`</span>
+
 <span class="sd">            &gt;&gt;&gt; sky_coord = center.deproject(u,v)</span>
+<span class="sd">            &gt;&gt;&gt; print(sky_coord)</span>
+<span class="sd">            coord.CelestialCoord(2.74889357189 radians, 0.541052068118 radians)</span>
 
 <span class="sd">        where u and v are Angles and center and sky_coord are CelestialCoords.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

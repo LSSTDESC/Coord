@@ -83,7 +83,7 @@
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.angleunit</span> <span class="k">import</span> <span class="n">AngleUnit</span><span class="p">,</span> <span class="n">radians</span><span class="p">,</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">hours</span>
+<span class="kn">from</span> <span class="nn">.angleunit</span> <span class="k">import</span> <span class="n">AngleUnit</span><span class="p">,</span> <span class="n">radians</span><span class="p">,</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">arcmin</span><span class="p">,</span> <span class="n">arcsec</span>
 
 <div class="viewcode-block" id="Angle"><a class="viewcode-back" href="../../angle.html#coord.Angle">[docs]</a><span class="k">class</span> <span class="nc">Angle</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A class representing an Angle.  Angles are a value with an AngleUnit.</span>
@@ -92,15 +92,16 @@
 
 <span class="sd">        You typically create an Angle by multiplying a number by a coord.AngleUnit, for example::</span>
 
-<span class="sd">            &gt;&gt;&gt; pixel = 0.27 * coord.arcsec</span>
-<span class="sd">            &gt;&gt;&gt; ra = 13.4 * coord.hours</span>
-<span class="sd">            &gt;&gt;&gt; dec = -32 * coord.degrees</span>
+<span class="sd">            &gt;&gt;&gt; pixel = 0.27 * arcsec</span>
+<span class="sd">            &gt;&gt;&gt; ra = 13.4 * hours</span>
+<span class="sd">            &gt;&gt;&gt; dec = -32 * degrees</span>
 <span class="sd">            &gt;&gt;&gt; from math import pi</span>
-<span class="sd">            &gt;&gt;&gt; theta = pi/2. * coord.radians</span>
+<span class="sd">            &gt;&gt;&gt; theta = pi/2. * radians</span>
 
 <span class="sd">        You can also initialize explicitly, taking a value and a unit::</span>
 
-<span class="sd">            &gt;&gt;&gt; phi = coord.Angle(90, coord.degrees)</span>
+<span class="sd">            &gt;&gt;&gt; unit = AngleUnit(math.pi / 100)  # gradians</span>
+<span class="sd">            &gt;&gt;&gt; phi = Angle(90, unit)</span>
 
 <span class="sd">    **Built-in units:**</span>
 
@@ -121,35 +122,37 @@
 
 <span class="sd">        For example::</span>
 
-<span class="sd">            &gt;&gt;&gt; theta = 90 * coord.degrees</span>
+<span class="sd">            &gt;&gt;&gt; theta = 90 * degrees</span>
 <span class="sd">            &gt;&gt;&gt; print(theta.rad)</span>
 <span class="sd">            1.57079632679</span>
 
 <span class="sd">        It is equivalent to the more verbose::</span>
 
-<span class="sd">            &gt;&gt;&gt; x = theta / coord.radians</span>
+<span class="sd">            &gt;&gt;&gt; x = theta / radians</span>
+<span class="sd">            &gt;&gt;&gt; print(x)</span>
+<span class="sd">            1.57079632679</span>
 
 <span class="sd">        but without actually requiring the floating point operation of dividing by 1.</span>
 
 <span class="sd">    **Arithmetic:**</span>
 
 <span class="sd">        Allowed arithmetic with Angles include the following.</span>
-<span class="sd">        In the list below, ``x`` is a ``float``, ``unit`` is a ``coord.AngleUnit``, and</span>
-<span class="sd">        ``theta`` is a ``coord.Angle``::</span>
+<span class="sd">        In the list below, ``x`` can be any ``float``, ``unit`` is any ``coord.AngleUnit``, and</span>
+<span class="sd">        ``theta`` is any ``coord.Angle``::</span>
 
 <span class="sd">            &gt;&gt;&gt; theta = x * unit</span>
 <span class="sd">            &gt;&gt;&gt; x = theta / unit</span>
-<span class="sd">            &gt;&gt;&gt; theta3 = theta1 + theta2</span>
-<span class="sd">            &gt;&gt;&gt; theta3 = theta1 - theta2</span>
-<span class="sd">            &gt;&gt;&gt; theta2 = theta1 * x</span>
-<span class="sd">            &gt;&gt;&gt; theta2 = x * theta1</span>
-<span class="sd">            &gt;&gt;&gt; theta2 = theta1 / x</span>
-<span class="sd">            &gt;&gt;&gt; theta2 = -theta1</span>
-<span class="sd">            &gt;&gt;&gt; theta2 += theta1</span>
-<span class="sd">            &gt;&gt;&gt; theta2 -= theta1</span>
+<span class="sd">            &gt;&gt;&gt; theta = theta + theta</span>
+<span class="sd">            &gt;&gt;&gt; theta = theta - theta</span>
+<span class="sd">            &gt;&gt;&gt; theta = theta * x</span>
+<span class="sd">            &gt;&gt;&gt; theta = x * theta</span>
+<span class="sd">            &gt;&gt;&gt; theta = theta / x</span>
+<span class="sd">            &gt;&gt;&gt; theta = -theta</span>
+<span class="sd">            &gt;&gt;&gt; theta += theta</span>
+<span class="sd">            &gt;&gt;&gt; theta -= theta</span>
 <span class="sd">            &gt;&gt;&gt; theta *= x</span>
 <span class="sd">            &gt;&gt;&gt; theta /= x</span>
-<span class="sd">            &gt;&gt;&gt; x = unit1 / unit2   # equivalent to x = (1 * unit1) / unit2</span>
+<span class="sd">            &gt;&gt;&gt; x = unit / unit   # equivalent to x = (1 * unit1) / unit2</span>
 
 <span class="sd">        The above operations on NumPy arrays containing Angles are permitted as well.</span>
 
@@ -158,6 +161,11 @@
 <span class="sd">        There are convenience function for getting the sin, cos, and tan of an angle, along with</span>
 <span class="sd">        one for getting sin and cos together, which should be more efficient than doing sin and</span>
 <span class="sd">        cos separately:</span>
+
+<span class="sd">            - :meth:`coord.Angle.sin`</span>
+<span class="sd">            - :meth:`coord.Angle.cos`</span>
+<span class="sd">            - :meth:`coord.Angle.tan`</span>
+<span class="sd">            - :meth:`coord.Angle.sincos`</span>
 
 <span class="sd">            &gt;&gt;&gt; sint = theta.sin()  # equivalent to sint = math.sin(theta.rad)</span>
 <span class="sd">            &gt;&gt;&gt; cost = theta.cos()  # equivalent to cost = math.cos(theta.rad)</span>
@@ -168,6 +176,8 @@
 
 <span class="sd">        Depending on the context, theta = 2pi radians and theta = 0 radians may mean the same thing.</span>
 <span class="sd">        If you want your angles to be wrapped to [-pi,pi) radians, you can do this by calling</span>
+
+<span class="sd">            - :meth:`coord.Angle.wrap`</span>
 
 <span class="sd">            &gt;&gt;&gt; theta = theta.wrap()</span>
 
@@ -237,9 +247,12 @@
         <span class="sd">&quot;&quot;&quot;Wrap Angle to lie in the range [-pi, pi) radians (or other range  of 2pi radians)</span>
 
 <span class="sd">        Depending on the context, theta = 2pi radians and theta = 0 radians are the same thing.</span>
-<span class="sd">        If you want your angles to be wrapped to [-pi, pi) radians, you can do this by calling</span>
+<span class="sd">        If you want your angles to be wrapped to [-pi, pi) radians, you can do this as follows::</span>
 
+<span class="sd">            &gt;&gt;&gt; theta = Angle(700 * degrees)</span>
 <span class="sd">            &gt;&gt;&gt; theta = theta.wrap()</span>
+<span class="sd">            &gt;&gt;&gt; print(theta / degrees)</span>
+<span class="sd">            -20.0</span>
 
 <span class="sd">        This could be appropriate before testing for the equality of two angles for example, or</span>
 <span class="sd">        calculating the difference between them.</span>
@@ -248,7 +261,9 @@
 <span class="sd">        to be the desired center of the the range.  e.g. for return values to fall in [0, 2pi),</span>
 <span class="sd">        you could call</span>
 
-<span class="sd">            &gt;&gt;&gt; theta = theta.wrap(center=180. * coord.degrees)</span>
+<span class="sd">            &gt;&gt;&gt; theta = theta.wrap(center=180. * degrees)</span>
+<span class="sd">            &gt;&gt;&gt; print(theta / degrees)</span>
+<span class="sd">            340.0</span>
 
 <span class="sd">        :param center:  The center point of the wrapped range. [default: 0 radians]</span>
 
@@ -359,12 +374,12 @@
 
 <span class="sd">        Note: the reverse process is effected by `from_hms`::</span>
 
-<span class="sd">            &gt;&gt;&gt; angle = -5.357 * coord.hours</span>
+<span class="sd">            &gt;&gt;&gt; angle = -5.357 * hours</span>
 <span class="sd">            &gt;&gt;&gt; hms = angle.hms()</span>
 <span class="sd">            &gt;&gt;&gt; print(hms)</span>
 <span class="sd">            -05:21:25.2</span>
-<span class="sd">            &gt;&gt;&gt; angle2 = coord.Angle.from_hms(hms)</span>
-<span class="sd">            &gt;&gt;&gt; print(angle2 / coord.hours)</span>
+<span class="sd">            &gt;&gt;&gt; angle2 = Angle.from_hms(hms)</span>
+<span class="sd">            &gt;&gt;&gt; print(angle2 / hours)</span>
 <span class="sd">            -5.357</span>
 
 <span class="sd">        :param sep:         The token to put between the hh and mm and beteen mm and ss.  This may</span>
@@ -392,12 +407,12 @@
 
 <span class="sd">        Note: the reverse process is effected by `from_dms`::</span>
 
-<span class="sd">            &gt;&gt;&gt; angle = -(5 * coord.degrees + 21 * coord.arcmin + 25.2 * coord.arcsec)</span>
+<span class="sd">            &gt;&gt;&gt; angle = -(5 * degrees + 21 * arcmin + 25.2 * arcsec)</span>
 <span class="sd">            &gt;&gt;&gt; dms = angle.dms()</span>
 <span class="sd">            &gt;&gt;&gt; print(dms)</span>
 <span class="sd">            -05:21:25.2</span>
-<span class="sd">            &gt;&gt;&gt; angle2 = coord.Angle.from_dms(dms)</span>
-<span class="sd">            &gt;&gt;&gt; print(angle2 / coord.degrees)</span>
+<span class="sd">            &gt;&gt;&gt; angle2 = Angle.from_dms(dms)</span>
+<span class="sd">            &gt;&gt;&gt; print(angle2 / degrees)</span>
 <span class="sd">            -5.357</span>
 
 <span class="sd">        :param sep:         The token to put between the hh and mm and beteen mm and ss.  This may</span>
@@ -429,12 +444,12 @@
 
 <span class="sd">        Note: the reverse process is effected by Angle.hms():</span>
 
-<span class="sd">            &gt;&gt;&gt; angle = -5.357 * coord.hours</span>
+<span class="sd">            &gt;&gt;&gt; angle = -5.357 * hours</span>
 <span class="sd">            &gt;&gt;&gt; hms = angle.hms()</span>
 <span class="sd">            &gt;&gt;&gt; print(hms)</span>
-<span class="sd">            -05:32:25.2</span>
-<span class="sd">            &gt;&gt;&gt; angle2 = coord.Angle.from_hms(hms)</span>
-<span class="sd">            &gt;&gt;&gt; print(angle2 / coord.hours)</span>
+<span class="sd">            -05:21:25.2</span>
+<span class="sd">            &gt;&gt;&gt; angle2 = Angle.from_hms(hms)</span>
+<span class="sd">            &gt;&gt;&gt; print(angle2 / hours)</span>
 <span class="sd">            -5.357</span>
 
 <span class="sd">        :param str:     The string to parse.</span>
@@ -454,12 +469,12 @@
 
 <span class="sd">        Note: the reverse process is effected by Angle.dms():</span>
 
-<span class="sd">            &gt;&gt;&gt; angle = -(5 * coord.degrees + 32 * coord.arcmin + 25.2 * coord.arcsec)</span>
+<span class="sd">            &gt;&gt;&gt; angle = -(5 * degrees + 21 * arcmin + 25.2 * arcsec)</span>
 <span class="sd">            &gt;&gt;&gt; dms = angle.dms()</span>
 <span class="sd">            &gt;&gt;&gt; print(dms)</span>
-<span class="sd">            -05:32:25.2</span>
-<span class="sd">            &gt;&gt;&gt; angle2 = coord.Angle.from_dms(dms)</span>
-<span class="sd">            &gt;&gt;&gt; print(angle2 / coord.degrees)</span>
+<span class="sd">            -05:21:25.2</span>
+<span class="sd">            &gt;&gt;&gt; angle2 = Angle.from_dms(dms)</span>
+<span class="sd">            &gt;&gt;&gt; print(angle2 / degrees)</span>
 <span class="sd">            -5.357</span>
 
 <span class="sd">        :param str:     The string to parse.</span>
