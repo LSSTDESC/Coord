@@ -26,7 +26,7 @@ import coord
 from helper_util import *
 
 # We'll use these a lot, so just import them.
-from math import pi, sin, cos, tan, acos, sqrt
+from numpy import pi, sin, cos, tan, arccos, sqrt
 from coord import radians, degrees, hours, arcmin, arcsec
 
 @timer
@@ -100,7 +100,7 @@ def test_distance():
     c5 = coord.CelestialCoord(1.832 * radians, -0.723 * radians)
     # The standard formula is:
     # cos(d) = sin(dec1) sin(dec2) + cos(dec1) cos(dec2) cos(delta ra)
-    d = acos(c1.dec.sin() * c5.dec.sin() + c1.dec.cos() * c5.dec.cos() * (c1.ra-c5.ra).cos())
+    d = arccos(sin(c1.dec) * sin(c5.dec) + cos(c1.dec) * cos(c5.dec) * cos(c1.ra-c5.ra))
     np.testing.assert_almost_equal(c1.distanceTo(c5).rad, d, decimal=12)
 
     # Tiny displacements should have dsq = (dra^2 cos^2 dec) + (ddec^2)
@@ -109,11 +109,11 @@ def test_distance():
     c8 = coord.CelestialCoord(c1.ra + 2.3e-9 * radians, c1.dec + 1.2e-9 * radians)
 
     # Note that the standard formula gets these wrong.  d comes back as 0.
-    d = acos(c1.dec.sin() * c6.dec.sin() + c1.dec.cos() * c6.dec.cos() * (c1.ra-c6.ra).cos())
+    d = arccos(sin(c1.dec) * sin(c6.dec) + cos(c1.dec) * cos(c6.dec) * cos(c1.ra-c6.ra))
     print('d(c6) = ',1.7e-9 * cos(0.342), c1.distanceTo(c6), d)
-    d = acos(c1.dec.sin() * c7.dec.sin() + c1.dec.cos() * c7.dec.cos() * (c1.ra-c7.ra).cos())
+    d = arccos(sin(c1.dec) * sin(c7.dec) + cos(c1.dec) * cos(c7.dec) * cos(c1.ra-c7.ra))
     print('d(c7) = ',1.9e-9, c1.distanceTo(c7), d)
-    d = acos(c1.dec.sin() * c8.dec.sin() + c1.dec.cos() * c8.dec.cos() * (c1.ra-c8.ra).cos())
+    d = arccos(sin(c1.dec) * sin(c8.dec) + cos(c1.dec) * cos(c8.dec) * cos(c1.ra-c8.ra))
     true_d = sqrt( (2.3e-9 * cos(0.342))**2 + 1.2e-9**2)
     print('d(c7) = ',true_d, c1.distanceTo(c8), d)
     np.testing.assert_allclose(c1.distanceTo(c6).rad, 1.7e-9 * c1.dec.cos(), rtol=1.e-7)

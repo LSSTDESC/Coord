@@ -110,6 +110,12 @@ class Angle(object):
             >>> tant = theta.tan()  # equivalent to tant = math.tan(theta.rad)
             >>> sint, cost = theta.sincos()
 
+        These functions mean that numpy trig functions will work on Angles or arrays of Angles::
+
+            >>> sint = np.sin(theta)
+            >>> cost = np.cos(theta)
+            >>> tant = np.tan(theta)
+
     **Wrapping:**
 
         Depending on the context, theta = 2pi radians and theta = 0 radians may mean the same thing.
