@@ -215,6 +215,41 @@ $ nosetests
 <div><p><a class="reference external" href="https://lsstdesc.github.io/Coord/">https://lsstdesc.github.io/Coord/</a></p>
 </div></blockquote>
 </li>
+<li><p class="first">Make a branch for yourself.  Pick some appropriate name for your branch, like your last name,
+or your initials.  Something you think would likely be unique to you.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ git pull
+$ git checkout -b your_branch_name
+$ git push -U origin your_branch_name
+</pre></div>
+</div>
+</li>
+<li><p class="first">Look through the existing tests and pick a test that is currently unimplemented.
+There are lots of stubs of test functions that you can pick from that currently just say
+<code class="docutils literal"><span class="pre">pass</span></code>, or feel free to do something different if you have an idea of what to test and
+don’t seem something appropriate.</p>
+<p>Write the test.  Think about the various considerations I talked about in the lesson.</p>
+<p>Be as complete or not as you want.  You only have half an hour, so don’t worry if you don’t
+feel like you covered everything about the concept you are trying to test.</p>
+</li>
+<li><p class="first">One the test is working, commit and push.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ git add -p
+$ git commit -m &quot;Add some tests of the .... function&quot;
+$ git push
+</pre></div>
+</div>
+</li>
+<li><p class="first">Make a pull request of your new test.  Start here:</p>
+<blockquote>
+<div><p><a class="reference external" href="https://github.com/LSSTDESC/Coord/compare">https://github.com/LSSTDESC/Coord/compare</a></p>
+</div></blockquote>
+<p>Select the “compare” tab, and find your branch name.</p>
+<p>Write a short title.  e.g. “Add test of stereographic projection”</p>
+<p>Write a slightly longer summary in the text box.  (Normally – for this exercise there might
+not be much more to write than what you already wrote in the title.)</p>
+<p>Click “Create pull request”</p>
+<p>Wait for Travis to run your test.  If it fails, check why and edit your code appropriately.
+You can add more commits to your branch, which will be included in the pull request.</p>
+</li>
 </ol>
 </div>
 </div>

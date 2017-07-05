@@ -172,6 +172,12 @@
 <span class="sd">            &gt;&gt;&gt; tant = theta.tan()  # equivalent to tant = math.tan(theta.rad)</span>
 <span class="sd">            &gt;&gt;&gt; sint, cost = theta.sincos()</span>
 
+<span class="sd">        These functions mean that numpy trig functions will work on Angles or arrays of Angles::</span>
+
+<span class="sd">            &gt;&gt;&gt; sint = np.sin(theta)</span>
+<span class="sd">            &gt;&gt;&gt; cost = np.cos(theta)</span>
+<span class="sd">            &gt;&gt;&gt; tant = np.tan(theta)</span>
+
 <span class="sd">    **Wrapping:**</span>
 
 <span class="sd">        Depending on the context, theta = 2pi radians and theta = 0 radians may mean the same thing.</span>
