@@ -50,7 +50,7 @@ class AngleUnit(object):
 
         An AngleUnit as the following (read-only) attribute:
 
-        :value:     The measure of the unit in radians.
+            :value:     The measure of the unit in radians.
     """
     def __init__(self, value):
         """

@@ -60,7 +60,7 @@ class Angle(object):
         Since extracting the value in radians is extremely common, we have a read-only attribute
         to do this quickly:
 
-        :rad:       The measure of the unit in radians.
+            :rad:       The measure of the unit in radians.
 
         For example:
 
