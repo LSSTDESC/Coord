@@ -89,11 +89,14 @@
 <blockquote>
 <div><p>An AngleUnit takes a single argument for initialization, a float that specifies the size
 of the desired angular unit in radians.  For example:</p>
+<blockquote>
+<div><p><a class="reference internal" href="#coord.AngleUnit.__init__" title="coord.AngleUnit.__init__"><code class="xref py py-meth docutils literal"><span class="pre">coord.AngleUnit.__init__()</span></code></a></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gradian</span> <span class="o">=</span> <span class="n">AngleUnit</span><span class="p">(</span><span class="mf">2.</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">400.</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">gradian</span><span class="p">)</span>
 <span class="go">coord.AngleUnit(0.015707963267948967)</span>
 </pre></div>
 </div>
+</div></blockquote>
 </div></blockquote>
 <p><strong>Built-in units:</strong></p>
 <blockquote>
@@ -103,15 +106,15 @@ of the desired angular unit in radians.  For example:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">coord.radians:</th><td class="field-body">= <cite>coord.AngleUnit(1.)</cite></td>
+<tr class="field-odd field"><th class="field-name">coord.radians:</th><td class="field-body">coord.AngleUnit(1.)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">coord.degrees:</th><td class="field-body">= <cite>coord.AngleUnit(pi / 180.)</cite></td>
+<tr class="field-even field"><th class="field-name">coord.degrees:</th><td class="field-body">coord.AngleUnit(pi / 180.)</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">coord.hours:</th><td class="field-body">= <cite>coord.AngleUnit(pi / 12.)</cite></td>
+<tr class="field-odd field"><th class="field-name">coord.hours:</th><td class="field-body">coord.AngleUnit(pi / 12.)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">coord.arcmin:</th><td class="field-body">= <cite>coord.AngleUnit(pi / 180. / 60.)</cite></td>
+<tr class="field-even field"><th class="field-name">coord.arcmin:</th><td class="field-body">coord.AngleUnit(pi / 180. / 60.)</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">coord.arcsec:</th><td class="field-body">= <cite>coord.AngleUnit(pi / 180. / 3600.)</cite></td>
+<tr class="field-odd field"><th class="field-name">coord.arcsec:</th><td class="field-body">coord.AngleUnit(pi / 180. / 3600.)</td>
 </tr>
 </tbody>
 </table>

@@ -28,8 +28,10 @@ class AngleUnit(object):
     **Initialization:**
 
         An AngleUnit takes a single argument for initialization, a float that specifies the size
-        of the desired angular unit in radians.  For example::
+        of the desired angular unit in radians.  For example:
 
+            :meth:`coord.AngleUnit.__init__`
+ 
             >>> gradian = AngleUnit(2. * math.pi / 400.)
             >>> print(gradian)
             coord.AngleUnit(0.015707963267948967)
@@ -38,11 +40,11 @@ class AngleUnit(object):
 
         There are five built-in AngleUnits which are always available for use:
 
-            :coord.radians:   = `coord.AngleUnit(1.)`
-            :coord.degrees:   = `coord.AngleUnit(pi / 180.)`
-            :coord.hours:     = `coord.AngleUnit(pi / 12.)`
-            :coord.arcmin:    = `coord.AngleUnit(pi / 180. / 60.)`
-            :coord.arcsec:    = `coord.AngleUnit(pi / 180. / 3600.)`
+            :coord.radians:   coord.AngleUnit(1.)
+            :coord.degrees:   coord.AngleUnit(pi / 180.)
+            :coord.hours:     coord.AngleUnit(pi / 12.)
+            :coord.arcmin:    coord.AngleUnit(pi / 180. / 60.)
+            :coord.arcsec:    coord.AngleUnit(pi / 180. / 3600.)
 
     **Attribute:**
 

@@ -92,13 +92,14 @@ spherical triangles, projecting from sky coordinates onto a Euclidean tangent pl
 <p><strong>Initialization:</strong></p>
 <blockquote>
 <div><p>A <cite>CelestialCoord</cite> object is constructed from the right ascension and declination:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>``coord.CelestialCoord.(ra, dec)``
-
-&gt;&gt;&gt; c = CelestialCoord(ra=12*hours, dec=31*degrees)
-&gt;&gt;&gt; print(c)
-coord.CelestialCoord(3.14159265359 radians, 0.541052068118 radians)
+<blockquote>
+<div><p><a class="reference internal" href="#coord.CelestialCoord.__init__" title="coord.CelestialCoord.__init__"><code class="xref py py-meth docutils literal"><span class="pre">coord.CelestialCoord.__init__()</span></code></a></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mi">12</span><span class="o">*</span><span class="n">hours</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="mi">31</span><span class="o">*</span><span class="n">degrees</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="go">coord.CelestialCoord(3.14159265359 radians, 0.541052068118 radians)</span>
 </pre></div>
 </div>
+</div></blockquote>
 </div></blockquote>
 <p><strong>Attributes:</strong></p>
 <blockquote>
@@ -141,10 +142,10 @@ coord.CelestialCoord(3.14159265359 radians, 0.541052068118 radians)
 <p>For three coordinates cA, cB, cC making a spherical triangle, one can calculate the
 sides and angles via:</p>
 <blockquote>
-<div><ul class="simple">
-<li><a class="reference internal" href="#coord.CelestialCoord.distanceTo" title="coord.CelestialCoord.distanceTo"><code class="xref py py-meth docutils literal"><span class="pre">coord.CelestialCoord.distanceTo()</span></code></a></li>
-<li><a class="reference internal" href="#coord.CelestialCoord.angleBetween" title="coord.CelestialCoord.angleBetween"><code class="xref py py-meth docutils literal"><span class="pre">coord.CelestialCoord.angleBetween()</span></code></a></li>
-</ul>
+<div><div class="line-block">
+<div class="line"><a class="reference internal" href="#coord.CelestialCoord.distanceTo" title="coord.CelestialCoord.distanceTo"><code class="xref py py-meth docutils literal"><span class="pre">coord.CelestialCoord.distanceTo()</span></code></a></div>
+<div class="line"><a class="reference internal" href="#coord.CelestialCoord.angleBetween" title="coord.CelestialCoord.angleBetween"><code class="xref py py-meth docutils literal"><span class="pre">coord.CelestialCoord.angleBetween()</span></code></a></div>
+</div>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cA</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">,</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cB</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cC</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">,</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">)</span>
@@ -166,25 +167,27 @@ sides and angles via:</p>
 <blockquote>
 <div><p>Local tangent plane projections of an area of the sky can be performed using the project
 method:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>- :meth:`coord.CelestialCoord.project`
-
-&gt;&gt;&gt; center = CelestialCoord(ra=10*hours, dec=30*degrees)
-&gt;&gt;&gt; sky_coord = CelestialCoord(ra=10.5*hours, dec=31*degrees)
-&gt;&gt;&gt; print(sky_coord)
-coord.CelestialCoord(2.74889357189 radians, 0.541052068118 radians)
-&gt;&gt;&gt; u, v = center.project(sky_coord)
-&gt;&gt;&gt; print(u / degrees, v / degrees)
--6.45237127534 1.21794987289
+<blockquote>
+<div><p><a class="reference internal" href="#coord.CelestialCoord.project" title="coord.CelestialCoord.project"><code class="xref py py-meth docutils literal"><span class="pre">coord.CelestialCoord.project()</span></code></a></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">center</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mi">10</span><span class="o">*</span><span class="n">hours</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="mi">30</span><span class="o">*</span><span class="n">degrees</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sky_coord</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mf">10.5</span><span class="o">*</span><span class="n">hours</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="mi">31</span><span class="o">*</span><span class="n">degrees</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sky_coord</span><span class="p">)</span>
+<span class="go">coord.CelestialCoord(2.74889357189 radians, 0.541052068118 radians)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">center</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">sky_coord</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">u</span> <span class="o">/</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">v</span> <span class="o">/</span> <span class="n">degrees</span><span class="p">)</span>
+<span class="go">-6.45237127534 1.21794987289</span>
 </pre></div>
 </div>
+</div></blockquote>
 <p>and back:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>- :meth:`coord.CelestialCoord.deproject`
-
-&gt;&gt;&gt; sky_coord = center.deproject(u,v)
-&gt;&gt;&gt; print(sky_coord)
-coord.CelestialCoord(2.74889357189 radians, 0.541052068118 radians)
+<blockquote>
+<div><p><a class="reference internal" href="#coord.CelestialCoord.deproject" title="coord.CelestialCoord.deproject"><code class="xref py py-meth docutils literal"><span class="pre">coord.CelestialCoord.deproject()</span></code></a></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sky_coord</span> <span class="o">=</span> <span class="n">center</span><span class="o">.</span><span class="n">deproject</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sky_coord</span><span class="p">)</span>
+<span class="go">coord.CelestialCoord(2.74889357189 radians, 0.541052068118 radians)</span>
 </pre></div>
 </div>
+</div></blockquote>
 <p>where u and v are Angles and center and sky_coord are CelestialCoords.</p>
 </div></blockquote>
 <dl class="method">

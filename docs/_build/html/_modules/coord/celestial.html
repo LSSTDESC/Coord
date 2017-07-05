@@ -99,9 +99,9 @@
 
 <span class="sd">    **Initialization:**</span>
 
-<span class="sd">        A `CelestialCoord` object is constructed from the right ascension and declination::</span>
+<span class="sd">        A `CelestialCoord` object is constructed from the right ascension and declination:</span>
 
-<span class="sd">            ``coord.CelestialCoord.(ra, dec)``</span>
+<span class="sd">            :meth:`coord.CelestialCoord.__init__`</span>
 
 <span class="sd">            &gt;&gt;&gt; c = CelestialCoord(ra=12*hours, dec=31*degrees)</span>
 <span class="sd">            &gt;&gt;&gt; print(c)</span>
@@ -131,8 +131,8 @@
 <span class="sd">        For three coordinates cA, cB, cC making a spherical triangle, one can calculate the</span>
 <span class="sd">        sides and angles via:</span>
 
-<span class="sd">            - :meth:`coord.CelestialCoord.distanceTo`</span>
-<span class="sd">            - :meth:`coord.CelestialCoord.angleBetween`</span>
+<span class="sd">            | :meth:`coord.CelestialCoord.distanceTo`</span>
+<span class="sd">            | :meth:`coord.CelestialCoord.angleBetween`</span>
 
 <span class="sd">            &gt;&gt;&gt; cA = CelestialCoord(0 * degrees, 0 * degrees)</span>
 <span class="sd">            &gt;&gt;&gt; cB = CelestialCoord(0 * degrees, 10 * degrees)</span>
@@ -151,9 +151,9 @@
 <span class="sd">    **Projections:**</span>
 
 <span class="sd">        Local tangent plane projections of an area of the sky can be performed using the project</span>
-<span class="sd">        method::</span>
+<span class="sd">        method:</span>
 
-<span class="sd">            - :meth:`coord.CelestialCoord.project`</span>
+<span class="sd">            :meth:`coord.CelestialCoord.project`</span>
 
 <span class="sd">            &gt;&gt;&gt; center = CelestialCoord(ra=10*hours, dec=30*degrees)</span>
 <span class="sd">            &gt;&gt;&gt; sky_coord = CelestialCoord(ra=10.5*hours, dec=31*degrees)</span>
@@ -163,9 +163,9 @@
 <span class="sd">            &gt;&gt;&gt; print(u / degrees, v / degrees)</span>
 <span class="sd">            -6.45237127534 1.21794987289</span>
 
-<span class="sd">        and back::</span>
+<span class="sd">        and back:</span>
 
-<span class="sd">            - :meth:`coord.CelestialCoord.deproject`</span>
+<span class="sd">            :meth:`coord.CelestialCoord.deproject`</span>
 
 <span class="sd">            &gt;&gt;&gt; sky_coord = center.deproject(u,v)</span>
 <span class="sd">            &gt;&gt;&gt; print(sky_coord)</span>

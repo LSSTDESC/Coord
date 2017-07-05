@@ -90,8 +90,10 @@
 <span class="sd">    **Initialization:**</span>
 
 <span class="sd">        An AngleUnit takes a single argument for initialization, a float that specifies the size</span>
-<span class="sd">        of the desired angular unit in radians.  For example::</span>
+<span class="sd">        of the desired angular unit in radians.  For example:</span>
 
+<span class="sd">            :meth:`coord.AngleUnit.__init__`</span>
+<span class="sd"> </span>
 <span class="sd">            &gt;&gt;&gt; gradian = AngleUnit(2. * math.pi / 400.)</span>
 <span class="sd">            &gt;&gt;&gt; print(gradian)</span>
 <span class="sd">            coord.AngleUnit(0.015707963267948967)</span>
@@ -100,11 +102,11 @@
 
 <span class="sd">        There are five built-in AngleUnits which are always available for use:</span>
 
-<span class="sd">            :coord.radians:   = `coord.AngleUnit(1.)`</span>
-<span class="sd">            :coord.degrees:   = `coord.AngleUnit(pi / 180.)`</span>
-<span class="sd">            :coord.hours:     = `coord.AngleUnit(pi / 12.)`</span>
-<span class="sd">            :coord.arcmin:    = `coord.AngleUnit(pi / 180. / 60.)`</span>
-<span class="sd">            :coord.arcsec:    = `coord.AngleUnit(pi / 180. / 3600.)`</span>
+<span class="sd">            :coord.radians:   coord.AngleUnit(1.)</span>
+<span class="sd">            :coord.degrees:   coord.AngleUnit(pi / 180.)</span>
+<span class="sd">            :coord.hours:     coord.AngleUnit(pi / 12.)</span>
+<span class="sd">            :coord.arcmin:    coord.AngleUnit(pi / 180. / 60.)</span>
+<span class="sd">            :coord.arcsec:    coord.AngleUnit(pi / 180. / 3600.)</span>
 
 <span class="sd">    **Attribute:**</span>
 

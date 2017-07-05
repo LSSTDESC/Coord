@@ -37,9 +37,9 @@ class CelestialCoord(object):
 
     **Initialization:**
 
-        A `CelestialCoord` object is constructed from the right ascension and declination::
+        A `CelestialCoord` object is constructed from the right ascension and declination:
 
-            ``coord.CelestialCoord.(ra, dec)``
+            :meth:`coord.CelestialCoord.__init__`
 
             >>> c = CelestialCoord(ra=12*hours, dec=31*degrees)
             >>> print(c)
@@ -69,8 +69,8 @@ class CelestialCoord(object):
         For three coordinates cA, cB, cC making a spherical triangle, one can calculate the
         sides and angles via:
 
-            - :meth:`coord.CelestialCoord.distanceTo`
-            - :meth:`coord.CelestialCoord.angleBetween`
+            | :meth:`coord.CelestialCoord.distanceTo`
+            | :meth:`coord.CelestialCoord.angleBetween`
 
             >>> cA = CelestialCoord(0 * degrees, 0 * degrees)
             >>> cB = CelestialCoord(0 * degrees, 10 * degrees)
@@ -89,9 +89,9 @@ class CelestialCoord(object):
     **Projections:**
 
         Local tangent plane projections of an area of the sky can be performed using the project
-        method::
+        method:
 
-            - :meth:`coord.CelestialCoord.project`
+            :meth:`coord.CelestialCoord.project`
 
             >>> center = CelestialCoord(ra=10*hours, dec=30*degrees)
             >>> sky_coord = CelestialCoord(ra=10.5*hours, dec=31*degrees)
@@ -101,9 +101,9 @@ class CelestialCoord(object):
             >>> print(u / degrees, v / degrees)
             -6.45237127534 1.21794987289
 
-        and back::
+        and back:
 
-            - :meth:`coord.CelestialCoord.deproject`
+            :meth:`coord.CelestialCoord.deproject`
 
             >>> sky_coord = center.deproject(u,v)
             >>> print(sky_coord)
