@@ -30,21 +30,21 @@ from math import pi, sin, cos, tan, acos, sqrt
 from coord import radians, degrees, hours, arcmin, arcsec
 
 @timer
-def test_basic():
-    """Basic tests of CelestialCoord construction. etc.
+def test_init():
+    """Basic tests of CelestialCoord construction.
     """
     pass
 
 
 @timer
-def test_pickle():
-    """Check picklability of CelestialCoords
+def test_invalid():
+    """Check some invalid initializations of CelestialCoord
     """
 
 
 @timer
-def test_invalid():
-    """Check some invalid initializations of CelestialCoord
+def test_pickle():
+    """Check picklability of CelestialCoords
     """
 
 
@@ -59,7 +59,84 @@ def test_eq():
 def test_distance():
     """Test calculations of distances on the sphere.
     """
-    pass
+    # First, let's test some distances that are easy to figure out without any spherical trig.
+    eq1 = coord.CelestialCoord(0. * radians, 0. * radians)  # point on the equator
+    eq2 = coord.CelestialCoord(1. * radians, 0. * radians)  # 1 radian along equator
+    eq3 = coord.CelestialCoord(pi * radians, 0. * radians)  # antipode of eq1
+    north_pole = coord.CelestialCoord(0. * radians, pi/2. * radians)  # north pole
+    south_pole = coord.CelestialCoord(0. * radians, -pi/2. * radians) # south pole
+
+    np.testing.assert_almost_equal(eq1.distanceTo(eq2).rad, 1., decimal=12)
+    np.testing.assert_almost_equal(eq2.distanceTo(eq1).rad, 1., decimal=12)
+    np.testing.assert_almost_equal(eq1.distanceTo(eq3).rad, pi, decimal=12)
+    np.testing.assert_almost_equal(eq2.distanceTo(eq3).rad, pi-1., decimal=12)
+
+    np.testing.assert_almost_equal(north_pole.distanceTo(south_pole).rad, pi, decimal=12)
+
+    np.testing.assert_almost_equal(eq1.distanceTo(north_pole).rad, pi/2., decimal=12)
+    np.testing.assert_almost_equal(eq2.distanceTo(north_pole).rad, pi/2., decimal=12)
+    np.testing.assert_almost_equal(eq3.distanceTo(north_pole).rad, pi/2., decimal=12)
+    np.testing.assert_almost_equal(eq1.distanceTo(south_pole).rad, pi/2., decimal=12)
+    np.testing.assert_almost_equal(eq2.distanceTo(south_pole).rad, pi/2., decimal=12)
+    np.testing.assert_almost_equal(eq3.distanceTo(south_pole).rad, pi/2., decimal=12)
+
+    # Some random point
+    c1 = coord.CelestialCoord(0.234 * radians, 0.342 * radians)
+    # Same meridian
+    c2 = coord.CelestialCoord(0.234 * radians, -1.093 * radians)
+    # Antipode
+    c3 = coord.CelestialCoord((pi + 0.234) * radians, -0.342 * radians)
+    # Different point on opposide meridian
+    c4 = coord.CelestialCoord((pi + 0.234) * radians, 0.832 * radians)
+
+    for c, d in zip( (c1,c2,c3,c4), (0., 1.435, pi, pi-1.174) ):
+        np.testing.assert_almost_equal(c1.distanceTo(c).rad, d, decimal=12)
+
+    # Now some that require spherical trig calculations.
+    # Importantly, this uses the more straightforward spherical trig formula, the cosine rule.
+    # The CelestialCoord class uses a different formula that is more stable for very small
+    # distances, which are typical in the correlation function calculation.
+    # Some other random point:
+    c5 = coord.CelestialCoord(1.832 * radians, -0.723 * radians)
+    # The standard formula is:
+    # cos(d) = sin(dec1) sin(dec2) + cos(dec1) cos(dec2) cos(delta ra)
+    d = acos(c1.dec.sin() * c5.dec.sin() + c1.dec.cos() * c5.dec.cos() * (c1.ra-c5.ra).cos())
+    np.testing.assert_almost_equal(c1.distanceTo(c5).rad, d, decimal=12)
+
+    # Tiny displacements should have dsq = (dra^2 cos^2 dec) + (ddec^2)
+    c6 = coord.CelestialCoord(c1.ra + 1.7e-9 * radians, c1.dec)
+    c7 = coord.CelestialCoord(c1.ra, c1.dec + 1.9e-9 * radians)
+    c8 = coord.CelestialCoord(c1.ra + 2.3e-9 * radians, c1.dec + 1.2e-9 * radians)
+
+    # Note that the standard formula gets these wrong.  d comes back as 0.
+    d = acos(c1.dec.sin() * c6.dec.sin() + c1.dec.cos() * c6.dec.cos() * (c1.ra-c6.ra).cos())
+    print('d(c6) = ',1.7e-9 * cos(0.342), c1.distanceTo(c6), d)
+    d = acos(c1.dec.sin() * c7.dec.sin() + c1.dec.cos() * c7.dec.cos() * (c1.ra-c7.ra).cos())
+    print('d(c7) = ',1.9e-9, c1.distanceTo(c7), d)
+    d = acos(c1.dec.sin() * c8.dec.sin() + c1.dec.cos() * c8.dec.cos() * (c1.ra-c8.ra).cos())
+    true_d = sqrt( (2.3e-9 * cos(0.342))**2 + 1.2e-9**2)
+    print('d(c7) = ',true_d, c1.distanceTo(c8), d)
+    np.testing.assert_allclose(c1.distanceTo(c6).rad, 1.7e-9 * c1.dec.cos(), rtol=1.e-7)
+    np.testing.assert_allclose(c1.distanceTo(c7).rad, 1.9e-9, rtol=1.e-7)
+    np.testing.assert_allclose(c1.distanceTo(c8).rad, true_d, rtol=1.e-7)
+
+    # Near antipodes, the formula we usually use becomes somewhat inaccurate.
+    # Check a variety of antipodes.
+    eq1 = coord.CelestialCoord(0. * radians, 0. * radians)
+    eq2 = coord.CelestialCoord(1. * radians, 0. * radians)
+    eq3 = coord.CelestialCoord(pi * radians, 0. * radians)
+    north_pole = coord.CelestialCoord(0. * radians, pi/2. * radians)
+    south_pole = coord.CelestialCoord(0. * radians, -pi/2. * radians)
+    for c in [c1, c2, c3, c4, c5, c6, c7, c8, eq1, eq2, eq3, north_pole, south_pole]:
+        antipode = coord.CelestialCoord(c.ra + pi * radians, -c.dec)
+        np.testing.assert_almost_equal(c.distanceTo(antipode).rad, pi, decimal=12)
+        np.testing.assert_almost_equal(antipode.distanceTo(c).rad, pi, decimal=12)
+
+    # Also some near, but not quite antipodes
+    # Note: this range crosses the point where the formula in distanceTo changes.
+    for delta in range(500):
+        eq4 = coord.CelestialCoord(delta * arcmin, 0 * radians)
+        np.testing.assert_allclose(pi - eq3.distanceTo(eq4).rad, eq4.ra.rad, rtol=1.e-7)
 
 
 @timer
@@ -197,7 +274,9 @@ def test_ecliptic_date():
 
 
 if __name__ == '__main__':
-    test_basic()
+    test_init()
+    test_invalid()
+    test_pickle()
     test_eq()
     test_distance()
     test_angleBetween()

@@ -74,11 +74,11 @@ def test_precess():
     t4 = time.time()
 
     np.testing.assert_allclose(c1.rad, [a1.ra.rad, a1.dec.rad], rtol=1.e-5,
-                               err_msg='starting coords different ra')
+                               err_msg='starting coords different')
     np.testing.assert_allclose(c2.rad, [a2.ra.rad, a2.dec.rad], rtol=1.e-5,
                                err_msg='coord/astropy different after 2000->1950')
     np.testing.assert_allclose(c3.rad, [a3.ra.rad, a3.dec.rad], rtol=1.e-5,
-                               err_msg='different dec after 1950->1900')
+                               err_msg='coord/astropy different after 1950->1900')
 
     print('Compare times for precession calculations:')
     print('  Make CelestialCoords: t = ',t1-t0)
