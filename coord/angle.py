@@ -34,7 +34,7 @@ class Angle(object):
 
             >>> pixel = 0.27 * arcsec
             >>> ra = 13.4 * hours
-            >>> dec = -32 * degreees
+            >>> dec = -32 * degrees
             >>> from math import pi
             >>> theta = pi/2. * radians
 
@@ -93,7 +93,7 @@ class Angle(object):
             >>> unit2 = degrees
 
             >>> theta1 = x * unit1
-            >>> theta2 = unit2 * x
+            >>> theta2 = x * unit2
             >>> x2 = theta1 / unit2
             >>> theta = theta1 + theta2
             >>> theta = theta1 - theta2
