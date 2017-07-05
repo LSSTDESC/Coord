@@ -93,8 +93,8 @@ def test_precess():
 
     # Make sure we don't get slow like astropy.  ;)
     # (Travis is a bit slower than the above times, but these limits should still be safe.)
-    assert t1-t0 < 0.0005, 'Building CelestialCoord is too slow'
-    assert t2-t1 < 0.005, 'CelestialCoord.precess is too slow'
+    assert t1-t0 < 0.001, 'Building CelestialCoord is too slow'
+    assert t2-t1 < 0.01, 'CelestialCoord.precess is too slow'
 
 
 @timer
