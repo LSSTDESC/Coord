@@ -103,3 +103,28 @@ certainly still participate even if not.
 After the end of the class I will add all the unit tests that I currently have for this module
 along with (hopefully) some that the class will have written.
 
+Instructions
+------------
+
+1. Clone the repository onto your laptop.::
+
+    $ git clone git@github.com:LSSTDESC/Coord.git
+
+2. Follow the above instructions to install Coord.
+
+3. Make sure you have nose and astropy installed.::
+
+    $ pip install nose astropy
+
+4. Try running the existing tests.::
+
+    $ cd tests
+    $ nosetests
+
+5. Make sure that you are a member of the LSSTDESC GitHub team.  If not, post a request on the
+   #desc-ci Slack channel that you want to be added.
+
+6. Look through the documentation here:
+
+    https://lsstdesc.github.io/Coord/
+
