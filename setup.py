@@ -48,7 +48,9 @@ dist = setup(name="LSSTDESC.Coord",
 # setup.py doesn't put the .so file in the coord directory, so this bit makes it possible to
 # import coord from the root directory.  Not really advisable, but everyone does it at some
 # point, so might as well facilitate it.
-lib = os.path.join('coord','_coord.so')
-if os.path.lexists(lib): os.unlink(lib)
-os.link(glob.glob(os.path.join('build','*','coord','_coord*.so'))[0], lib)
+build_lib = glob.glob(os.path.join('build','*','coord','_coord*.so'))
+if len(build_lib) >= 1:
+    lib = os.path.join('coord','_coord.so')
+    if os.path.lexists(lib): os.unlink(lib)
+    os.link(glob.glob(os.path.join('build','*','coord','_coord*.so'))[0], lib)
 
