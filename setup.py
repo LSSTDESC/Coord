@@ -52,5 +52,5 @@ build_lib = glob.glob(os.path.join('build','*','coord','_coord*.so'))
 if len(build_lib) >= 1:
     lib = os.path.join('coord','_coord.so')
     if os.path.lexists(lib): os.unlink(lib)
-    os.link(glob.glob(os.path.join('build','*','coord','_coord*.so'))[0], lib)
+    os.link(build_lib[0], lib)
 
