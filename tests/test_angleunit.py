@@ -79,7 +79,7 @@ def test_div():
 
 @timer
 def test_pickle():
-    """Check that everything pickles correctly.
+    """Check that AngleUnits pickle correctly.
 
     Not a big deal here, but if we start including any C structs, they require special handling
     to make picklable, so useful to have this check in place.

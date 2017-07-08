@@ -103,11 +103,11 @@ def test_eq():
     theta2 = 45 * coord.degrees
     assert theta1 == theta2, "pi/4 rad != 45 deg"
 
-    theta3 = theta1.wrap()
-    assert theta1 == theta3, "(pi/4 rad).wrap() != pi/4 rad"
+    theta3 = coord.Angle(theta1)  # Copy constructor
+    assert theta3 == theta1, "copy not == to original"
 
-    theta4 = coord.Angle(theta1)  # Copy constructor
-    assert theta4 == theta1, "copy not == to original"
+    theta4 = theta1.wrap()
+    assert theta1 == theta4, "(pi/4 rad).wrap() != pi/4 rad"
 
     # These should all test as unequal.  Note some non-Angles in the list.
     diff_list = [ theta1,
