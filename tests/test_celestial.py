@@ -60,25 +60,25 @@ def test_distance():
     """Test calculations of distances on the sphere.
     """
     # First, let's test some distances that are easy to figure out without any spherical trig.
-    eq1 = coord.CelestialCoord(0. * radians, 0. * radians)  # point on the equator
-    eq2 = coord.CelestialCoord(1. * radians, 0. * radians)  # 1 radian along equator
-    eq3 = coord.CelestialCoord(pi * radians, 0. * radians)  # antipode of eq1
-    north_pole = coord.CelestialCoord(0. * radians, pi/2. * radians)  # north pole
-    south_pole = coord.CelestialCoord(0. * radians, -pi/2. * radians) # south pole
+    eq1 = coord.CelestialCoord(0 * radians, 0 * radians)  # point on the equator
+    eq2 = coord.CelestialCoord(1 * radians, 0 * radians)  # 1 radian along equator
+    eq3 = coord.CelestialCoord(pi * radians, 0 * radians)  # antipode of eq1
+    north_pole = coord.CelestialCoord(0 * radians, pi/2 * radians)  # north pole
+    south_pole = coord.CelestialCoord(0 * radians, -pi/2 * radians) # south pole
 
-    np.testing.assert_almost_equal(eq1.distanceTo(eq2).rad, 1., decimal=12)
-    np.testing.assert_almost_equal(eq2.distanceTo(eq1).rad, 1., decimal=12)
+    np.testing.assert_almost_equal(eq1.distanceTo(eq2).rad, 1, decimal=12)
+    np.testing.assert_almost_equal(eq2.distanceTo(eq1).rad, 1, decimal=12)
     np.testing.assert_almost_equal(eq1.distanceTo(eq3).rad, pi, decimal=12)
-    np.testing.assert_almost_equal(eq2.distanceTo(eq3).rad, pi-1., decimal=12)
+    np.testing.assert_almost_equal(eq2.distanceTo(eq3).rad, pi-1, decimal=12)
 
     np.testing.assert_almost_equal(north_pole.distanceTo(south_pole).rad, pi, decimal=12)
 
-    np.testing.assert_almost_equal(eq1.distanceTo(north_pole).rad, pi/2., decimal=12)
-    np.testing.assert_almost_equal(eq2.distanceTo(north_pole).rad, pi/2., decimal=12)
-    np.testing.assert_almost_equal(eq3.distanceTo(north_pole).rad, pi/2., decimal=12)
-    np.testing.assert_almost_equal(eq1.distanceTo(south_pole).rad, pi/2., decimal=12)
-    np.testing.assert_almost_equal(eq2.distanceTo(south_pole).rad, pi/2., decimal=12)
-    np.testing.assert_almost_equal(eq3.distanceTo(south_pole).rad, pi/2., decimal=12)
+    np.testing.assert_almost_equal(eq1.distanceTo(north_pole).rad, pi/2, decimal=12)
+    np.testing.assert_almost_equal(eq2.distanceTo(north_pole).rad, pi/2, decimal=12)
+    np.testing.assert_almost_equal(eq3.distanceTo(north_pole).rad, pi/2, decimal=12)
+    np.testing.assert_almost_equal(eq1.distanceTo(south_pole).rad, pi/2, decimal=12)
+    np.testing.assert_almost_equal(eq2.distanceTo(south_pole).rad, pi/2, decimal=12)
+    np.testing.assert_almost_equal(eq3.distanceTo(south_pole).rad, pi/2, decimal=12)
 
     # Some random point
     c1 = coord.CelestialCoord(0.234 * radians, 0.342 * radians)
@@ -108,27 +108,22 @@ def test_distance():
     c7 = coord.CelestialCoord(c1.ra, c1.dec + 1.9e-9 * radians)
     c8 = coord.CelestialCoord(c1.ra + 2.3e-9 * radians, c1.dec + 1.2e-9 * radians)
 
-    # Note that the standard formula gets these wrong.  d comes back as 0.
+    # Note that the standard formula gets these wrong.  d is 0.0
     d = arccos(sin(c1.dec) * sin(c6.dec) + cos(c1.dec) * cos(c6.dec) * cos(c1.ra-c6.ra))
-    print('d(c6) = ',1.7e-9 * cos(0.342), c1.distanceTo(c6), d)
+    print('d(c6) = ',1.7e-9 * cos(c1.dec), c1.distanceTo(c6), d)
     d = arccos(sin(c1.dec) * sin(c7.dec) + cos(c1.dec) * cos(c7.dec) * cos(c1.ra-c7.ra))
     print('d(c7) = ',1.9e-9, c1.distanceTo(c7), d)
     d = arccos(sin(c1.dec) * sin(c8.dec) + cos(c1.dec) * cos(c8.dec) * cos(c1.ra-c8.ra))
-    true_d = sqrt( (2.3e-9 * cos(0.342))**2 + 1.2e-9**2)
+    true_d = sqrt( (2.3e-9 * cos(c1.dec))**2 + 1.2e-9**2)
     print('d(c7) = ',true_d, c1.distanceTo(c8), d)
-    np.testing.assert_allclose(c1.distanceTo(c6).rad, 1.7e-9 * c1.dec.cos(), rtol=1.e-7)
+    np.testing.assert_allclose(c1.distanceTo(c6).rad, 1.7e-9 * cos(c1.dec), rtol=1.e-7)
     np.testing.assert_allclose(c1.distanceTo(c7).rad, 1.9e-9, rtol=1.e-7)
     np.testing.assert_allclose(c1.distanceTo(c8).rad, true_d, rtol=1.e-7)
 
     # Near antipodes, the formula we usually use becomes somewhat inaccurate.
     # Check a variety of antipodes.
-    eq1 = coord.CelestialCoord(0. * radians, 0. * radians)
-    eq2 = coord.CelestialCoord(1. * radians, 0. * radians)
-    eq3 = coord.CelestialCoord(pi * radians, 0. * radians)
-    north_pole = coord.CelestialCoord(0. * radians, pi/2. * radians)
-    south_pole = coord.CelestialCoord(0. * radians, -pi/2. * radians)
     for c in [c1, c2, c3, c4, c5, c6, c7, c8, eq1, eq2, eq3, north_pole, south_pole]:
-        antipode = coord.CelestialCoord(c.ra + pi * radians, -c.dec)
+        antipode = coord.CelestialCoord(c.ra + pi*radians, -c.dec)
         np.testing.assert_almost_equal(c.distanceTo(antipode).rad, pi, decimal=12)
         np.testing.assert_almost_equal(antipode.distanceTo(c).rad, pi, decimal=12)
 
@@ -195,7 +190,7 @@ def test_lambert_projection():
     # A = 1/2 abs( (x2-x1)*(y3-y1) - (x3-x1)*(y2-y1) )
     area = 0.5 * abs( (uB.rad-uA.rad) * (vC.rad-vA.rad) - (uC.rad-uA.rad) * (vB.rad-vA.rad) )
     print('lambert area = ',area,E)
-    np.testing.assert_allclose(area, E, err_msg="lambert didn't preserve area")
+    np.testing.assert_allclose(area, E, rtol=1.e-8, err_msg="lambert didn't preserve area")
 
     # Check that project_rad does the same thing
     uA2, vA2 = center.project_rad(cA.ra.rad, cA.dec.rad, projection='lambert')
@@ -216,9 +211,12 @@ def test_lambert_projection():
     cosB = ((uC.rad-uB.rad)*(uA.rad-uB.rad) + (vC.rad-vB.rad)*(vA.rad-vB.rad)) / (c*a)
     cosC = ((uA.rad-uC.rad)*(uB.rad-uC.rad) + (vA.rad-vC.rad)*(vB.rad-vC.rad)) / (a*b)
 
-    print('lambert cosA = ',cosA,cos(A))
-    print('lambert cosB = ',cosB,cos(B))
-    print('lambert cosC = ',cosC,cos(C))
+    print('lambert cosA = ',cosA,cos(A)) # 0.385002890444 0.371329625008
+    print('lambert cosB = ',cosB,cos(B)) # 0.13803694316 0.102895820012
+    print('lambert cosC = ',cosC,cos(C)) # 0.860935750473 0.885364487706
+    assert cosA > cos(A) + 0.01
+    assert cosB > cos(B) + 0.03
+    assert cosC < cos(C) - 0.02
 
     # The deproject jacobian should tell us how the area changes
     dudx, dudy, dvdx, dvdy = center.jac_deproject(uA, vA, 'lambert').ravel()
