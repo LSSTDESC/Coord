@@ -38,7 +38,16 @@ from math import pi
 def test_angle():
     """Tests comparing coord.Angle to astropy.coordinates.Angle
     """
-    pass
+    # radians
+    theta_coord = 45. * coord.degrees
+    theta_astro = astropy.coordinates.Angle(pi/4., units.radian)
+
+    # degrees
+    np.testing.assert_almost_equal(theta_coord.rad, theta_astro.rad, decimal=12)
+    np.testing.assert_almost_equal(theta_coord / coord.degrees, theta_astro.degree, decimal=12)
+    np.testing.assert_almost_equal(theta_coord / coord.hours, theta_astro.hour, decimal=12)
+    np.testing.assert_almost_equal(theta_coord / coord.arcmin, theta_astro.arcminute, decimal=12)
+    np.testing.assert_almost_equal(theta_coord / coord.arcsec, theta_astro.arcsec, decimal=12)
 
 
 @timer
