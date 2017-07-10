@@ -133,7 +133,7 @@ Instructions
 
     $ git pull
     $ git checkout -b your_branch_name
-    $ git push -U origin your_branch_name
+    $ git push -u origin your_branch_name
 
 8. Look through the existing tests and pick a test that is currently unimplemented.
    There are lots of stubs of test functions that you can pick from that currently just say
