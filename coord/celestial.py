@@ -62,7 +62,7 @@ class CelestialCoord(object):
             >>> print(c.rad)
             (3.141592653589793, 0.5410520681182421)
 
-    **Sperical Geometry:**
+    **Spherical Geometry:**
 
         The basic spherical geometry operations are available to work with spherical triangles
 
