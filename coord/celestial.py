@@ -166,7 +166,7 @@ class CelestialCoord(object):
 
             x &= \\cos(dec) \\cos(ra)  \\\\
             y &= \\cos(dec) \\sin(ra)  \\\\
-            z &= \\sin(dec
+            z &= \\sin(dec)
 
         :returns: a tuple (x,y,z)
         """
@@ -184,7 +184,7 @@ class CelestialCoord(object):
 
             x &= r \\cos(dec) \\cos(ra)  \\\\
             y &= r \\cos(dec) \\sin(ra)  \\\\
-            z &= r \\sin(dec
+            z &= r \\sin(dec)
 
         where :math:`r` is arbitrary.
 
