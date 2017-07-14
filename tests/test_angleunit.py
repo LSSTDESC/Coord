@@ -52,8 +52,11 @@ def test_init():
 def test_builtin_units():
     """Check the built-in AngleUnits
     """
-    pass
-
+    angle_rad = coord.AngleUnit(pi)
+    assert angle_rad.value == 180.*coord.degrees.value
+    assert angle_rad.value == 12.*coord.hours.value
+    assert angle_rad.value ==  180.* 60.* coord.arcmin.value
+    assert angle_rad.value == 180. *  3600 * coord.arcsec.value
 
 @timer
 def test_invalid():
