@@ -138,6 +138,24 @@ def test_distance():
 def test_xyz():
     """Test get_xyz and from_xyz functions
     """
+    # Set up test coordinates
+    tra = 12.0 * coord.hours
+    tdec = 31.0 * coord.degrees
+    tx = tdec.cos() * tra.cos()
+    ty = tdec.cos() * tra.sin()
+    tz = tdec.sin()
+    
+    # Check get_xyz by comparing to true values
+    c1 = coord.CelestialCoord(ra=tra, dec=tdec)
+    np.testing.assert_almost_equal(c1.get_xyz(), (tx, ty, tz), decimal=12)
+    
+    # Check ra and dec when setting coordinates with from_xyz
+    c2 = coord.CelestialCoord.from_xyz(tx, ty, tz)
+    np.testing.assert_almost_equal(c2.ra.rad, tra.rad, decimal=12, err_msg="RA from (x,y,z) not equal to true RA")
+    np.testing.assert_almost_equal(c2.dec.rad, tdec.rad, decimal=12, err_msg="DEC from (x,y,z) not equal to true DEC")
+    
+    # Check that the x, y, z is consistent
+    np.testing.assert_almost_equal(c2.get_xyz(), (tx, ty, tz), decimal=12, err_msg="Different (x, y, z) coordinates output than input.")
 
 
 @timer
