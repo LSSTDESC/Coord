@@ -54,8 +54,23 @@ def test_angle():
 def test_basic():
     """Basic tests of CelestialCoord construction and corresponding SkyCoord construction.
     """
-    pass
 
+    t0 = time.time()
+    c1 = coord.CelestialCoord(0.234 * coord.radians, 0.342 * coord.radians)
+    t1 = time.time()
+
+    a1 = astropy.coordinates.SkyCoord(0.234, 0.342, unit=units.radian,
+                                      frame=astropy.coordinates.FK5(equinox='J2000'))
+    t2 = time.time()
+
+    np.testing.assert_allclose(c1.rad, [a1.ra.rad, a1.dec.rad], rtol=1.e-5,
+                               err_msg='starting coords in coord/astropy different')
+
+    print('Compare times for CelestialCoord construction and corresponding SkyCoord construction:')
+    print('  Make CelestialCoords: t = ',t1-t0)
+    print('  Make SkyCoords: t = ',t2-t1)
+
+    
 
 @timer
 def test_distance():
