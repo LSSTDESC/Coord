@@ -183,43 +183,6 @@ def test_distance():
         eq4 = coord.CelestialCoord(delta * arcmin, 0 * radians)
         np.testing.assert_allclose(pi - eq3.distanceTo(eq4).rad, eq4.ra.rad, rtol=1.e-7)
 
-@timer
-def test_xyz():
-    """Test get_xyz and from_xyz functions
-    """
-    eq1 = coord.CelestialCoord(0. * radians, 0. * radians)  # point on the equator
-    eq2 = coord.CelestialCoord(1. * radians, 0. * radians)  # 1 radian along equator
-    eq3 = coord.CelestialCoord(pi * radians, 0. * radians) # antipode of eq1
-    north_pole = coord.CelestialCoord(0. * radians, pi/2. * radians)  # north pole
-    south_pole = coord.CelestialCoord(0. * radians, -pi/2. * radians) # south pole
-    c1 = coord.CelestialCoord(0.234 * radians, 0.342 * radians)
-    c2 = coord.CelestialCoord(0.234 * radians, -1.093 * radians)
-    c3 = coord.CelestialCoord((pi + 0.234) * radians, -0.342 * radians)
-    c4 = coord.CelestialCoord((pi + 0.234) * radians, 0.832 * radians)
-    c5 = coord.CelestialCoord(1.832 * radians, -0.723 * radians)
-
-    for c in [c1, c2, c3, c4, c5, eq1, eq2, eq3, north_pole, south_pole]:
-        x, y, z = c.get_xyz()
-        np.testing.assert_almost_equal(x, c.dec.cos() * c.ra.cos(), decimal=12)
-        np.testing.assert_almost_equal(y, c.dec.cos() * c.ra.sin(), decimal=12)
-        np.testing.assert_almost_equal(z, c.dec.sin(), decimal=12)
-
-        cc1 = coord.CelestialCoord.from_xyz(x,y,z)
-        np.testing.assert_almost_equal(cc1.ra.rad, c.ra.rad, decimal=12)
-        np.testing.assert_almost_equal(cc1.dec.rad, c.dec.rad, decimal=12)
-
-        # Works in x,y,z are scaled arbitrarily
-        cc2 = coord.CelestialCoord.from_xyz(x*17,y*17,z*17)
-        np.testing.assert_almost_equal(cc2.ra.rad, c.ra.rad, decimal=12)
-        np.testing.assert_almost_equal(cc2.dec.rad, c.dec.rad, decimal=12)
-
-        cc3 = coord.CelestialCoord.from_xyz(x*1.e-9,y*1.e-9,z*1.e-9)
-        np.testing.assert_almost_equal(cc3.ra.rad, c.ra.rad, decimal=12)
-        np.testing.assert_almost_equal(cc3.dec.rad, c.dec.rad, decimal=12)
-
-    # constructing from x,y,z = 0,0,0 is undefined.
-    np.testing.assert_raises(ValueError, coord.CelestialCoord.from_xyz, 0., 0., 0.)
-
 
 @timer
 def test_xyz():
@@ -238,11 +201,44 @@ def test_xyz():
     
     # Check ra and dec when setting coordinates with from_xyz
     c2 = coord.CelestialCoord.from_xyz(tx, ty, tz)
-    np.testing.assert_almost_equal(c2.ra.rad, tra.rad, decimal=12, err_msg="RA from (x,y,z) not equal to true RA")
-    np.testing.assert_almost_equal(c2.dec.rad, tdec.rad, decimal=12, err_msg="DEC from (x,y,z) not equal to true DEC")
+    np.testing.assert_almost_equal(c2.ra.rad, tra.rad, decimal=12,
+                                   err_msg="RA from (x,y,z) not equal to true RA")
+    np.testing.assert_almost_equal(c2.dec.rad, tdec.rad, decimal=12,
+                                   err_msg="DEC from (x,y,z) not equal to true DEC")
     
     # Check that the x, y, z is consistent
-    np.testing.assert_almost_equal(c2.get_xyz(), (tx, ty, tz), decimal=12, err_msg="Different (x, y, z) coordinates output than input.")
+    np.testing.assert_almost_equal(c2.get_xyz(), (tx, ty, tz), decimal=12,
+                                   err_msg="Different (x, y, z) coordinates output than input.")
+
+    # Check some special coordinates in case anything is funny at the poles or equator.
+    eq1 = coord.CelestialCoord(0. * radians, 0. * radians)     # points on the equator
+    eq2 = coord.CelestialCoord(0.5*pi * radians, 0. * radians)
+    eq3 = coord.CelestialCoord(pi * radians, 0. * radians)
+    eq4 = coord.CelestialCoord(1.5*pi * radians, 0. * radians)
+    north_pole = coord.CelestialCoord(0. * radians, pi/2. * radians)  # north pole
+    south_pole = coord.CelestialCoord(0. * radians, -pi/2. * radians) # south pole
+
+    for c in [c1, eq1, eq2, eq3, eq4, north_pole, south_pole]:
+        x, y, z = c.get_xyz()
+        np.testing.assert_almost_equal(x, cos(c.dec) * cos(c.ra), decimal=12)
+        np.testing.assert_almost_equal(y, cos(c.dec) * sin(c.ra), decimal=12)
+        np.testing.assert_almost_equal(z, sin(c.dec), decimal=12)
+
+        c2 = coord.CelestialCoord.from_xyz(x,y,z)
+        np.testing.assert_almost_equal(c2.ra.rad, c.ra.rad, decimal=12)
+        np.testing.assert_almost_equal(c2.dec.rad, c.dec.rad, decimal=12)
+
+        # Check that it works if x,y,z are scaled arbitrarily
+        c3 = coord.CelestialCoord.from_xyz(x*17,y*17,z*17)
+        np.testing.assert_almost_equal(c3.ra.rad, c.ra.rad, decimal=12)
+        np.testing.assert_almost_equal(c3.dec.rad, c.dec.rad, decimal=12)
+
+        c4 = coord.CelestialCoord.from_xyz(x*1.e-9,y*1.e-9,z*1.e-9)
+        np.testing.assert_almost_equal(c4.ra.rad, c.ra.rad, decimal=12)
+        np.testing.assert_almost_equal(c4.dec.rad, c.dec.rad, decimal=12)
+
+    # constructing from x,y,z = 0,0,0 is undefined.
+    np.testing.assert_raises(ValueError, coord.CelestialCoord.from_xyz, 0., 0., 0.)
 
 
 @timer
@@ -289,19 +285,19 @@ def test_angleBetween():
     s = (a+b+c)/2.
 
     # Law of cosines:
-    np.testing.assert_almost_equal(c.cos(), a.cos()*b.cos() + a.sin()*b.sin()*C.cos(), decimal=12)
-    np.testing.assert_almost_equal(a.cos(), b.cos()*c.cos() + b.sin()*c.sin()*A.cos(), decimal=12)
-    np.testing.assert_almost_equal(b.cos(), c.cos()*a.cos() + c.sin()*a.sin()*B.cos(), decimal=12)
+    np.testing.assert_almost_equal(cos(c), cos(a)*cos(b) + sin(a)*sin(b)*cos(C), decimal=12)
+    np.testing.assert_almost_equal(cos(a), cos(b)*cos(c) + sin(b)*sin(c)*cos(A), decimal=12)
+    np.testing.assert_almost_equal(cos(b), cos(c)*cos(a) + sin(c)*sin(a)*cos(B), decimal=12)
 
     # Law of sines:
-    np.testing.assert_almost_equal(A.sin() * b.sin(), B.sin() * a.sin(), decimal=12)
-    np.testing.assert_almost_equal(B.sin() * c.sin(), C.sin() * b.sin(), decimal=12)
-    np.testing.assert_almost_equal(C.sin() * a.sin(), A.sin() * c.sin(), decimal=12)
+    np.testing.assert_almost_equal(sin(A) * sin(b), sin(B) * sin(a), decimal=12)
+    np.testing.assert_almost_equal(sin(B) * sin(c), sin(C) * sin(b), decimal=12)
+    np.testing.assert_almost_equal(sin(C) * sin(a), sin(A) * sin(c), decimal=12)
 
     # Alternate law of cosines:
-    np.testing.assert_almost_equal(C.cos(), -A.cos()*B.cos() + A.sin()*B.sin()*c.cos(), decimal=12)
-    np.testing.assert_almost_equal(A.cos(), -B.cos()*C.cos() + B.sin()*C.sin()*a.cos(), decimal=12)
-    np.testing.assert_almost_equal(B.cos(), -C.cos()*A.cos() + C.sin()*A.sin()*b.cos(), decimal=12)
+    np.testing.assert_almost_equal(cos(C), -cos(A)*cos(B) + sin(A)*sin(B)*cos(c), decimal=12)
+    np.testing.assert_almost_equal(cos(A), -cos(B)*cos(C) + sin(B)*sin(C)*cos(a), decimal=12)
+    np.testing.assert_almost_equal(cos(B), -cos(C)*cos(A) + sin(C)*sin(A)*cos(b), decimal=12)
 
     # Spherical excess:
     np.testing.assert_almost_equal(cA.area(cB,cC), E, decimal=12)
@@ -859,6 +855,7 @@ if __name__ == '__main__':
     test_pickle()
     test_eq()
     test_distance()
+    test_xyz()
     test_angleBetween()
     test_gnomonic_projection()
     test_stereographic_projection()
