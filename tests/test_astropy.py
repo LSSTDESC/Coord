@@ -38,53 +38,60 @@ from math import pi
 def test_angle():
     """Tests comparing coord.Angle to astropy.coordinates.Angle
     """
-    # astropy has more ways to create an Angle, but some are quite analogous to coord.Angle.
-    a1 = astropy.coordinates.Angle(10.2345 * units.deg)
-    c1 = 10.2345 * coord.degrees
-    np.testing.assert_almost_equal(c1.rad, a1.rad, decimal=12)
+    # radians
+    theta_coord = 45. * coord.degrees
+    theta_astro = astropy.coordinates.Angle(pi/4., units.radian)
 
-    a2 = astropy.coordinates.Angle(23.09, units.arcsec)
-    c2 = coord.Angle(23.09, coord.arcsec)
-    np.testing.assert_almost_equal(c2.rad, a2.rad, decimal=12)
+    # degrees
+    np.testing.assert_almost_equal(theta_coord.rad, theta_astro.rad, decimal=12)
+    np.testing.assert_almost_equal(theta_coord / coord.degrees, theta_astro.degree, decimal=12)
+    np.testing.assert_almost_equal(theta_coord / coord.hours, theta_astro.hour, decimal=12)
+    np.testing.assert_almost_equal(theta_coord / coord.arcmin, theta_astro.arcminute, decimal=12)
+    np.testing.assert_almost_equal(theta_coord / coord.arcsec, theta_astro.arcsec, decimal=12)
 
-    a3 = astropy.coordinates.Angle(-0.17, unit='rad')
-    c3 = coord._Angle(-0.17)
-    np.testing.assert_almost_equal(c3.rad, a3.rad, decimal=12)
+    # Other constructors
+    theta_astro2 = astropy.coordinates.Angle(23.09, units.arcsec)
+    theta_coord2 = coord.Angle(23.09, coord.arcsec)
+    np.testing.assert_almost_equal(theta_coord2.rad, theta_astro2.rad, decimal=12)
+
+    theta_astro3 = astropy.coordinates.Angle(-0.17, unit='rad')
+    theta_coord3 = coord._Angle(-0.17)
+    np.testing.assert_almost_equal(theta_coord3.rad, theta_astro3.rad, decimal=12)
 
     # astropy wrapping uses a different convention than we do.  Their argument is
     # the upper end of the target range, not the center.
-    a4 = a3.wrap_at(360 * units.deg)
-    c4 = c3.wrap(180 * coord.degrees)
-    np.testing.assert_almost_equal(c4.rad, a4.rad, decimal=12)
+    theta_astro4 = theta_astro3.wrap_at(360 * units.deg)
+    theta_coord4 = theta_coord3.wrap(180 * coord.degrees)
+    np.testing.assert_almost_equal(theta_coord4.rad, theta_astro4.rad, decimal=12)
 
-    a5 = a3.wrap_at(-100 * units.deg)
-    c5 = c3.wrap(-280 * coord.degrees)
-    np.testing.assert_almost_equal(c5.rad, a5.rad, decimal=12)
+    theta_astro5 = theta_astro3.wrap_at(-100 * units.deg)
+    theta_coord5 = theta_coord3.wrap(-280 * coord.degrees)
+    np.testing.assert_almost_equal(theta_coord5.rad, theta_astro5.rad, decimal=12)
 
-    a6 = astropy.coordinates.Angle('03:34:12', unit='hourangle')
-    c6 = coord.Angle.from_hms('03:34:12')
-    np.testing.assert_almost_equal(c6.rad, a6.rad, decimal=12)
+    theta_astro6 = astropy.coordinates.Angle('03:34:12', unit='hourangle')
+    theta_coord6 = coord.Angle.from_hms('03:34:12')
+    np.testing.assert_almost_equal(theta_coord6.rad, theta_astro6.rad, decimal=12)
 
-    a7 = astropy.coordinates.Angle('03:34:12', unit='deg')
-    c7 = coord.Angle.from_dms('03:34:12')
-    np.testing.assert_almost_equal(c7.rad, a7.rad, decimal=12)
+    theta_astro7 = astropy.coordinates.Angle('03:34:12', unit='deg')
+    theta_coord7 = coord.Angle.from_dms('03:34:12')
+    np.testing.assert_almost_equal(theta_coord7.rad, theta_astro7.rad, decimal=12)
 
     # Their default arguments to to_string are different from ours, but can make them compatible.
-    print('a6.hms = ',a6.to_string(sep=':', pad=True))
-    print('c6.hms = ',c6.hms())
-    assert c6.hms() == a6.to_string(sep=':', pad=True)
+    print('theta_astro6.hms = ',theta_astro6.to_string(sep=':', pad=True))
+    print('theta_coord6.hms = ',theta_coord6.hms())
+    assert theta_coord6.hms() == theta_astro6.to_string(sep=':', pad=True)
 
-    print('a7.dms = ',a7.to_string(sep=':', pad=True))
-    print('c7.dms = ',c7.dms())
-    assert c7.dms() == a7.to_string(sep=':', pad=True)
+    print('theta_astro7.dms = ',theta_astro7.to_string(sep=':', pad=True))
+    print('theta_coord7.dms = ',theta_coord7.dms())
+    assert theta_coord7.dms() == theta_astro7.to_string(sep=':', pad=True)
 
-    print('a6.hms = ',a6.to_string())
-    print('c6.hms = ',c6.hms(sep='hms', pad=False))
-    assert c6.hms(sep='hms', pad=False) == a6.to_string()
+    print('theta_astro6.hms = ',theta_astro6.to_string())
+    print('theta_coord6.hms = ',theta_coord6.hms(sep='hms', pad=False))
+    assert theta_coord6.hms(sep='hms', pad=False) == theta_astro6.to_string()
 
-    print('a7.hms = ',a7.to_string())
-    print('c7.hms = ',c7.dms(sep='dms', pad=False))
-    assert c7.dms(sep='dms', pad=False) == a7.to_string()
+    print('theta_astro7.hms = ',theta_astro7.to_string())
+    print('theta_coord7.hms = ',theta_coord7.dms(sep='dms', pad=False))
+    assert theta_coord7.dms(sep='dms', pad=False) == theta_astro7.to_string()
 
 
 @timer
