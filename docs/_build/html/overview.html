@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Features &#8212; Coord 1.0 documentation</title>
+    <title>Features &#8212; Coord 1.1 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.0',
+        VERSION:     '1.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="index.html" title="Overview"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Coord 1.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Coord 1.1 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -160,15 +160,24 @@ $ cd ..
 <div class="section" id="installing-coord">
 <h2>Installing Coord<a class="headerlink" href="#installing-coord" title="Permalink to this headline">¶</a></h2>
 <p>Once you have done one of the above (or not if you already have libffi installed), you can
-install Coord in the usual way with:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ python setup.py install --prefix={prefix}
+install Coord with pip:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install LSSTDESC.Coord --user
 </pre></div>
 </div>
 <p>or if you have root access, you might prefer:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ sudo pip install LSSTDESC.Coord
+</pre></div>
+</div>
+<p>or possibly with neither <code class="docutils literal"><span class="pre">sudo</span></code> nor <code class="docutils literal"><span class="pre">--user</span></code> if your Python distro is in a writable directory.</p>
+<p>If you prefer to download or clone the repo and install manually, you can install with
+setup.py using one of the usual variants:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ python setup.py install --prefix={prefix}
+</pre></div>
+</div>
+<p>or:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ sudo python setup.py install
 </pre></div>
 </div>
-<p>Or any of the other usual variants of this command as you prefer.</p>
 </div>
 </div>
 
@@ -190,7 +199,7 @@ install Coord in the usual way with:</p>
         <li class="right" >
           <a href="index.html" title="Overview"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Coord 1.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Coord 1.1 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
