@@ -84,6 +84,7 @@ class Angle(object):
 
         Allowed arithmetic with Angles include the following.
         In the list below,
+
             - ``x`` is an arbitrary `float` value
             - ``unit1`` and ``unit2`` are arbitrary `coord.AngleUnit` instances
             - ``theta1`` and ``theta2`` are arbitrary `coord.Angle` instances
