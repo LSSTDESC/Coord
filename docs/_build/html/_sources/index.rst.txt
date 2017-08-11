@@ -10,6 +10,7 @@ Overview
 .. toctree::
 
     overview
+    deschool
 
 Code Documentation
 ==================
