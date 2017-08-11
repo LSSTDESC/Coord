@@ -1,0 +1,28 @@
+
+Checklist for making a new release:
+
+- Run test suite on as many machines as possible.
+- Update the version number to the new M.m.r value in coord/_version.py
+- Read over the CHANGELOG.rst file and edit as needed.  [This doesn't exist yet, but it would be a
+  good idea to add one for releases after 1.0.]
+- Update any docs that might need updating.
+- Make sure the current code is installed:  e.g.
+    python setup.py install --prefix=~
+- Generate current docs
+    update_docs
+- Commit and push new docs.  (Assuming there were any changes from the last time this was done.)
+    git add build
+    git commit -m "update docs"
+- Tag the current version
+    git tag -a vM.m.r -m "vM.m.r"
+    git push --tags
+- Make the corresponding release branch in case we need to do any bug fixes.  (Assuming this is
+  a new minor release, not just a revision.)
+    git checkout -b releases/M.m
+    git push -u origin releases/M.m
+- Get the current version onto pip.  (Maybe check again that the current version is installed!)
+    python setup.py sdist upload
+    pip install -UI LSSTDESC.Coord --user  (To test that it worked)
+- Back in master, update version number to M.(m+1) (i.e. no .r)
+- Move the CHANGELOG information into a History section of the docs [don't have that yet either]
+  and clear out the current CHANGELOG.rst file for the next version.
