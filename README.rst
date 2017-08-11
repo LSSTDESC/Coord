@@ -77,12 +77,21 @@ Installing Coord
 ----------------
 
 Once you have done one of the above (or not if you already have libffi installed), you can
-install Coord in the usual way with::
+install Coord with pip::
 
-    $ python setup.py install --prefix={prefix}
+    $ pip install LSSTDESC.Coord --user
 
 or if you have root access, you might prefer::
 
-    $ sudo python setup.py install
+    $ sudo pip install LSSTDESC.Coord
 
-Or any of the other usual variants of this command as you prefer.
+or possibly with neither ``sudo`` nor ``--user`` if your Python distro is in a writable directory.
+
+If you prefer to download or clone the repo and install manually, you can install with
+setup.py using one of the usual variants::
+
+    $ python setup.py install --prefix={prefix}
+
+or::
+
+    $ sudo python setup.py install
