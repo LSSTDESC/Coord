@@ -1,3 +1,6 @@
 include *.rst
-include tests/*.py
-recursive-include coord *.h *.py *.so
+include requirements.txt
+recursive-include coord *.py *.h *.so
+recursive-include include *.h
+recursive-include src *.cpp
+recursive-include tests *.py

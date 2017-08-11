@@ -21,7 +21,7 @@ with open('README.rst') as file:
 
 # We need a symlink to include in the Coord directory.  If it's not there, make it.
 try:
-    os.symlink(os.path.join('..','include'), os.path.join('coord','include'))
+    os.symlink(os.path.join('..','include/'), os.path.join('coord','include'))
 except OSError:
     pass
 
