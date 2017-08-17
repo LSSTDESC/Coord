@@ -11,7 +11,7 @@ Checklist for making a new release:
 - Generate current docs
     update_docs
 - Commit and push new docs.  (Assuming there were any changes from the last time this was done.)
-    git add build
+    git add docs/_build
     git commit -m "update docs"
 - Tag the current version
     git tag -a vM.m.r -m "vM.m.r"
