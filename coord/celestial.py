@@ -198,11 +198,15 @@ class CelestialCoord(object):
         if norm == 0.:
             raise ValueError("CelestialCoord for position (0,0,0) is undefined.")
         ret = CelestialCoord.__new__(CelestialCoord)
-        ret._ra = (np.arctan2(y, x) * radians).wrap(_Angle(math.pi))
-        ret._dec = np.arctan2(z, np.sqrt(x*x + y*y)) * radians
-        ret._x = x/norm
-        ret._y = y/norm
-        ret._z = z/norm
+        ret._x = x / norm
+        ret._y = y / norm
+        ret._z = z / norm
+        ret._sindec = ret._z
+        ret._cosdec = np.sqrt(ret._x*ret._x + ret._y*ret._y)
+        ret._sinra = ret._y / ret._cosdec
+        ret._cosra = ret._x / ret._cosdec
+        ret._ra = (np.arctan2(ret._sinra, ret._cosra) * radians).wrap(_Angle(math.pi))
+        ret._dec = np.arctan2(ret._sindec, ret._cosdec) * radians
         return ret
 
     def normal(self):

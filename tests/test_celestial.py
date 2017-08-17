@@ -29,6 +29,20 @@ from helper_util import *
 from numpy import pi, sin, cos, tan, arccos, sqrt
 from coord import radians, degrees, hours, arcmin, arcsec
 
+def check_aux(c):
+    """A helper function to check that the aux values are set correctly (or get set correctly
+    after calling set_aux()).
+    """
+    c._set_aux()
+    np.testing.assert_almost_equal(c._sindec, c._dec.sin(), decimal=12)
+    np.testing.assert_almost_equal(c._cosdec, c._dec.cos(), decimal=12)
+    np.testing.assert_almost_equal(c._sinra, c._ra.sin(), decimal=12)
+    np.testing.assert_almost_equal(c._cosra, c._ra.cos(), decimal=12)
+    np.testing.assert_almost_equal(c._x, c._cosdec * c._cosra, decimal=12)
+    np.testing.assert_almost_equal(c._y, c._cosdec * c._sinra, decimal=12)
+    np.testing.assert_almost_equal(c._z, c._sindec, decimal=12)
+
+
 @timer
 def test_init():
     """Basic tests of CelestialCoord construction.
@@ -63,6 +77,12 @@ def test_init():
     np.testing.assert_almost_equal(c2.distanceTo(c3).rad, 0., decimal=12)
     np.testing.assert_almost_equal(c2.distanceTo(c4).rad, 0., decimal=12)
 
+    # Check that the set_aux function properly sets some auxiliary values
+    check_aux(c1)
+    check_aux(c2)
+    check_aux(c3)
+    check_aux(c4)
+
     # Check picklability
     do_pickle(c1)
     do_pickle(c2)
@@ -74,18 +94,6 @@ def test_init():
     np.testing.assert_raises(TypeError, coord.CelestialCoord, 11 * hours, -37)
     np.testing.assert_raises(TypeError, coord.CelestialCoord, 11, -37 * degrees)
     np.testing.assert_raises(ValueError, coord.CelestialCoord, 11. * hours, 99 * degrees)
-
-
-@timer
-def test_invalid():
-    """Check some invalid initializations of CelestialCoord
-    """
-
-
-@timer
-def test_pickle():
-    """Check picklability of CelestialCoords
-    """
 
 
 @timer
@@ -205,7 +213,11 @@ def test_xyz():
                                    err_msg="RA from (x,y,z) not equal to true RA")
     np.testing.assert_almost_equal(c2.dec.rad, tdec.rad, decimal=12,
                                    err_msg="DEC from (x,y,z) not equal to true DEC")
-    
+
+    # Check that aux values are set up correctly.  The from_xyz function sets these itself,
+    # so this is a non-trivial test.
+    check_aux(c2)
+
     # Check that the x, y, z is consistent
     np.testing.assert_almost_equal(c2.get_xyz(), (tx, ty, tz), decimal=12,
                                    err_msg="Different (x, y, z) coordinates output than input.")
@@ -227,15 +239,18 @@ def test_xyz():
         c2 = coord.CelestialCoord.from_xyz(x,y,z)
         np.testing.assert_almost_equal(c2.ra.rad, c.ra.rad, decimal=12)
         np.testing.assert_almost_equal(c2.dec.rad, c.dec.rad, decimal=12)
+        check_aux(c2)
 
         # Check that it works if x,y,z are scaled arbitrarily
         c3 = coord.CelestialCoord.from_xyz(x*17,y*17,z*17)
         np.testing.assert_almost_equal(c3.ra.rad, c.ra.rad, decimal=12)
         np.testing.assert_almost_equal(c3.dec.rad, c.dec.rad, decimal=12)
+        check_aux(c3)
 
         c4 = coord.CelestialCoord.from_xyz(x*1.e-9,y*1.e-9,z*1.e-9)
         np.testing.assert_almost_equal(c4.ra.rad, c.ra.rad, decimal=12)
         np.testing.assert_almost_equal(c4.dec.rad, c.dec.rad, decimal=12)
+        check_aux(c4)
 
     # constructing from x,y,z = 0,0,0 is undefined.
     np.testing.assert_raises(ValueError, coord.CelestialCoord.from_xyz, 0., 0., 0.)
@@ -348,6 +363,7 @@ def test_gnomonic_projection():
     np.testing.assert_allclose(cA2.rad, cA.rad, err_msg="deproject didn't return to orig")
     cA3 = center.deproject_rad(uA.rad, vA.rad, projection='gnomonic')
     np.testing.assert_allclose(cA3, cA.rad, err_msg="deproject_rad not equivalent")
+    check_aux(cA2)
 
     # The angles are not preserved
     a = sqrt( (uB.rad-uC.rad)**2 + (vB.rad-vC.rad)**2 )
@@ -381,6 +397,7 @@ def test_gnomonic_projection():
     np.testing.assert_allclose(c2.rad, center.rad, err_msg='(0,0) did not deproject to center')
     np.testing.assert_allclose(np.linalg.det(center.jac_deproject(u, v, 'gnomonic')), 1.,
                                err_msg='determinant of jac_deproject matrix != 1 at center')
+    check_aux(c2)
 
     # Finally, check the claim that great circles turn into straight lines.
     # Meridians are great circles.  Also symmetric points across the equator.
@@ -491,6 +508,7 @@ def test_stereographic_projection():
     np.testing.assert_allclose(cA2.rad, cA.rad, err_msg="deproject didn't return to orig")
     cA3 = center.deproject_rad(uA.rad, vA.rad, projection='stereographic')
     np.testing.assert_allclose(cA3, cA.rad, err_msg="deproject_rad not equivalent")
+    check_aux(cA2)
 
     # The area is not preserved
     area = 0.5 * abs( (uB.rad-uA.rad) * (vC.rad-vA.rad) - (uC.rad-uA.rad) * (vB.rad-vA.rad) )
@@ -512,6 +530,7 @@ def test_stereographic_projection():
     np.testing.assert_allclose(c2.rad, center.rad, err_msg='(0,0) did not deproject to center')
     np.testing.assert_allclose(np.linalg.det(center.jac_deproject(u, v, 'stereographic')), 1.,
                                err_msg='determinant of jac_deproject matrix != 1 at center')
+    check_aux(c2)
 
 
 @timer
@@ -555,6 +574,7 @@ def test_lambert_projection():
     np.testing.assert_allclose(cA2.rad, cA.rad, err_msg="deproject didn't return to orig")
     cA3 = center.deproject_rad(uA.rad, vA.rad, projection='lambert')
     np.testing.assert_allclose(cA3, cA.rad, err_msg="deproject_rad not equivalent")
+    check_aux(cA2)
 
     # The angles are not preserved
     a = sqrt( (uB.rad-uC.rad)**2 + (vB.rad-vC.rad)**2 )
@@ -587,6 +607,7 @@ def test_lambert_projection():
     np.testing.assert_allclose(c2.rad, center.rad, err_msg='(0,0) did not deproject to center')
     np.testing.assert_allclose(np.linalg.det(center.jac_deproject(u, v, 'lambert')), 1.,
                                err_msg='determinant of jac_deproject matrix != 1 at center')
+    check_aux(c2)
 
 
 @timer
@@ -634,6 +655,7 @@ def test_postel_projection():
     np.testing.assert_allclose(cA2.rad, cA.rad, err_msg="deproject didn't return to orig")
     cA3 = center.deproject_rad(uA.rad, vA.rad, projection='postel')
     np.testing.assert_allclose(cA3, cA.rad, err_msg="deproject_rad not equivalent")
+    check_aux(cA2)
 
     # The angles are not preserved
     a = sqrt( (uB.rad-uC.rad)**2 + (vB.rad-vC.rad)**2 )
@@ -667,6 +689,7 @@ def test_postel_projection():
     np.testing.assert_allclose(c2.rad, center.rad, err_msg='(0,0) did not deproject to center')
     np.testing.assert_allclose(np.linalg.det(center.jac_deproject(u, v, 'postel')), 1.,
                                err_msg='determinant of jac_deproject matrix != 1 at center')
+    check_aux(c2)
 
 
 @timer
@@ -683,10 +706,14 @@ def test_precess():
     c3 = c2.precess(1900., 2000.)
     np.testing.assert_almost_equal(c3.ra.rad, orig.ra.rad, decimal=10)
     np.testing.assert_almost_equal(c3.dec.rad, orig.dec.rad, decimal=10)
+    check_aux(c1)
+    check_aux(c2)
+    check_aux(c3)
 
     # The no op is exact.
     c4 = orig.precess(2000., 2000.)
     assert c4 == orig
+    check_aux(c4)
 
     # I found a website that does precession calculations, so check that we are
     # consistent with them.
@@ -724,6 +751,7 @@ def test_galactic():
     # Go back from galactic coords to CelestialCoord
     center2 = coord.CelestialCoord.from_galactic(el,b)
     np.testing.assert_allclose(center2.rad, center.rad)
+    check_aux(center2)
 
     # The north pole is at 12h:51.4m, 27.13d again with more precise values from the above paper.
     north = coord.CelestialCoord(
@@ -734,6 +762,7 @@ def test_galactic():
     np.testing.assert_allclose(b.rad, pi/2.)
     north2 = coord.CelestialCoord.from_galactic(el,b)
     np.testing.assert_allclose(north2.rad, north.rad)
+    check_aux(north2)
 
     south = coord.CelestialCoord(
         coord.Angle.from_hms('00:51:26.27549'),
@@ -743,6 +772,7 @@ def test_galactic():
     np.testing.assert_allclose(b.rad, -pi/2.)
     south2 = coord.CelestialCoord.from_galactic(el,b)
     np.testing.assert_allclose(south2.rad, south.rad)
+    check_aux(south2)
 
     anticenter = coord.CelestialCoord(
         coord.Angle.from_hms('05:45:37.1991'),
@@ -753,6 +783,7 @@ def test_galactic():
     np.testing.assert_almost_equal(b.rad, 0., decimal=8)
     anticenter2 = coord.CelestialCoord.from_galactic(el,b)
     np.testing.assert_allclose(anticenter2.rad, anticenter.rad)
+    check_aux(anticenter2)
 
 
 @timer
@@ -771,6 +802,7 @@ def test_ecliptic():
     north_pole2 = coord.CelestialCoord.from_ecliptic(el, b)
     np.testing.assert_almost_equal(north_pole2.ra.rad, north_pole.ra.rad, decimal=8)
     np.testing.assert_almost_equal(north_pole2.dec.rad, north_pole.dec.rad, decimal=8)
+    check_aux(north_pole2)
 
     south_pole = coord.CelestialCoord(
         coord.Angle.from_hms('06:00:00.00'),
@@ -780,6 +812,7 @@ def test_ecliptic():
     south_pole2 = coord.CelestialCoord.from_ecliptic(el, b)
     np.testing.assert_almost_equal(south_pole2.ra.rad, south_pole.ra.rad, decimal=8)
     np.testing.assert_almost_equal(south_pole2.dec.rad, south_pole.dec.rad, decimal=8)
+    check_aux(south_pole2)
 
     # Also confirm that positions that should be the same in equatorial and ecliptic coordinates are
     # actually the same:
@@ -790,6 +823,7 @@ def test_ecliptic():
     vernal2 = coord.CelestialCoord.from_ecliptic(el,b)
     np.testing.assert_almost_equal(vernal2.ra.rad, vernal.ra.rad, decimal=8)
     np.testing.assert_almost_equal(vernal2.dec.rad, vernal.dec.rad, decimal=8)
+    check_aux(vernal2)
 
     autumnal = coord.CelestialCoord(pi*radians, 0.*radians)
     el, b = autumnal.ecliptic()
@@ -798,6 +832,7 @@ def test_ecliptic():
     autumnal2 = coord.CelestialCoord.from_ecliptic(el,b)
     np.testing.assert_almost_equal(autumnal2.ra.rad, autumnal.ra.rad, decimal=8)
     np.testing.assert_almost_equal(autumnal2.dec.rad, autumnal.dec.rad, decimal=8)
+    check_aux(autumnal2)
 
 
 @timer
@@ -822,6 +857,7 @@ def test_ecliptic_date():
     vernal2 = coord.CelestialCoord.from_ecliptic(el_rel, b_rel, date=vernal_eq_date)
     np.testing.assert_almost_equal(vernal2.ra.wrap().rad, vernal.ra.rad, decimal=8)
     np.testing.assert_almost_equal(vernal2.dec.rad, vernal.dec.rad, decimal=8)
+    check_aux(vernal2)
 
     # Now do the autumnal equinox: should have (el, b) = (pi, 0) = (el_rel, b_rel) when we look at
     # the time of the vernal equinox.
@@ -835,6 +871,7 @@ def test_ecliptic_date():
     np.testing.assert_almost_equal(autumnal2.ra.wrap(pi*radians).rad,
                                    autumnal.ra.wrap(pi*radians).rad, decimal=8)
     np.testing.assert_almost_equal(autumnal2.dec.rad, autumnal.dec.rad, decimal=8)
+    check_aux(autumnal2)
 
     # And check that if it's the date of the autumnal equinox (sun at (180, 0)) but we're looking at
     # the position of the vernal equinox (0, 0), then (el_rel, b_rel) = (-180, 0)
