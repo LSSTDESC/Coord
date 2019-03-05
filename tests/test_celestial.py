@@ -257,6 +257,61 @@ def test_xyz():
 
 
 @timer
+def test_xyz_array():
+    """Test xyz_to_radec and radec_to_xyz
+    """
+    # Set up a list of ra, dec values to check.
+    # Note: These include the same special locations used above in test_xyz.
+
+    ra_ar = np.array([0.123, 0.55, 0., 0.5*pi, pi, 1.5*pi, 0., 0.])
+    dec_ar = np.array([-0.5, 0.88, 0., 0., 0., 0., pi/2., -pi/2])
+
+    x_ar = np.cos(dec_ar) * np.cos(ra_ar)
+    y_ar = np.cos(dec_ar) * np.sin(ra_ar)
+    z_ar = np.sin(dec_ar)
+
+    # Check converting singly:
+    for (x,y,z,ra,dec) in zip(x_ar, y_ar, z_ar, ra_ar, dec_ar):
+        x1, y1, z1 = coord.CelestialCoord(ra*radians, dec*radians).get_xyz()
+        assert np.isclose(x1, x)
+        assert np.isclose(y1, y)
+        assert np.isclose(z1, z)
+
+        x2, y2, z2 = coord.CelestialCoord.radec_to_xyz(ra, dec)
+        assert np.isclose(x2, x)
+        assert np.isclose(y2, y)
+        assert np.isclose(z2, z)
+
+        x3, y3, z3 = coord.CelestialCoord.radec_to_xyz(ra, dec, r=17)
+        assert np.isclose(x3, x*17)
+        assert np.isclose(y3, y*17)
+        assert np.isclose(z3, z*17)
+
+        c = coord.CelestialCoord.from_xyz(x, y, z)
+        ra1, dec1 = c.ra.rad, c.dec.rad
+        assert np.isclose(ra1, ra)
+        assert np.isclose(dec1, dec)
+
+        ra2, dec2 = coord.CelestialCoord.xyz_to_radec(x, y, z)
+        if ra2 < 0.: ra2 += 2.*pi
+        assert np.isclose(ra2, ra)
+        assert np.isclose(dec2, dec)
+
+    # Now check converting them all at once
+    x4, y4, z4 = coord.CelestialCoord.radec_to_xyz(ra_ar, dec_ar)
+    np.testing.assert_allclose(x4, x_ar, rtol=1.e-8, atol=1.e-12)
+    np.testing.assert_allclose(y4, y_ar, rtol=1.e-8, atol=1.e-12)
+    np.testing.assert_allclose(z4, z_ar, rtol=1.e-8, atol=1.e-12)
+
+    ra3, dec3 = coord.CelestialCoord.xyz_to_radec(x_ar, y_ar, z_ar)
+    # check sin, cor, rather than angle, so wrap doesn't matter.
+    np.testing.assert_allclose(np.cos(ra3), np.cos(ra_ar), rtol=1.e-8, atol=1.e-12)
+    np.testing.assert_allclose(np.sin(ra3), np.sin(ra_ar), rtol=1.e-8, atol=1.e-12)
+    np.testing.assert_allclose(np.cos(dec3), np.cos(dec_ar), rtol=1.e-8, atol=1.e-12)
+    np.testing.assert_allclose(np.sin(dec3), np.sin(dec_ar), rtol=1.e-8, atol=1.e-12)
+
+
+@timer
 def test_angleBetween():
     """Test calculations of angles between positions on the sphere.
     """
@@ -888,11 +943,10 @@ def test_ecliptic_date():
 
 if __name__ == '__main__':
     test_init()
-    test_invalid()
-    test_pickle()
     test_eq()
     test_distance()
     test_xyz()
+    test_xyz_array()
     test_angleBetween()
     test_gnomonic_projection()
     test_stereographic_projection()

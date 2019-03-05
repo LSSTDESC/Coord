@@ -209,6 +209,71 @@ class CelestialCoord(object):
         ret._dec = np.arctan2(ret._sindec, ret._cosdec) * radians
         return ret
 
+    @staticmethod
+    def radec_to_xyz(ra, dec, r=1.):
+        """Convert ra, dec (in radians) to 3D x,y,z coordinates on the unit sphere.
+
+        The connection between (ra,dec) and (x,y,z) are given by the following formulae:
+        .. math::
+
+            x &= r \\cos(dec) \\cos(ra)  \\\\
+            y &= r \\cos(dec) \\sin(ra)  \\\\
+            z &= r \\sin(dec)
+
+        For a single ra,dec pair, the following are equivalent:
+
+            >>> x,y,z = CelestialCoord.radec_to_xyz(ra, dec)
+
+            >>> x,y,z = CelestialCoord(ra * radians, dec * radians).get_xyz()
+
+        However, the advantage of this function is that the input values may be numpy
+        arrays, in which case, the return values will also be numpy arrays.
+
+        :param ra:      The right ascension(s) in radians. May be a numpy array.
+        :param dec:     The declination(s) in radians. May be a numpy array.
+        :param r:       The distance(s) from Earth (default 1.). May be a numpy array.
+
+        :returns: x, y, z as a tuple.
+        """
+        import numpy
+        cosdec = numpy.cos(dec)
+        x = cosdec * numpy.cos(ra) * r
+        y = cosdec * numpy.sin(ra) * r
+        z = numpy.sin(dec) * r
+        return x,y,z
+
+    @staticmethod
+    def xyz_to_radec(x, y, z):
+        """Convert 3D x,y,z coordinates to ra, dec (in radians).
+
+        The connection between (ra,dec) and (x,y,z) are given by the following formulae:
+        .. math::
+
+            x &= r \\cos(dec) \\cos(ra)  \\\\
+            y &= r \\cos(dec) \\sin(ra)  \\\\
+            z &= r \\sin(dec)
+
+        For a single (x,y,z) position, the following are equivalent:
+
+            >>> ra, dec = CelestialCoord.xyz_to_radec(x, y, z)
+
+            >>> coord = CelestialCoord.from_xyz(x, y, z)
+            >>> ra, dec = coord.ra.rad, coord.dec.rad
+
+        However, the advantage of this function is that the input values may be numpy
+        arrays, in which case, the return values will also be numpy arrays.
+
+        :param x:       The x position(s) in 3 dimensions. May be a numpy array.
+        :param y:       The y position(s) in 3 dimensions. May be a numpy array.
+        :param z:       The z position(s) in 3 dimensions. May be a numpy array.
+
+        :returns: ra, dec as a tuple.
+        """
+        import numpy
+        ra = numpy.arctan2(y, x)
+        dec = numpy.arctan2(z, numpy.sqrt(x**2+y**2))
+        return ra,dec
+
     def normal(self):
         """Return the coordinate in the "normal" convention of having 0 <= ra < 24 hours.
 
