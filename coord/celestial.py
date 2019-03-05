@@ -220,11 +220,16 @@ class CelestialCoord(object):
             y &= r \\cos(dec) \\sin(ra)  \\\\
             z &= r \\sin(dec)
 
-        For a single ra,dec pair, the following are equivalent:
+        For a single ra,dec pair, the following are essentially equivalent:
 
-            >>> x,y,z = CelestialCoord.radec_to_xyz(ra, dec)
+            >>> ra = 12*hours/radians       # May be any angle measured
+            >>> dec = 31*degrees/radians    # in radians
 
-            >>> x,y,z = CelestialCoord(ra * radians, dec * radians).get_xyz()
+            >>> CelestialCoord.radec_to_xyz(ra, dec)
+            (-0.8571673007021123, 1.0497271911386187e-16, 0.5150380749100542)
+
+            >>> CelestialCoord(ra * radians, dec * radians).get_xyz()
+            (-0.8571673007021123, 1.0497271911386187e-16, 0.5150380749100542)
 
         However, the advantage of this function is that the input values may be numpy
         arrays, in which case, the return values will also be numpy arrays.
@@ -253,12 +258,18 @@ class CelestialCoord(object):
             y &= r \\cos(dec) \\sin(ra)  \\\\
             z &= r \\sin(dec)
 
-        For a single (x,y,z) position, the following are equivalent:
+        For a single (x,y,z) position, the following are essentially equivalent:
 
-            >>> ra, dec = CelestialCoord.xyz_to_radec(x, y, z)
+            >>> x = 0.839       # May be any any 3D location
+            >>> y = 0.123       # Not necessarily on unit sphere
+            >>> z = 0.530
 
-            >>> coord = CelestialCoord.from_xyz(x, y, z)
-            >>> ra, dec = coord.ra.rad, coord.dec.rad
+            >>> CelestialCoord.xyz_to_radec(x, y, z)
+            (0.14556615088111796, 0.5586161910485231)
+
+            >>> c = CelestialCoord.from_xyz(x, y, z)
+            >>> c.ra.rad, c.dec.rad
+            (0.145566150881118, 0.558616191048523)
 
         However, the advantage of this function is that the input values may be numpy
         arrays, in which case, the return values will also be numpy arrays.
