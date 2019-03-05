@@ -269,7 +269,7 @@ class CelestialCoord(object):
             >>> z = 0.530
 
             >>> CelestialCoord.xyz_to_radec(x, y, z)
-            (0.14556615088111796, 0.55861619104852311)
+            (0.14556615088111796, 0.558616191048523)
 
             >>> c = CelestialCoord.from_xyz(x, y, z)
             >>> c.ra.rad, c.dec.rad
