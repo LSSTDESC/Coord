@@ -252,7 +252,7 @@ class CelestialCoord(object):
         return x,y,z
 
     @staticmethod
-    def xyz_to_radec(x, y, z):
+    def xyz_to_radec(x, y, z, return_r=False):
         """Convert 3D x,y,z coordinates to ra, dec (in radians).
 
         The connection between (ra,dec) and (x,y,z) are given by the following formulae:
@@ -281,9 +281,11 @@ class CelestialCoord(object):
         :param x:       The x position(s) in 3 dimensions. May be a numpy array.
         :param y:       The y position(s) in 3 dimensions. May be a numpy array.
         :param z:       The z position(s) in 3 dimensions. May be a numpy array.
+        :param return_r: Whether to return r as well as ra, dec. (default: False)
 
-        :returns: ra, dec as a tuple.
+        :returns: ra, dec as a tuple.  Or if return_r is True, (ra, dec, r).
         """
+        xy2 = x**2 + y**2
         ra = np.arctan2(y, x)
         # Note: We don't need arctan2, since always quadrant 1 or 4.
         #       Using plain arctan is slightly faster.  About 10% for the whole function.
@@ -291,8 +293,11 @@ class CelestialCoord(object):
         #       It still gives the right answer, but we catch and ignore the warning here.
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore",category=RuntimeWarning)
-            dec = np.arctan(z/np.sqrt(x**2+y**2))
-        return ra,dec
+            dec = np.arctan(z/np.sqrt(xy2))
+        if return_r:
+            return ra, dec, np.sqrt(xy2 + z**2)
+        else:
+            return ra, dec
 
     def normal(self):
         """Return the coordinate in the "normal" convention of having 0 <= ra < 24 hours.

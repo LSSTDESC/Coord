@@ -299,6 +299,12 @@ def test_xyz_array():
         assert np.isclose(ra2, ra)
         assert np.isclose(dec2, dec)
 
+        ra3, dec3, r3 = coord.CelestialCoord.xyz_to_radec(x, y, z, return_r=True)
+        if ra3 < 0.: ra3 += 2.*pi
+        assert np.isclose(ra3, ra)
+        assert np.isclose(dec3, dec)
+        assert np.isclose(r3, (x**2+y**2+z**2)**0.5)
+
     # Now check converting them all at once
     x4, y4, z4 = coord.CelestialCoord.radec_to_xyz(ra_ar, dec_ar)
     np.testing.assert_allclose(x4, x_ar, rtol=1.e-8, atol=1.e-12)
@@ -318,6 +324,13 @@ def test_xyz_array():
     np.testing.assert_allclose(x5, x_ar * r_ar, rtol=1.e-8, atol=1.e-12)
     np.testing.assert_allclose(y5, y_ar * r_ar, rtol=1.e-8, atol=1.e-12)
     np.testing.assert_allclose(z5, z_ar * r_ar, rtol=1.e-8, atol=1.e-12)
+
+    ra5, dec5, r5 = coord.CelestialCoord.xyz_to_radec(x5, y5, z5, return_r=True)
+    np.testing.assert_allclose(np.cos(ra5), np.cos(ra_ar), rtol=1.e-8, atol=1.e-12)
+    np.testing.assert_allclose(np.sin(ra5), np.sin(ra_ar), rtol=1.e-8, atol=1.e-12)
+    np.testing.assert_allclose(np.cos(dec5), np.cos(dec_ar), rtol=1.e-8, atol=1.e-12)
+    np.testing.assert_allclose(np.sin(dec5), np.sin(dec_ar), rtol=1.e-8, atol=1.e-12)
+    np.testing.assert_allclose(r5, r_ar, rtol=1.e-8, atol=1.e-12)
 
 
 @timer
