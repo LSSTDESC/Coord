@@ -226,10 +226,10 @@ class CelestialCoord(object):
             >>> dec = 31*degrees/radians    # in radians
 
             >>> CelestialCoord.radec_to_xyz(ra, dec)
-            (-0.8571673007021123, 1.0497271911386187e-16, 0.5150380749100542)
+            (-0.85716730070211233, 1.0497271911386187e-16, 0.51503807491005416)
 
             >>> CelestialCoord(ra * radians, dec * radians).get_xyz()
-            (-0.8571673007021123, 1.0497271911386187e-16, 0.5150380749100542)
+            (-0.85716730070211233, 1.0497271911386187e-16, 0.51503807491005416)
 
         However, the advantage of this function is that the input values may be numpy
         arrays, in which case, the return values will also be numpy arrays.
@@ -265,7 +265,7 @@ class CelestialCoord(object):
             >>> z = 0.530
 
             >>> CelestialCoord.xyz_to_radec(x, y, z)
-            (0.14556615088111796, 0.5586161910485231)
+            (0.14556615088111796, 0.55861619104852311)
 
             >>> c = CelestialCoord.from_xyz(x, y, z)
             >>> c.ra.rad, c.dec.rad
