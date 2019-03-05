@@ -269,6 +269,8 @@ def test_xyz_array():
     x_ar = np.cos(dec_ar) * np.cos(ra_ar)
     y_ar = np.cos(dec_ar) * np.sin(ra_ar)
     z_ar = np.sin(dec_ar)
+    x_ar[-2:] = 0.  # Make sure these are precisely 0 to test edge case of exactly n or s pole
+    y_ar[-2:] = 0.
 
     # Check converting singly:
     for (x,y,z,ra,dec) in zip(x_ar, y_ar, z_ar, ra_ar, dec_ar):
@@ -303,12 +305,19 @@ def test_xyz_array():
     np.testing.assert_allclose(y4, y_ar, rtol=1.e-8, atol=1.e-12)
     np.testing.assert_allclose(z4, z_ar, rtol=1.e-8, atol=1.e-12)
 
-    ra3, dec3 = coord.CelestialCoord.xyz_to_radec(x_ar, y_ar, z_ar)
+    ra4, dec4 = coord.CelestialCoord.xyz_to_radec(x_ar, y_ar, z_ar)
     # check sin, cor, rather than angle, so wrap doesn't matter.
-    np.testing.assert_allclose(np.cos(ra3), np.cos(ra_ar), rtol=1.e-8, atol=1.e-12)
-    np.testing.assert_allclose(np.sin(ra3), np.sin(ra_ar), rtol=1.e-8, atol=1.e-12)
-    np.testing.assert_allclose(np.cos(dec3), np.cos(dec_ar), rtol=1.e-8, atol=1.e-12)
-    np.testing.assert_allclose(np.sin(dec3), np.sin(dec_ar), rtol=1.e-8, atol=1.e-12)
+    np.testing.assert_allclose(np.cos(ra4), np.cos(ra_ar), rtol=1.e-8, atol=1.e-12)
+    np.testing.assert_allclose(np.sin(ra4), np.sin(ra_ar), rtol=1.e-8, atol=1.e-12)
+    np.testing.assert_allclose(np.cos(dec4), np.cos(dec_ar), rtol=1.e-8, atol=1.e-12)
+    np.testing.assert_allclose(np.sin(dec4), np.sin(dec_ar), rtol=1.e-8, atol=1.e-12)
+
+    # With r values
+    r_ar = np.linspace(1,100, num=len(ra_ar))
+    x5, y5, z5 = coord.CelestialCoord.radec_to_xyz(ra_ar, dec_ar, r_ar)
+    np.testing.assert_allclose(x5, x_ar * r_ar, rtol=1.e-8, atol=1.e-12)
+    np.testing.assert_allclose(y5, y_ar * r_ar, rtol=1.e-8, atol=1.e-12)
+    np.testing.assert_allclose(z5, z_ar * r_ar, rtol=1.e-8, atol=1.e-12)
 
 
 @timer

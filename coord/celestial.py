@@ -22,6 +22,7 @@ from __future__ import print_function
 import numpy as np
 import math
 import datetime
+import warnings
 
 from .angle import Angle, _Angle
 from .angleunit import radians, degrees, hours, arcsec
@@ -203,8 +204,12 @@ class CelestialCoord(object):
         ret._z = z / norm
         ret._sindec = ret._z
         ret._cosdec = np.sqrt(ret._x*ret._x + ret._y*ret._y)
-        ret._sinra = ret._y / ret._cosdec
-        ret._cosra = ret._x / ret._cosdec
+        if ret._cosdec == 0.:
+            ret._sinra = 0.
+            ret._cosra = 1.
+        else:
+            ret._sinra = ret._y / ret._cosdec
+            ret._cosra = ret._x / ret._cosdec
         ret._ra = (np.arctan2(ret._sinra, ret._cosra) * radians).wrap(_Angle(math.pi))
         ret._dec = np.arctan2(ret._sindec, ret._cosdec) * radians
         return ret
@@ -240,11 +245,10 @@ class CelestialCoord(object):
 
         :returns: x, y, z as a tuple.
         """
-        import numpy
-        cosdec = numpy.cos(dec)
-        x = cosdec * numpy.cos(ra) * r
-        y = cosdec * numpy.sin(ra) * r
-        z = numpy.sin(dec) * r
+        cosdec = np.cos(dec)
+        x = cosdec * np.cos(ra) * r
+        y = cosdec * np.sin(ra) * r
+        z = np.sin(dec) * r
         return x,y,z
 
     @staticmethod
@@ -280,9 +284,14 @@ class CelestialCoord(object):
 
         :returns: ra, dec as a tuple.
         """
-        import numpy
-        ra = numpy.arctan2(y, x)
-        dec = numpy.arctan2(z, numpy.sqrt(x**2+y**2))
+        ra = np.arctan2(y, x)
+        # Note: We don't need arctan2, since always quadrant 1 or 4.
+        #       Using plain arctan is slightly faster.  About 10% for the whole function.
+        #       However, if any points have x=y=0, then this will raise a numpy warning.
+        #       It still gives the right answer, but we catch and ignore the warning here.
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore",category=RuntimeWarning)
+            dec = np.arctan(z/np.sqrt(x**2+y**2))
         return ra,dec
 
     def normal(self):
