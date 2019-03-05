@@ -52,6 +52,8 @@ class AngleUnit(object):
 
             :value:     The measure of the unit in radians.
     """
+    valid_names = ['rad', 'deg', 'hr', 'hour', 'arcmin', 'arcsec']
+
     def __init__(self, value):
         """
         :param value:   The measure of the unit in radians.
@@ -95,6 +97,8 @@ class AngleUnit(object):
             :hour or hr:    AngleUnit(pi / 12.)
             :arcmin:        AngleUnit(pi / 180. / 60.)
             :arcsec:        AngleUnit(pi / 180. / 3600.)
+
+        Note: these valid names are listed in AngleUnit.valid_names.
 
         :param unit:    The string name of the unit to return
 
