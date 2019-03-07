@@ -163,6 +163,10 @@ def test_from_name():
     np.testing.assert_raises(ValueError, coord.AngleUnit.from_name, 'gradians')
     np.testing.assert_raises(ValueError, coord.AngleUnit.from_name, 'spam')
 
+    # Make sure all the angles in AngleUnit.valid_names work
+    for name in coord.AngleUnit.valid_names:
+        assert isinstance(coord.AngleUnit.from_name(name), coord.AngleUnit)
+
 if __name__ == '__main__':
     test_init()
     test_builtin_units()

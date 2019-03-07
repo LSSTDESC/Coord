@@ -44,7 +44,8 @@ if not os.path.exists(lib_file): # pragma: no cover
 # Load the C functions with cffi
 _ffi = cffi.FFI()
 for file_name in glob.glob(os.path.join(include_dir,'*_C.h')):
-    _ffi.cdef(open(file_name).read())
+    with open(file_name) as f:
+        _ffi.cdef(f.read())
 _lib = _ffi.dlopen(lib_file)
 
 # Explicitly import things that we want to be in the coord namespace

@@ -22,6 +22,7 @@ from __future__ import print_function
 import numpy as np
 import math
 import datetime
+import warnings
 
 from .angle import Angle, _Angle
 from .angleunit import radians, degrees, hours, arcsec
@@ -203,11 +204,100 @@ class CelestialCoord(object):
         ret._z = z / norm
         ret._sindec = ret._z
         ret._cosdec = np.sqrt(ret._x*ret._x + ret._y*ret._y)
-        ret._sinra = ret._y / ret._cosdec
-        ret._cosra = ret._x / ret._cosdec
+        if ret._cosdec == 0.:
+            ret._sinra = 0.
+            ret._cosra = 1.
+        else:
+            ret._sinra = ret._y / ret._cosdec
+            ret._cosra = ret._x / ret._cosdec
         ret._ra = (np.arctan2(ret._sinra, ret._cosra) * radians).wrap(_Angle(math.pi))
         ret._dec = np.arctan2(ret._sindec, ret._cosdec) * radians
         return ret
+
+    @staticmethod
+    def radec_to_xyz(ra, dec, r=1.):
+        """Convert ra, dec (in radians) to 3D x,y,z coordinates on the unit sphere.
+
+        The connection between (ra,dec) and (x,y,z) are given by the following formulae:
+        .. math::
+
+            x &= r \\cos(dec) \\cos(ra)  \\\\
+            y &= r \\cos(dec) \\sin(ra)  \\\\
+            z &= r \\sin(dec)
+
+        For a single ra,dec pair, the following are essentially equivalent:
+
+            >>> ra = 12*hours/radians       # May be any angle measured
+            >>> dec = 31*degrees/radians    # in radians
+
+            >>> CelestialCoord.radec_to_xyz(ra, dec)
+            (-0.85716730070211233, 1.0497271911386187e-16, 0.51503807491005416)
+
+            >>> CelestialCoord(ra * radians, dec * radians).get_xyz()
+            (-0.85716730070211233, 1.0497271911386187e-16, 0.51503807491005416)
+
+        However, the advantage of this function is that the input values may be numpy
+        arrays, in which case, the return values will also be numpy arrays.
+
+        :param ra:      The right ascension(s) in radians. May be a numpy array.
+        :param dec:     The declination(s) in radians. May be a numpy array.
+        :param r:       The distance(s) from Earth (default 1.). May be a numpy array.
+
+        :returns: x, y, z as a tuple.
+        """
+        cosdec = np.cos(dec)
+        x = cosdec * np.cos(ra) * r
+        y = cosdec * np.sin(ra) * r
+        z = np.sin(dec) * r
+        return x,y,z
+
+    @staticmethod
+    def xyz_to_radec(x, y, z, return_r=False):
+        """Convert 3D x,y,z coordinates to ra, dec (in radians).
+
+        The connection between (ra,dec) and (x,y,z) are given by the following formulae:
+        .. math::
+
+            x &= r \\cos(dec) \\cos(ra)  \\\\
+            y &= r \\cos(dec) \\sin(ra)  \\\\
+            z &= r \\sin(dec)
+
+        For a single (x,y,z) position, the following are essentially equivalent:
+
+            >>> x = 0.839       # May be any any 3D location
+            >>> y = 0.123       # Not necessarily on unit sphere
+            >>> z = 0.530
+
+            >>> CelestialCoord.xyz_to_radec(x, y, z)
+            (0.14556615088111796, 0.558616191048523)
+
+            >>> c = CelestialCoord.from_xyz(x, y, z)
+            >>> c.ra.rad, c.dec.rad
+            (0.145566150881118, 0.558616191048523)
+
+        However, the advantage of this function is that the input values may be numpy
+        arrays, in which case, the return values will also be numpy arrays.
+
+        :param x:       The x position(s) in 3 dimensions. May be a numpy array.
+        :param y:       The y position(s) in 3 dimensions. May be a numpy array.
+        :param z:       The z position(s) in 3 dimensions. May be a numpy array.
+        :param return_r: Whether to return r as well as ra, dec. (default: False)
+
+        :returns: ra, dec as a tuple.  Or if return_r is True, (ra, dec, r).
+        """
+        xy2 = x**2 + y**2
+        ra = np.arctan2(y, x)
+        # Note: We don't need arctan2, since always quadrant 1 or 4.
+        #       Using plain arctan is slightly faster.  About 10% for the whole function.
+        #       However, if any points have x=y=0, then this will raise a numpy warning.
+        #       It still gives the right answer, but we catch and ignore the warning here.
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore",category=RuntimeWarning)
+            dec = np.arctan(z/np.sqrt(xy2))
+        if return_r:
+            return ra, dec, np.sqrt(xy2 + z**2)
+        else:
+            return ra, dec
 
     def normal(self):
         """Return the coordinate in the "normal" convention of having 0 <= ra < 24 hours.
