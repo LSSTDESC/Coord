@@ -4,31 +4,20 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>coord.celestial &#8212; Coord 1.1 documentation</title>
-    
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '1.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -43,12 +32,14 @@
         <div class="sphinxsidebarwrapper">
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -84,6 +75,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">from</span> <span class="nn">.angle</span> <span class="k">import</span> <span class="n">Angle</span><span class="p">,</span> <span class="n">_Angle</span>
 <span class="kn">from</span> <span class="nn">.angleunit</span> <span class="k">import</span> <span class="n">radians</span><span class="p">,</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">arcsec</span>
@@ -260,12 +252,105 @@
         <span class="k">if</span> <span class="n">norm</span> <span class="o">==</span> <span class="mf">0.</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;CelestialCoord for position (0,0,0) is undefined.&quot;</span><span class="p">)</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">CelestialCoord</span><span class="p">)</span>
-        <span class="n">ret</span><span class="o">.</span><span class="n">_ra</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">radians</span><span class="p">)</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">_Angle</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
-        <span class="n">ret</span><span class="o">.</span><span class="n">_dec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">y</span><span class="p">))</span> <span class="o">*</span> <span class="n">radians</span>
-        <span class="n">ret</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">x</span><span class="o">/</span><span class="n">norm</span>
-        <span class="n">ret</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="n">y</span><span class="o">/</span><span class="n">norm</span>
-        <span class="n">ret</span><span class="o">.</span><span class="n">_z</span> <span class="o">=</span> <span class="n">z</span><span class="o">/</span><span class="n">norm</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">norm</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">/</span> <span class="n">norm</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">_z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">/</span> <span class="n">norm</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">_sindec</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">_z</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">_cosdec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">_x</span><span class="o">*</span><span class="n">ret</span><span class="o">.</span><span class="n">_x</span> <span class="o">+</span> <span class="n">ret</span><span class="o">.</span><span class="n">_y</span><span class="o">*</span><span class="n">ret</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ret</span><span class="o">.</span><span class="n">_cosdec</span> <span class="o">==</span> <span class="mf">0.</span><span class="p">:</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">_sinra</span> <span class="o">=</span> <span class="mf">0.</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">_cosra</span> <span class="o">=</span> <span class="mf">1.</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">_sinra</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">_y</span> <span class="o">/</span> <span class="n">ret</span><span class="o">.</span><span class="n">_cosdec</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">_cosra</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">_x</span> <span class="o">/</span> <span class="n">ret</span><span class="o">.</span><span class="n">_cosdec</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">_ra</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">_sinra</span><span class="p">,</span> <span class="n">ret</span><span class="o">.</span><span class="n">_cosra</span><span class="p">)</span> <span class="o">*</span> <span class="n">radians</span><span class="p">)</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">_Angle</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">_dec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">_sindec</span><span class="p">,</span> <span class="n">ret</span><span class="o">.</span><span class="n">_cosdec</span><span class="p">)</span> <span class="o">*</span> <span class="n">radians</span>
         <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="CelestialCoord.radec_to_xyz"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.radec_to_xyz">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">radec_to_xyz</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">1.</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert ra, dec (in radians) to 3D x,y,z coordinates on the unit sphere.</span>
+
+<span class="sd">        The connection between (ra,dec) and (x,y,z) are given by the following formulae:</span>
+<span class="sd">        .. math::</span>
+
+<span class="sd">            x &amp;= r \\cos(dec) \\cos(ra)  \\\\</span>
+<span class="sd">            y &amp;= r \\cos(dec) \\sin(ra)  \\\\</span>
+<span class="sd">            z &amp;= r \\sin(dec)</span>
+
+<span class="sd">        For a single ra,dec pair, the following are essentially equivalent:</span>
+
+<span class="sd">            &gt;&gt;&gt; ra = 12*hours/radians       # May be any angle measured</span>
+<span class="sd">            &gt;&gt;&gt; dec = 31*degrees/radians    # in radians</span>
+
+<span class="sd">            &gt;&gt;&gt; CelestialCoord.radec_to_xyz(ra, dec)</span>
+<span class="sd">            (-0.85716730070211233, 1.0497271911386187e-16, 0.51503807491005416)</span>
+
+<span class="sd">            &gt;&gt;&gt; CelestialCoord(ra * radians, dec * radians).get_xyz()</span>
+<span class="sd">            (-0.85716730070211233, 1.0497271911386187e-16, 0.51503807491005416)</span>
+
+<span class="sd">        However, the advantage of this function is that the input values may be numpy</span>
+<span class="sd">        arrays, in which case, the return values will also be numpy arrays.</span>
+
+<span class="sd">        :param ra:      The right ascension(s) in radians. May be a numpy array.</span>
+<span class="sd">        :param dec:     The declination(s) in radians. May be a numpy array.</span>
+<span class="sd">        :param r:       The distance(s) from Earth (default 1.). May be a numpy array.</span>
+
+<span class="sd">        :returns: x, y, z as a tuple.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cosdec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">dec</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">cosdec</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ra</span><span class="p">)</span> <span class="o">*</span> <span class="n">r</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">cosdec</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ra</span><span class="p">)</span> <span class="o">*</span> <span class="n">r</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dec</span><span class="p">)</span> <span class="o">*</span> <span class="n">r</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span></div>
+
+<div class="viewcode-block" id="CelestialCoord.xyz_to_radec"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.xyz_to_radec">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">xyz_to_radec</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">return_r</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert 3D x,y,z coordinates to ra, dec (in radians).</span>
+
+<span class="sd">        The connection between (ra,dec) and (x,y,z) are given by the following formulae:</span>
+<span class="sd">        .. math::</span>
+
+<span class="sd">            x &amp;= r \\cos(dec) \\cos(ra)  \\\\</span>
+<span class="sd">            y &amp;= r \\cos(dec) \\sin(ra)  \\\\</span>
+<span class="sd">            z &amp;= r \\sin(dec)</span>
+
+<span class="sd">        For a single (x,y,z) position, the following are essentially equivalent:</span>
+
+<span class="sd">            &gt;&gt;&gt; x = 0.839       # May be any any 3D location</span>
+<span class="sd">            &gt;&gt;&gt; y = 0.123       # Not necessarily on unit sphere</span>
+<span class="sd">            &gt;&gt;&gt; z = 0.530</span>
+
+<span class="sd">            &gt;&gt;&gt; CelestialCoord.xyz_to_radec(x, y, z)</span>
+<span class="sd">            (0.14556615088111796, 0.558616191048523)</span>
+
+<span class="sd">            &gt;&gt;&gt; c = CelestialCoord.from_xyz(x, y, z)</span>
+<span class="sd">            &gt;&gt;&gt; c.ra.rad, c.dec.rad</span>
+<span class="sd">            (0.145566150881118, 0.558616191048523)</span>
+
+<span class="sd">        However, the advantage of this function is that the input values may be numpy</span>
+<span class="sd">        arrays, in which case, the return values will also be numpy arrays.</span>
+
+<span class="sd">        :param x:       The x position(s) in 3 dimensions. May be a numpy array.</span>
+<span class="sd">        :param y:       The y position(s) in 3 dimensions. May be a numpy array.</span>
+<span class="sd">        :param z:       The z position(s) in 3 dimensions. May be a numpy array.</span>
+<span class="sd">        :param return_r: Whether to return r as well as ra, dec. (default: False)</span>
+
+<span class="sd">        :returns: ra, dec as a tuple.  Or if return_r is True, (ra, dec, r).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xy2</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">ra</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="c1"># Note: We don&#39;t need arctan2, since always quadrant 1 or 4.</span>
+        <span class="c1">#       Using plain arctan is slightly faster.  About 10% for the whole function.</span>
+        <span class="c1">#       However, if any points have x=y=0, then this will raise a numpy warning.</span>
+        <span class="c1">#       It still gives the right answer, but we catch and ignore the warning here.</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span><span class="n">category</span><span class="o">=</span><span class="ne">RuntimeWarning</span><span class="p">)</span>
+            <span class="n">dec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">xy2</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">return_r</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">xy2</span> <span class="o">+</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span></div>
 
 <div class="viewcode-block" id="CelestialCoord.normal"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.normal">[docs]</a>    <span class="k">def</span> <span class="nf">normal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the coordinate in the &quot;normal&quot; convention of having 0 &lt;= ra &lt; 24 hours.</span>
@@ -1039,7 +1124,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, LSST DESC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.3.
     </div>
   </body>
 </html>
