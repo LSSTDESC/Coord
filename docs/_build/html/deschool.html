@@ -4,33 +4,22 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>DESC DE School &#8212; Coord 1.1 documentation</title>
-    
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Angle Units" href="angleunit.html" />
     <link rel="prev" title="Features" href="overview.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -48,7 +37,7 @@
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
+  <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">DESC DE School</a><ul>
 <li><a class="reference internal" href="#original-instructions-for-de-school-stutents">Original instructions for DE School stutents:</a></li>
@@ -71,12 +60,14 @@
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -106,19 +97,19 @@ certainly still participate even if not.</p>
 along with (hopefully) some that the class will have written.</p>
 <ol class="arabic">
 <li><p class="first">Clone the repository onto your laptop.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ git clone git@github.com:LSSTDESC/Coord.git
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone git@github.com:LSSTDESC/Coord.git
 </pre></div>
 </div>
 </li>
 <li><p class="first">Follow the above instructions to install Coord.</p>
 </li>
 <li><p class="first">Make sure you have nose and astropy installed.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install nose astropy
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install nose astropy
 </pre></div>
 </div>
 </li>
 <li><p class="first">Try running the existing tests.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ cd tests
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd tests
 $ nosetests
 </pre></div>
 </div>
@@ -133,7 +124,7 @@ $ nosetests
 </li>
 <li><p class="first">Make a branch for yourself.  Pick some appropriate name for your branch, like your last name,
 or your initials.  Something you think would likely be unique to you.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ git pull
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git pull
 $ git checkout -b your_branch_name
 $ git push -u origin your_branch_name
 </pre></div>
@@ -141,14 +132,14 @@ $ git push -u origin your_branch_name
 </li>
 <li><p class="first">Look through the existing tests and pick a test that is currently unimplemented.
 There are lots of stubs of test functions that you can pick from that currently just say
-<code class="docutils literal"><span class="pre">pass</span></code>, or feel free to do something different if you have an idea of what to test and
+<code class="docutils literal notranslate"><span class="pre">pass</span></code>, or feel free to do something different if you have an idea of what to test and
 don’t seem something appropriate.</p>
 <p>Write the test.  Think about the various considerations I talked about in the lesson.</p>
 <p>Be as complete or not as you want.  You only have half an hour, so don’t worry if you don’t
 feel like you covered everything about the concept you are trying to test.</p>
 </li>
 <li><p class="first">One the test is working, commit and push.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ git add -p
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git add -p
 $ git commit -m &quot;Add some tests of the .... function&quot;
 $ git push
 </pre></div>
@@ -193,7 +184,7 @@ You can add more commits to your branch, which will be included in the pull requ
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, LSST DESC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.3.
     </div>
   </body>
 </html>
