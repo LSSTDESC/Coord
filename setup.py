@@ -19,12 +19,6 @@ ext=Extension("coord._coord", sources, depends=headers, include_dirs=['include']
 with open('README.rst') as file:
     long_description = file.read()
 
-# We need a symlink to include in the Coord directory.  If it's not there, make it.
-try:
-    os.symlink(os.path.join('..','include/'), os.path.join('coord','include'))
-except OSError:
-    pass
-
 # Read in the coord version from coord/_version.py
 # cf. http://stackoverflow.com/questions/458550/standard-way-to-embed-version-into-python-package
 version_file=os.path.join('coord','_version.py')
