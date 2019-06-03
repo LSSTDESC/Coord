@@ -431,8 +431,12 @@ def test_gnomonic_projection():
     uC, vC = center.project(cC, projection='gnomonic')
 
     # Check that project_rad does the same thing
-    uA2, vA2 = center.project_rad(cA.ra.rad, cA.dec.rad, projection='gnomonic')
-    np.testing.assert_allclose([uA2,vA2], [uA.rad,vA.rad], rtol=1.e-8,
+    all_ra = np.array([cA.ra.rad, cB.ra.rad, cC.ra.rad])
+    all_dec = np.array([cA.dec.rad, cB.dec.rad, cC.dec.rad])
+    all_u, all_v = center.project_rad(all_ra, all_dec, projection='gnomonic')
+    np.testing.assert_allclose(all_u, [uA.rad,uB.rad,uC.rad], rtol=1.e-8,
+                               err_msg="project_rad not equivalent")
+    np.testing.assert_allclose(all_v, [vA.rad,vB.rad,vC.rad], rtol=1.e-8,
                                err_msg="project_rad not equivalent")
 
     # Check the deprojection
@@ -440,6 +444,9 @@ def test_gnomonic_projection():
     np.testing.assert_allclose(cA2.rad, cA.rad, err_msg="deproject didn't return to orig")
     cA3 = center.deproject_rad(uA.rad, vA.rad, projection='gnomonic')
     np.testing.assert_allclose(cA3, cA.rad, err_msg="deproject_rad not equivalent")
+    cA4 = center.deproject_rad(np.array([uA.rad]), np.array([vA.rad]), projection='gnomonic')
+    np.testing.assert_allclose(cA4[0][0], cA.rad[0], err_msg="deproject_rad with arrays wrong ra")
+    np.testing.assert_allclose(cA4[1][0], cA.rad[1], err_msg="deproject_rad with arrays wrong dec")
     check_aux(cA2)
 
     # The angles are not preserved
@@ -576,8 +583,12 @@ def test_stereographic_projection():
     np.testing.assert_allclose(cosC, cos(C))
 
     # Check that project_rad does the same thing
-    uA2, vA2 = center.project_rad(cA.ra.rad, cA.dec.rad, projection='stereographic')
-    np.testing.assert_allclose([uA2,vA2], [uA.rad,vA.rad], rtol=1.e-8,
+    all_ra = np.array([cA.ra.rad, cB.ra.rad, cC.ra.rad])
+    all_dec = np.array([cA.dec.rad, cB.dec.rad, cC.dec.rad])
+    all_u, all_v = center.project_rad(all_ra, all_dec, projection='stereographic')
+    np.testing.assert_allclose(all_u, [uA.rad,uB.rad,uC.rad], rtol=1.e-8,
+                               err_msg="project_rad not equivalent")
+    np.testing.assert_allclose(all_v, [vA.rad,vB.rad,vC.rad], rtol=1.e-8,
                                err_msg="project_rad not equivalent")
 
     # Check the deprojection
@@ -585,6 +596,9 @@ def test_stereographic_projection():
     np.testing.assert_allclose(cA2.rad, cA.rad, err_msg="deproject didn't return to orig")
     cA3 = center.deproject_rad(uA.rad, vA.rad, projection='stereographic')
     np.testing.assert_allclose(cA3, cA.rad, err_msg="deproject_rad not equivalent")
+    cA4 = center.deproject_rad(np.array([uA.rad]), np.array([vA.rad]), projection='stereographic')
+    np.testing.assert_allclose(cA4[0][0], cA.rad[0], err_msg="deproject_rad with arrays wrong ra")
+    np.testing.assert_allclose(cA4[1][0], cA.rad[1], err_msg="deproject_rad with arrays wrong dec")
     check_aux(cA2)
 
     # The area is not preserved
@@ -642,8 +656,12 @@ def test_lambert_projection():
     np.testing.assert_allclose(area, E, rtol=1.e-8, err_msg="lambert didn't preserve area")
 
     # Check that project_rad does the same thing
-    uA2, vA2 = center.project_rad(cA.ra.rad, cA.dec.rad, projection='lambert')
-    np.testing.assert_allclose([uA2,vA2], [uA.rad,vA.rad], rtol=1.e-8,
+    all_ra = np.array([cA.ra.rad, cB.ra.rad, cC.ra.rad])
+    all_dec = np.array([cA.dec.rad, cB.dec.rad, cC.dec.rad])
+    all_u, all_v = center.project_rad(all_ra, all_dec, projection='lambert')
+    np.testing.assert_allclose(all_u, [uA.rad,uB.rad,uC.rad], rtol=1.e-8,
+                               err_msg="project_rad not equivalent")
+    np.testing.assert_allclose(all_v, [vA.rad,vB.rad,vC.rad], rtol=1.e-8,
                                err_msg="project_rad not equivalent")
 
     # Check the deprojection
@@ -651,6 +669,9 @@ def test_lambert_projection():
     np.testing.assert_allclose(cA2.rad, cA.rad, err_msg="deproject didn't return to orig")
     cA3 = center.deproject_rad(uA.rad, vA.rad, projection='lambert')
     np.testing.assert_allclose(cA3, cA.rad, err_msg="deproject_rad not equivalent")
+    cA4 = center.deproject_rad(np.array([uA.rad]), np.array([vA.rad]), projection='lambert')
+    np.testing.assert_allclose(cA4[0][0], cA.rad[0], err_msg="deproject_rad with arrays wrong ra")
+    np.testing.assert_allclose(cA4[1][0], cA.rad[1], err_msg="deproject_rad with arrays wrong dec")
     check_aux(cA2)
 
     # The angles are not preserved
@@ -723,8 +744,12 @@ def test_postel_projection():
     np.testing.assert_allclose(dC, center.distanceTo(cC).rad)
 
     # Check that project_rad does the same thing
-    uA2, vA2 = center.project_rad(cA.ra.rad, cA.dec.rad, projection='postel')
-    np.testing.assert_allclose([uA2,vA2], [uA.rad,vA.rad], rtol=1.e-8,
+    all_ra = np.array([cA.ra.rad, cB.ra.rad, cC.ra.rad])
+    all_dec = np.array([cA.dec.rad, cB.dec.rad, cC.dec.rad])
+    all_u, all_v = center.project_rad(all_ra, all_dec, projection='postel')
+    np.testing.assert_allclose(all_u, [uA.rad,uB.rad,uC.rad], rtol=1.e-8,
+                               err_msg="project_rad not equivalent")
+    np.testing.assert_allclose(all_v, [vA.rad,vB.rad,vC.rad], rtol=1.e-8,
                                err_msg="project_rad not equivalent")
 
     # Check the deprojection
@@ -732,6 +757,9 @@ def test_postel_projection():
     np.testing.assert_allclose(cA2.rad, cA.rad, err_msg="deproject didn't return to orig")
     cA3 = center.deproject_rad(uA.rad, vA.rad, projection='postel')
     np.testing.assert_allclose(cA3, cA.rad, err_msg="deproject_rad not equivalent")
+    cA4 = center.deproject_rad(np.array([uA.rad]), np.array([vA.rad]), projection='postel')
+    np.testing.assert_allclose(cA4[0][0], cA.rad[0], err_msg="deproject_rad with arrays wrong ra")
+    np.testing.assert_allclose(cA4[1][0], cA.rad[1], err_msg="deproject_rad with arrays wrong dec")
     check_aux(cA2)
 
     # The angles are not preserved

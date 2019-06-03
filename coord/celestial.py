@@ -598,11 +598,12 @@ class CelestialCoord(object):
             k = 2. / (1. + cosc)
         elif projection[0] == 'l':
             k = np.sqrt( 2. / (1.+cosc) )
-        elif cosc == 1.:
-            k = 1.
         else:
             c = np.arccos(cosc)
-            k = c / np.sin(c)
+            # k = c / np.sin(c)
+            # np.sinc is defined as sin(pi x) / (pi x)
+            # So need to divide by pi first.
+            k = 1. / np.sinc(c / np.pi)
 
         # u = k * cosdec * sindra
         # v = k * ( self._cosdec * sindec - self._sindec * cosdec * cosdra )
