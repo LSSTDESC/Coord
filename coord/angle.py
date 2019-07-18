@@ -85,9 +85,9 @@ class Angle(object):
         Allowed arithmetic with Angles include the following.
         In the list below,
 
-            - ``x`` is an arbitrary `float` value
-            - ``unit1`` and ``unit2`` are arbitrary `coord.AngleUnit` instances
-            - ``theta1`` and ``theta2`` are arbitrary `coord.Angle` instances
+            - ``x`` is an arbitrary ``float`` value
+            - ``unit1`` and ``unit2`` are arbitrary `AngleUnit` instances
+            - ``theta1`` and ``theta2`` are arbitrary `Angle` instances
 
             >>> x = 37.8
             >>> unit1 = arcmin
@@ -221,7 +221,7 @@ class Angle(object):
         This could be appropriate before testing for the equality of two angles for example, or
         calculating the difference between them.
 
-        If you want to wrap to a different range than [-pi, pi), you can set the `center` argument
+        If you want to wrap to a different range than [-pi, pi), you can set the ``center`` argument
         to be the desired center of the the range.  e.g. for return values to fall in [0, 2pi),
         you could call
 
@@ -335,10 +335,10 @@ class Angle(object):
     def hms(self, sep=":", prec=None, pad=True, plus_sign=False):
         """Return an HMS representation of the angle as a string: +-hh:mm:ss.decimal.
 
-        An optional `sep` parameter can change the : to something else (e.g. a space or
+        An optional ``sep`` parameter can change the : to something else (e.g. a space or
         nothing at all).
 
-        Note: the reverse process is effected by `from_hms`:
+        Note: the reverse process is effected by :meth:`Angle.from_hms`:
 
             ..
 
@@ -370,10 +370,10 @@ class Angle(object):
 
     def dms(self, sep=":", prec=None, pad=True, plus_sign=False):
         """Return a DMS representation of the angle as a string: +-dd:mm:ss.decimal
-        An optional `sep` parameter can change the : to something else (e.g. a space or
+        An optional ``sep`` parameter can change the : to something else (e.g. a space or
         nothing at all).
 
-        Note: the reverse process is effected by `from_dms`:
+        Note: the reverse process is effected by :meth:`Angle.from_dms`:
 
             ..
 

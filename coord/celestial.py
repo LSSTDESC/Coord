@@ -30,7 +30,7 @@ from . import util
 
 class CelestialCoord(object):
     """This class defines a position on the celestial sphere, normally given by two angles,
-    `ra` and `dec`.
+    ``ra`` and ``dec``.
 
     This class can be used to perform various calculations in spherical coordinates, such
     as finding the angular distance between two points in the sky, calculating the angles in
@@ -315,7 +315,7 @@ class CelestialCoord(object):
 
         :param coord2:      The CelestialCoordinate to calculate the distance to.
 
-        :returns: the great circle distance to `coord2`.
+        :returns: the great circle distance to ``coord2``.
         """
         # The easiest way to do this in a way that is stable for small separations
         # is to calculate the (x,y,z) position on the unit sphere corresponding to each
@@ -394,14 +394,14 @@ class CelestialCoord(object):
 
 
     def angleBetween(self, coord2, coord3):
-        """Find the open angle at the location of the current coord between `coord2` and `coord3`.
+        """Find the open angle at the location of the current coord between ``coord2`` and ``coord3``.
 
         The current coordinate along with the two other coordinates form a spherical triangle
         on the sky.  This function calculates the angle between the two sides at the location of
         the current coordinate.
 
         Note that this returns a signed angle.  The angle is positive if the sweep direction from
-        `coord2` to `coord3` is counter-clockwise (as observed from Earth).  It is negative if
+        ``coord2`` to ``coord3`` is counter-clockwise (as observed from Earth).  It is negative if
         the direction is clockwise.
 
         :param coord2:       A second CelestialCoord
@@ -488,14 +488,14 @@ class CelestialCoord(object):
 
     def project(self, coord2, projection=None):
         """Use the currect coord as the center point of a tangent plane projection to project
-        the `coord2` coordinate onto that plane.
+        the ``coord2`` coordinate onto that plane.
 
         This function return a tuple (u,v) in the Euclidean coordinate system defined by
         a tangent plane projection around the current coordinate, with +v pointing north and
         +u pointing west. (i.e. to the right on the sky if +v is up.)
 
         There are currently four options for the projection, which you can specify with the
-        optional `projection` keyword argument:
+        optional ``projection`` keyword argument:
 
             :gnomonic: [default] uses a gnomonic projection (i.e. a projection from the center of
                     the sphere, which has the property that all great circles become straight
@@ -533,16 +533,16 @@ class CelestialCoord(object):
         return u * radians, v * radians
 
     def project_rad(self, ra, dec, projection=None):
-        """This is basically identical to the project() function except that the input `ra`, `dec`
+        """This is basically identical to the project() function except that the input ``ra``, ``dec``
         are given in radians rather than packaged as a CelestialCoord object and the returned
         u,v are given in radians.
 
-        The main advantage to this is that it will work if `ra` and `dec` are NumPy arrays, in which
-        case the output `u`, `v` will also be NumPy arrays.
+        The main advantage to this is that it will work if ``ra`` and ``dec`` are NumPy arrays, in which
+        case the output ``u``, ``v`` will also be NumPy arrays.
 
         :param ra:          The right ascension in radians to project onto the tangent plane.
         :param dec:         The declination in radians to project onto the tangent plane.
-        :param projection:  The name of the projection to be used. [default: gnomonic, see `project`
+        :param projection:  The name of the projection to be used. [default: gnomonic, see ``project``
                             docstring for other options]
 
         :returns: (u,v) in radians
@@ -627,7 +627,7 @@ class CelestialCoord(object):
                             instance)
         :param v:           The v position on the tangent plane to deproject (must be an Angle
                             instance)
-        :param projection:  The name of the projection to be used. [default: gnomonic, see `project`
+        :param projection:  The name of the projection to be used. [default: gnomonic, see ``project``
                             docstring for other options]
 
         :returns: the corresponding CelestialCoord for that position.
@@ -641,16 +641,16 @@ class CelestialCoord(object):
         return CelestialCoord(_Angle(ra), _Angle(dec))
 
     def deproject_rad(self, u, v, projection=None):
-        """This is basically identical to the deproject() function except that the output `ra`,
-        `dec` are returned as a tuple (ra, dec) in radians rather than packaged as a CelestialCoord
-        object and `u` and `v` are in radians rather than Angle instances.
+        """This is basically identical to the deproject() function except that the output ``ra``,
+        ``dec`` are returned as a tuple (ra, dec) in radians rather than packaged as a CelestialCoord
+        object and ``u`` and ``v`` are in radians rather than Angle instances.
 
-        The main advantage to this is that it will work if `u` and `v` are NumPy arrays, in which
-        case the output `ra`, `dec` will also be NumPy arrays.
+        The main advantage to this is that it will work if ``u`` and ``v`` are NumPy arrays, in which
+        case the output ``ra``, ``dec`` will also be NumPy arrays.
 
         :param u:           The u position in radians on the tangent plane to deproject
         :param v:           The v position in radians on the tangent plane to deproject
-        :param projection:  The name of the projection to be used. [default: gnomonic, see `project`
+        :param projection:  The name of the projection to be used. [default: gnomonic, see ``project``
                             docstring for other options]
 
         :returns: the corresponding RA, Dec in radians
@@ -743,7 +743,7 @@ class CelestialCoord(object):
 
         :param u:           The u position (as an Angle instance) on the tangent plane
         :param v:           The v position (as an Angle instance) on the tangent plane
-        :param projection:  The name of the projection to be used. [default: gnomonic, see `project`
+        :param projection:  The name of the projection to be used. [default: gnomonic, see ``project``
                             docstring for other options]
 
         :returns: the Jacobian as a 2x2 numpy array [[J00, J01], [J10, J11]]
@@ -753,7 +753,7 @@ class CelestialCoord(object):
         return self._jac_deproject(u.rad, v.rad, projection)
 
     def jac_deproject_rad(self, u, v, projection=None):
-        """Equivalent to `jac_deproject`, but the inputs are in radians and may be numpy
+        """Equivalent to ``jac_deproject``, but the inputs are in radians and may be numpy
         arrays.
 
         :param u:           The u position (in radians) on the tangent plane
@@ -951,12 +951,12 @@ class CelestialCoord(object):
     def ecliptic(self, epoch=2000., date=None):
         """Get the longitude and latitude in ecliptic coordinates corresponding to this position.
 
-        The `epoch` parameter is used to get an accurate value for the (time-varying) obliquity of
+        The ``epoch`` parameter is used to get an accurate value for the (time-varying) obliquity of
         the ecliptic.  The formulae for this are quite straightforward.  It requires just a single
         parameter for the transformation, the obliquity of the ecliptic (the Earth's axial tilt).
 
         :param epoch:       The epoch to be used for estimating the obliquity of the ecliptic, if
-                            `date` is None.  But if `date` is given, then use that to determine the
+                            ``date`` is None.  But if ``date`` is given, then use that to determine the
                             epoch.  [default: 2000.]
         :param date:        If a date is given as a python datetime object, then return the
                             position in ecliptic coordinates with respect to the sun position at
@@ -999,7 +999,7 @@ class CelestialCoord(object):
         :param lam:         The longitude in ecliptic coordinates (an Angle instance)
         :param beta:        The latitude in ecliptic coordinates (an Angle instance)
         :param epoch:       The epoch to be used for estimating the obliquity of the ecliptic, if
-                            `date` is None.  But if `date` is given, then use that to determine the
+                            ``date`` is None.  But if ``date`` is given, then use that to determine the
                             epoch.  [default: 2000.]
         :param date:        If a date is given as a python datetime object, then return the
                             position in ecliptic coordinates with respect to the sun position at
