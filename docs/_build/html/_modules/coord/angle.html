@@ -139,8 +139,8 @@
 <span class="sd">        In the list below,</span>
 
 <span class="sd">            - ``x`` is an arbitrary `float` value</span>
-<span class="sd">            - ``unit1`` and ``unit2`` are arbitrary `coord.AngleUnit` instances</span>
-<span class="sd">            - ``theta1`` and ``theta2`` are arbitrary `coord.Angle` instances</span>
+<span class="sd">            - ``unit1`` and ``unit2`` are arbitrary `AngleUnit` instances</span>
+<span class="sd">            - ``theta1`` and ``theta2`` are arbitrary `Angle` instances</span>
 
 <span class="sd">            &gt;&gt;&gt; x = 37.8</span>
 <span class="sd">            &gt;&gt;&gt; unit1 = arcmin</span>
@@ -274,7 +274,7 @@
 <span class="sd">        This could be appropriate before testing for the equality of two angles for example, or</span>
 <span class="sd">        calculating the difference between them.</span>
 
-<span class="sd">        If you want to wrap to a different range than [-pi, pi), you can set the `center` argument</span>
+<span class="sd">        If you want to wrap to a different range than [-pi, pi), you can set the ``center`` argument</span>
 <span class="sd">        to be the desired center of the the range.  e.g. for return values to fall in [0, 2pi),</span>
 <span class="sd">        you could call</span>
 
@@ -388,7 +388,7 @@
 <div class="viewcode-block" id="Angle.hms"><a class="viewcode-back" href="../../angle.html#coord.Angle.hms">[docs]</a>    <span class="k">def</span> <span class="nf">hms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plus_sign</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return an HMS representation of the angle as a string: +-hh:mm:ss.decimal.</span>
 
-<span class="sd">        An optional `sep` parameter can change the : to something else (e.g. a space or</span>
+<span class="sd">        An optional ``sep`` parameter can change the : to something else (e.g. a space or</span>
 <span class="sd">        nothing at all).</span>
 
 <span class="sd">        Note: the reverse process is effected by `from_hms`:</span>
@@ -423,10 +423,10 @@
 
 <div class="viewcode-block" id="Angle.dms"><a class="viewcode-back" href="../../angle.html#coord.Angle.dms">[docs]</a>    <span class="k">def</span> <span class="nf">dms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plus_sign</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a DMS representation of the angle as a string: +-dd:mm:ss.decimal</span>
-<span class="sd">        An optional `sep` parameter can change the : to something else (e.g. a space or</span>
+<span class="sd">        An optional ``sep`` parameter can change the : to something else (e.g. a space or</span>
 <span class="sd">        nothing at all).</span>
 
-<span class="sd">        Note: the reverse process is effected by `from_dms`:</span>
+<span class="sd">        Note: the reverse process is effected by ``from_dms``:</span>
 
 <span class="sd">            ..</span>
 
