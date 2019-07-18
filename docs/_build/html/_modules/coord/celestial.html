@@ -651,11 +651,12 @@
             <span class="n">k</span> <span class="o">=</span> <span class="mf">2.</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">+</span> <span class="n">cosc</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">projection</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span>
             <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="mf">2.</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">cosc</span><span class="p">)</span> <span class="p">)</span>
-        <span class="k">elif</span> <span class="n">cosc</span> <span class="o">==</span> <span class="mf">1.</span><span class="p">:</span>
-            <span class="n">k</span> <span class="o">=</span> <span class="mf">1.</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">cosc</span><span class="p">)</span>
-            <span class="n">k</span> <span class="o">=</span> <span class="n">c</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="c1"># k = c / np.sin(c)</span>
+            <span class="c1"># np.sinc is defined as sin(pi x) / (pi x)</span>
+            <span class="c1"># So need to divide by pi first.</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sinc</span><span class="p">(</span><span class="n">c</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
 
         <span class="c1"># u = k * cosdec * sindra</span>
         <span class="c1"># v = k * ( self._cosdec * sindec - self._sindec * cosdec * cosdra )</span>
