@@ -160,6 +160,57 @@ def test_wrap():
     np.testing.assert_almost_equal(theta4.wrap(-927 * coord.radians).rad,
                                    theta1.wrap(-927 * coord.radians).rad, decimal=12)
 
+@timer
+def test_compare():
+    """Test comparisons of Angles.
+    """
+    # Values in order
+    theta1 = -45 * coord.degrees
+    theta2 = 45 * coord.degrees
+    theta2b = 45 * coord.degrees
+    theta3 = 47 * coord.degrees
+    theta4 = (45 + 360) * coord.degrees
+    theta4b= (45 + 360) * coord.degrees
+    theta5 = (47 + 360) * coord.degrees
+
+    assert theta1 < theta2
+    assert theta1 < theta3
+    assert theta1 < theta4
+    assert theta1 < theta5
+
+    assert theta1 <= theta2
+    assert theta1 <= theta3
+    assert theta1 <= theta4
+    assert theta1 <= theta5
+
+    assert theta5 > theta1
+    assert theta5 > theta2
+    assert theta5 > theta3
+    assert theta5 > theta4
+
+    assert theta5 >= theta1
+    assert theta5 >= theta2
+    assert theta5 >= theta3
+    assert theta5 >= theta4
+
+    assert theta2 == theta2b
+    assert theta2 <= theta2b
+    assert theta2 >= theta2b
+
+    assert theta2 == theta2
+    assert theta2 <= theta2
+    assert theta2 >= theta2
+
+    assert theta4 == theta4b
+    assert theta4 <= theta4b
+    assert theta4 >= theta4b
+
+    # Have to explicitly wrap if you want it.
+    assert theta2.wrap() < theta5.wrap()
+    assert theta5.wrap() > theta2.wrap()
+    assert theta3.wrap() > theta4.wrap()
+    assert theta4.wrap() < theta3.wrap()
+
 
 @timer
 def test_trig():
@@ -383,6 +434,7 @@ if __name__ == '__main__':
     test_invalid()
     test_arith()
     test_wrap()
+    test_compare()
     test_trig()
     test_pickle()
     test_eq()

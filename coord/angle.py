@@ -278,6 +278,26 @@ class Angle(object):
     def __ne__(self, other):
         return not self.__eq__(other)
 
+    def __le__(self, other):
+        if not isinstance(other, Angle):
+            raise TypeError("Cannot compare %s of type %s to an Angle"%(other,type(other)))
+        return self._rad <= other._rad
+
+    def __lt__(self, other):
+        if not isinstance(other, Angle):
+            raise TypeError("Cannot compare %s of type %s to an Angle"%(other,type(other)))
+        return self._rad < other._rad
+
+    def __ge__(self, other):
+        if not isinstance(other, Angle):
+            raise TypeError("Cannot compare %s of type %s to an Angle"%(other,type(other)))
+        return self._rad >= other._rad
+
+    def __gt__(self, other):
+        if not isinstance(other, Angle):
+            raise TypeError("Cannot compare %s of type %s to an Angle"%(other,type(other)))
+        return self._rad > other._rad
+
     def __hash__(self):
         return hash(('coord.Angle', self._rad))
 
