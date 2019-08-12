@@ -175,6 +175,14 @@ class Angle(object):
         """
         return self._rad
 
+    @property
+    def deg(self):
+        """Return the Angle in degrees.
+
+        Equivalent to angle / coord.degrees
+        """
+        return self / degrees
+
     def __neg__(self):
         return _Angle(-self._rad)
 

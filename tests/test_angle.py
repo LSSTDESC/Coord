@@ -54,11 +54,16 @@ def test_init():
     np.testing.assert_almost_equal(theta6.rad, pi/4., decimal=12, err_msg='50 grad != pi/4 rad')
     np.testing.assert_almost_equal(theta7.rad, pi/4., decimal=12, err_msg='copy != pi/4 rad')
 
-    # Access angle in other units
-    np.testing.assert_almost_equal(theta1 / gradians, 50., 12)
-    np.testing.assert_almost_equal(theta3 / gradians, 50., 12)
-    np.testing.assert_almost_equal(theta1 / coord.hours, 3., 12)
-    np.testing.assert_almost_equal(theta5 / coord.hours, 3., 12)
+    for theta in [theta1, theta2, theta3, theta4, theta5, theta6, theta7]:
+        # Access angle in degrees
+        np.testing.assert_almost_equal(theta.deg, 45., 12)
+        np.testing.assert_almost_equal(theta / coord.degrees, 45., 12)
+
+        # Access angle in other units
+        np.testing.assert_almost_equal(theta / gradians, 50., 12)
+        np.testing.assert_almost_equal(theta / coord.hours, 3., 12)
+        np.testing.assert_almost_equal(theta / coord.arcmin, 45.*60, 11)
+        np.testing.assert_almost_equal(theta / coord.arcsec, 45.*60*60, 10)
 
 
 @timer
