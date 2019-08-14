@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>coord.celestial &#8212; Coord 1.1 documentation</title>
+    <meta charset="utf-8" />
+    <title>coord.celestial &#8212; Coord 1.2 documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -24,20 +22,18 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Coord 1.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Coord 1.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -83,7 +79,7 @@
 
 <div class="viewcode-block" id="CelestialCoord"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord">[docs]</a><span class="k">class</span> <span class="nc">CelestialCoord</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;This class defines a position on the celestial sphere, normally given by two angles,</span>
-<span class="sd">    `ra` and `dec`.</span>
+<span class="sd">    ``ra`` and ``dec``.</span>
 
 <span class="sd">    This class can be used to perform various calculations in spherical coordinates, such</span>
 <span class="sd">    as finding the angular distance between two points in the sky, calculating the angles in</span>
@@ -97,7 +93,7 @@
 
 <span class="sd">            &gt;&gt;&gt; c = CelestialCoord(ra=12*hours, dec=31*degrees)</span>
 <span class="sd">            &gt;&gt;&gt; print(c)</span>
-<span class="sd">            coord.CelestialCoord(3.14159265359 radians, 0.541052068118 radians)</span>
+<span class="sd">            coord.CelestialCoord(3.141592653589793 radians, 0.5410520681182421 radians)</span>
 
 <span class="sd">    **Attributes:**</span>
 
@@ -132,13 +128,14 @@
 <span class="sd">            &gt;&gt;&gt; a = cB.distanceTo(cC)</span>
 <span class="sd">            &gt;&gt;&gt; b = cC.distanceTo(cA)</span>
 <span class="sd">            &gt;&gt;&gt; c = cA.distanceTo(cB)</span>
-<span class="sd">            &gt;&gt;&gt; print(a / degrees, b / degrees, c / degrees)</span>
-<span class="sd">            14.1060442606 10.0 10.0</span>
+<span class="sd">            &gt;&gt;&gt; print(a.deg, b.deg, c.deg)</span>
+<span class="sd">            14.106044260566366 10.0 10.0</span>
 <span class="sd">            &gt;&gt;&gt; A = cA.angleBetween(cB, cC)</span>
 <span class="sd">            &gt;&gt;&gt; B = cB.angleBetween(cC, cA)</span>
 <span class="sd">            &gt;&gt;&gt; C = cC.angleBetween(cA, cB)</span>
-<span class="sd">            &gt;&gt;&gt; print(A / degrees, B / degrees, C / degrees)</span>
-<span class="sd">            90.0 45.4385485867 45.4385485867</span>
+<span class="sd">            &gt;&gt;&gt; print(A.deg, B.deg, C.deg)</span>
+<span class="sd">            90.0 45.43854858674231 45.43854858674231</span>
+
 
 <span class="sd">    **Projections:**</span>
 
@@ -150,10 +147,10 @@
 <span class="sd">            &gt;&gt;&gt; center = CelestialCoord(ra=10*hours, dec=30*degrees)</span>
 <span class="sd">            &gt;&gt;&gt; sky_coord = CelestialCoord(ra=10.5*hours, dec=31*degrees)</span>
 <span class="sd">            &gt;&gt;&gt; print(sky_coord)</span>
-<span class="sd">            coord.CelestialCoord(2.74889357189 radians, 0.541052068118 radians)</span>
+<span class="sd">            coord.CelestialCoord(2.748893571891069 radians, 0.5410520681182421 radians)</span>
 <span class="sd">            &gt;&gt;&gt; u, v = center.project(sky_coord)</span>
-<span class="sd">            &gt;&gt;&gt; print(u / degrees, v / degrees)</span>
-<span class="sd">            -6.45237127534 1.21794987289</span>
+<span class="sd">            &gt;&gt;&gt; print(u.deg, v.deg)</span>
+<span class="sd">            -6.452371275343261 1.21794987288635</span>
 
 <span class="sd">        and back:</span>
 
@@ -161,7 +158,7 @@
 
 <span class="sd">            &gt;&gt;&gt; sky_coord = center.deproject(u,v)</span>
 <span class="sd">            &gt;&gt;&gt; print(sky_coord)</span>
-<span class="sd">            coord.CelestialCoord(2.74889357189 radians, 0.541052068118 radians)</span>
+<span class="sd">            coord.CelestialCoord(2.748893571891069 radians, 0.5410520681182421 radians)</span>
 
 <span class="sd">        where u and v are Angles and center and sky_coord are CelestialCoords.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -284,10 +281,10 @@
 <span class="sd">            &gt;&gt;&gt; dec = 31*degrees/radians    # in radians</span>
 
 <span class="sd">            &gt;&gt;&gt; CelestialCoord.radec_to_xyz(ra, dec)</span>
-<span class="sd">            (-0.85716730070211233, 1.0497271911386187e-16, 0.51503807491005416)</span>
+<span class="sd">            (-0.8571673007021123, 1.0497271911386187e-16, 0.5150380749100542)</span>
 
 <span class="sd">            &gt;&gt;&gt; CelestialCoord(ra * radians, dec * radians).get_xyz()</span>
-<span class="sd">            (-0.85716730070211233, 1.0497271911386187e-16, 0.51503807491005416)</span>
+<span class="sd">            (-0.8571673007021123, 1.0497271911386187e-16, 0.5150380749100542)</span>
 
 <span class="sd">        However, the advantage of this function is that the input values may be numpy</span>
 <span class="sd">        arrays, in which case, the return values will also be numpy arrays.</span>
@@ -362,13 +359,27 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_CelestialCoord</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">_Angle</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">dec</span><span class="p">)</span></div>
 
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_raw_dsq</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">):</span>
+        <span class="c1"># Compute the raw dsq between two coordinates.</span>
+        <span class="c1"># Both are expected to already have _set_aux() called.</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">c1</span><span class="o">.</span><span class="n">_x</span><span class="o">-</span><span class="n">c2</span><span class="o">.</span><span class="n">_x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">c1</span><span class="o">.</span><span class="n">_y</span><span class="o">-</span><span class="n">c2</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">c1</span><span class="o">.</span><span class="n">_z</span><span class="o">-</span><span class="n">c2</span><span class="o">.</span><span class="n">_z</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_raw_cross</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">):</span>
+        <span class="c1"># Compute the raw cross product between two coordinates.</span>
+        <span class="c1"># Both are expected to already have _set_aux() called.</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">c1</span><span class="o">.</span><span class="n">_y</span> <span class="o">*</span> <span class="n">c2</span><span class="o">.</span><span class="n">_z</span> <span class="o">-</span> <span class="n">c2</span><span class="o">.</span><span class="n">_y</span> <span class="o">*</span> <span class="n">c1</span><span class="o">.</span><span class="n">_z</span><span class="p">,</span>
+                <span class="n">c1</span><span class="o">.</span><span class="n">_z</span> <span class="o">*</span> <span class="n">c2</span><span class="o">.</span><span class="n">_x</span> <span class="o">-</span> <span class="n">c2</span><span class="o">.</span><span class="n">_z</span> <span class="o">*</span> <span class="n">c1</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span>
+                <span class="n">c1</span><span class="o">.</span><span class="n">_x</span> <span class="o">*</span> <span class="n">c2</span><span class="o">.</span><span class="n">_y</span> <span class="o">-</span> <span class="n">c2</span><span class="o">.</span><span class="n">_x</span> <span class="o">*</span> <span class="n">c1</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span>
+
 <div class="viewcode-block" id="CelestialCoord.distanceTo"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.distanceTo">[docs]</a>    <span class="k">def</span> <span class="nf">distanceTo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord2</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns the great circle distance between this coord and another one.</span>
 <span class="sd">        The return value is an Angle object</span>
 
-<span class="sd">        :param coord2:      The CelestialCoordinate to calculate the distance to.</span>
+<span class="sd">        :param coord2:      The CelestialCoord to calculate the distance to.</span>
 
-<span class="sd">        :returns: the great circle distance to `coord2`.</span>
+<span class="sd">        :returns: the great circle distance to ``coord2``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># The easiest way to do this in a way that is stable for small separations</span>
         <span class="c1"># is to calculate the (x,y,z) position on the unit sphere corresponding to each</span>
@@ -384,8 +395,7 @@
         <span class="c1"># The direct distance between the two points is</span>
         <span class="c1">#</span>
         <span class="c1"># d^2 = (x1-x2)^2 + (y1-y2)^2 + (z1-z2)^2</span>
-
-        <span class="n">dsq</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="o">-</span><span class="n">coord2</span><span class="o">.</span><span class="n">_x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="o">-</span><span class="n">coord2</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_z</span><span class="o">-</span><span class="n">coord2</span><span class="o">.</span><span class="n">_z</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">dsq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_dsq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord2</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">dsq</span> <span class="o">&lt;</span> <span class="mf">3.99</span><span class="p">:</span>
             <span class="c1"># (The usual case.  This formula is perfectly stable here.)</span>
@@ -397,12 +407,73 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Points are nearly antipodes where the accuracy of this formula starts to break down.</span>
             <span class="c1"># But in this case, the cross product provides an accurate distance.</span>
-            <span class="n">crosssq</span> <span class="o">=</span> <span class="p">((</span><span class="n">coord2</span><span class="o">.</span><span class="n">_y</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z</span> <span class="o">-</span> <span class="n">coord2</span><span class="o">.</span><span class="n">_z</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
-                       <span class="p">(</span><span class="n">coord2</span><span class="o">.</span><span class="n">_z</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">-</span> <span class="n">coord2</span><span class="o">.</span><span class="n">_x</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
-                       <span class="p">(</span><span class="n">coord2</span><span class="o">.</span><span class="n">_x</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">-</span> <span class="n">coord2</span><span class="o">.</span><span class="n">_y</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">cz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_cross</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord2</span><span class="p">)</span>
+            <span class="n">crosssq</span> <span class="o">=</span> <span class="n">cx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">cy</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">cz</span><span class="o">**</span><span class="mi">2</span>
             <span class="n">theta</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">crosssq</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">_Angle</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CelestialCoord.greatCirclePoint"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.greatCirclePoint">[docs]</a>    <span class="k">def</span> <span class="nf">greatCirclePoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord2</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a point on the great circle connecting self and coord2.</span>
+
+<span class="sd">        Two points, c1 and c2, on the unit sphere define a great circle (so long as the two points</span>
+<span class="sd">        are not either coincident or antipodal).  We can define points on this great circle by</span>
+<span class="sd">        their angle from c1, such that the angle for c2 has 0 &lt; theta2 &lt; pi.  I.e. theta increases</span>
+<span class="sd">        from 0 as the points move from c1 towards c2.</span>
+
+<span class="sd">        This function then returns the coordinate on this great circle (where c1 is ``self`` and</span>
+<span class="sd">        c2 is ``coord2``) that corresponds to the given angle ``theta``.</span>
+
+<span class="sd">        :param coord2:      Another CelestialCoord defining the great circle to use.</span>
+<span class="sd">        :param theta:       The Angle along the great circle corresponding to the desired point.</span>
+
+<span class="sd">        :returns: the corresponding CelestialCoord</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_aux</span><span class="p">()</span>
+        <span class="n">coord2</span><span class="o">.</span><span class="n">_set_aux</span><span class="p">()</span>
+
+        <span class="c1"># Define u = self</span>
+        <span class="c1">#        v = coord2</span>
+        <span class="c1">#        w = (u x v) x u</span>
+        <span class="c1"># The great circle through u and v is then</span>
+        <span class="c1">#</span>
+        <span class="c1">#   R(t) = u cos(t) + w sin(t)</span>
+        <span class="c1">#</span>
+        <span class="c1"># Rather than directly calculate (u x v) x u, let&#39;s do some simplification first.</span>
+        <span class="c1"># u x v = ( uy vz - uz vy )</span>
+        <span class="c1">#         ( uz vx - ux vz )</span>
+        <span class="c1">#         ( ux vy - uy vx )</span>
+        <span class="c1"># wx = (u x v)_y uz - (u x v)_z uy</span>
+        <span class="c1">#    = (uz vx - ux vz) uz - (ux vy - uy vx) uy</span>
+        <span class="c1">#    = vx uz^2 - vz ux uz - vy ux uy + vx uy^2</span>
+        <span class="c1">#    = vx (1 - ux^2) - ux (uz vz + uy vy)</span>
+        <span class="c1">#    = vx - ux (u . v)</span>
+        <span class="c1">#    = vx - ux (1 - d^2/2)</span>
+        <span class="c1">#    = vx - ux + ux d^2/2</span>
+        <span class="c1"># wy = vy - uy + uy d^2/2</span>
+        <span class="c1"># wz = vz - uz + uz d^2/2</span>
+
+        <span class="n">dsq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_dsq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord2</span><span class="p">)</span>
+
+        <span class="c1"># These are unnormalized yet.</span>
+        <span class="n">wx</span> <span class="o">=</span> <span class="n">coord2</span><span class="o">.</span><span class="n">_x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">*</span> <span class="n">dsq</span><span class="o">/</span><span class="mf">2.</span>
+        <span class="n">wy</span> <span class="o">=</span> <span class="n">coord2</span><span class="o">.</span><span class="n">_y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">*</span> <span class="n">dsq</span><span class="o">/</span><span class="mf">2.</span>
+        <span class="n">wz</span> <span class="o">=</span> <span class="n">coord2</span><span class="o">.</span><span class="n">_z</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z</span> <span class="o">*</span> <span class="n">dsq</span><span class="o">/</span><span class="mf">2.</span>
+
+        <span class="c1"># Normalize</span>
+        <span class="n">wr</span> <span class="o">=</span> <span class="p">(</span><span class="n">wx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">wy</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">wz</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+        <span class="k">if</span> <span class="n">wr</span> <span class="o">==</span> <span class="mf">0.</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;coord2 does not define a unique great circle with self.&quot;</span><span class="p">)</span>
+        <span class="n">wx</span> <span class="o">/=</span> <span class="n">wr</span>
+        <span class="n">wy</span> <span class="o">/=</span> <span class="n">wr</span>
+        <span class="n">wz</span> <span class="o">/=</span> <span class="n">wr</span>
+
+        <span class="c1"># R(theta)</span>
+        <span class="n">s</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">sincos</span><span class="p">()</span>
+        <span class="n">rx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">*</span> <span class="n">c</span> <span class="o">+</span> <span class="n">wx</span> <span class="o">*</span> <span class="n">s</span>
+        <span class="n">ry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">*</span> <span class="n">c</span> <span class="o">+</span> <span class="n">wy</span> <span class="o">*</span> <span class="n">s</span>
+        <span class="n">rz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z</span> <span class="o">*</span> <span class="n">c</span> <span class="o">+</span> <span class="n">wz</span> <span class="o">*</span> <span class="n">s</span>
+        <span class="k">return</span> <span class="n">CelestialCoord</span><span class="o">.</span><span class="n">from_xyz</span><span class="p">(</span><span class="n">rx</span><span class="p">,</span><span class="n">ry</span><span class="p">,</span><span class="n">rz</span><span class="p">)</span></div>
 
 
     <span class="k">def</span> <span class="nf">_triple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord2</span><span class="p">,</span> <span class="n">coord3</span><span class="p">):</span>
@@ -447,14 +518,14 @@
 
 
 <div class="viewcode-block" id="CelestialCoord.angleBetween"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.angleBetween">[docs]</a>    <span class="k">def</span> <span class="nf">angleBetween</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord2</span><span class="p">,</span> <span class="n">coord3</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Find the open angle at the location of the current coord between `coord2` and `coord3`.</span>
+        <span class="sd">&quot;&quot;&quot;Find the open angle at the location of the current coord between ``coord2`` and ``coord3``.</span>
 
 <span class="sd">        The current coordinate along with the two other coordinates form a spherical triangle</span>
 <span class="sd">        on the sky.  This function calculates the angle between the two sides at the location of</span>
 <span class="sd">        the current coordinate.</span>
 
 <span class="sd">        Note that this returns a signed angle.  The angle is positive if the sweep direction from</span>
-<span class="sd">        `coord2` to `coord3` is counter-clockwise (as observed from Earth).  It is negative if</span>
+<span class="sd">        ``coord2`` to ``coord3`` is counter-clockwise (as observed from Earth).  It is negative if</span>
 <span class="sd">        the direction is clockwise.</span>
 
 <span class="sd">        :param coord2:       A second CelestialCoord</span>
@@ -541,14 +612,14 @@
 
 <div class="viewcode-block" id="CelestialCoord.project"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.project">[docs]</a>    <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord2</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Use the currect coord as the center point of a tangent plane projection to project</span>
-<span class="sd">        the `coord2` coordinate onto that plane.</span>
+<span class="sd">        the ``coord2`` coordinate onto that plane.</span>
 
 <span class="sd">        This function return a tuple (u,v) in the Euclidean coordinate system defined by</span>
 <span class="sd">        a tangent plane projection around the current coordinate, with +v pointing north and</span>
 <span class="sd">        +u pointing west. (i.e. to the right on the sky if +v is up.)</span>
 
 <span class="sd">        There are currently four options for the projection, which you can specify with the</span>
-<span class="sd">        optional `projection` keyword argument:</span>
+<span class="sd">        optional ``projection`` keyword argument:</span>
 
 <span class="sd">            :gnomonic: [default] uses a gnomonic projection (i.e. a projection from the center of</span>
 <span class="sd">                    the sphere, which has the property that all great circles become straight</span>
@@ -586,16 +657,16 @@
         <span class="k">return</span> <span class="n">u</span> <span class="o">*</span> <span class="n">radians</span><span class="p">,</span> <span class="n">v</span> <span class="o">*</span> <span class="n">radians</span></div>
 
 <div class="viewcode-block" id="CelestialCoord.project_rad"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.project_rad">[docs]</a>    <span class="k">def</span> <span class="nf">project_rad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;This is basically identical to the project() function except that the input `ra`, `dec`</span>
+        <span class="sd">&quot;&quot;&quot;This is basically identical to the project() function except that the input ``ra``, ``dec``</span>
 <span class="sd">        are given in radians rather than packaged as a CelestialCoord object and the returned</span>
 <span class="sd">        u,v are given in radians.</span>
 
-<span class="sd">        The main advantage to this is that it will work if `ra` and `dec` are NumPy arrays, in which</span>
-<span class="sd">        case the output `u`, `v` will also be NumPy arrays.</span>
+<span class="sd">        The main advantage to this is that it will work if ``ra`` and ``dec`` are NumPy arrays, in which</span>
+<span class="sd">        case the output ``u``, ``v`` will also be NumPy arrays.</span>
 
 <span class="sd">        :param ra:          The right ascension in radians to project onto the tangent plane.</span>
 <span class="sd">        :param dec:         The declination in radians to project onto the tangent plane.</span>
-<span class="sd">        :param projection:  The name of the projection to be used. [default: gnomonic, see `project`</span>
+<span class="sd">        :param projection:  The name of the projection to be used. [default: gnomonic, see ``project``</span>
 <span class="sd">                            docstring for other options]</span>
 
 <span class="sd">        :returns: (u,v) in radians</span>
@@ -680,7 +751,7 @@
 <span class="sd">                            instance)</span>
 <span class="sd">        :param v:           The v position on the tangent plane to deproject (must be an Angle</span>
 <span class="sd">                            instance)</span>
-<span class="sd">        :param projection:  The name of the projection to be used. [default: gnomonic, see `project`</span>
+<span class="sd">        :param projection:  The name of the projection to be used. [default: gnomonic, see ``project``</span>
 <span class="sd">                            docstring for other options]</span>
 
 <span class="sd">        :returns: the corresponding CelestialCoord for that position.</span>
@@ -694,16 +765,16 @@
         <span class="k">return</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="n">_Angle</span><span class="p">(</span><span class="n">ra</span><span class="p">),</span> <span class="n">_Angle</span><span class="p">(</span><span class="n">dec</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="CelestialCoord.deproject_rad"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.deproject_rad">[docs]</a>    <span class="k">def</span> <span class="nf">deproject_rad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;This is basically identical to the deproject() function except that the output `ra`,</span>
-<span class="sd">        `dec` are returned as a tuple (ra, dec) in radians rather than packaged as a CelestialCoord</span>
-<span class="sd">        object and `u` and `v` are in radians rather than Angle instances.</span>
+        <span class="sd">&quot;&quot;&quot;This is basically identical to the deproject() function except that the output ``ra``,</span>
+<span class="sd">        ``dec`` are returned as a tuple (ra, dec) in radians rather than packaged as a CelestialCoord</span>
+<span class="sd">        object and ``u`` and ``v`` are in radians rather than Angle instances.</span>
 
-<span class="sd">        The main advantage to this is that it will work if `u` and `v` are NumPy arrays, in which</span>
-<span class="sd">        case the output `ra`, `dec` will also be NumPy arrays.</span>
+<span class="sd">        The main advantage to this is that it will work if ``u`` and ``v`` are NumPy arrays, in which</span>
+<span class="sd">        case the output ``ra``, ``dec`` will also be NumPy arrays.</span>
 
 <span class="sd">        :param u:           The u position in radians on the tangent plane to deproject</span>
 <span class="sd">        :param v:           The v position in radians on the tangent plane to deproject</span>
-<span class="sd">        :param projection:  The name of the projection to be used. [default: gnomonic, see `project`</span>
+<span class="sd">        :param projection:  The name of the projection to be used. [default: gnomonic, see ``project``</span>
 <span class="sd">                            docstring for other options]</span>
 
 <span class="sd">        :returns: the corresponding RA, Dec in radians</span>
@@ -796,7 +867,7 @@
 
 <span class="sd">        :param u:           The u position (as an Angle instance) on the tangent plane</span>
 <span class="sd">        :param v:           The v position (as an Angle instance) on the tangent plane</span>
-<span class="sd">        :param projection:  The name of the projection to be used. [default: gnomonic, see `project`</span>
+<span class="sd">        :param projection:  The name of the projection to be used. [default: gnomonic, see ``project``</span>
 <span class="sd">                            docstring for other options]</span>
 
 <span class="sd">        :returns: the Jacobian as a 2x2 numpy array [[J00, J01], [J10, J11]]</span>
@@ -806,7 +877,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_jac_deproject</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">rad</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">rad</span><span class="p">,</span> <span class="n">projection</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CelestialCoord.jac_deproject_rad"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.jac_deproject_rad">[docs]</a>    <span class="k">def</span> <span class="nf">jac_deproject_rad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Equivalent to `jac_deproject`, but the inputs are in radians and may be numpy</span>
+        <span class="sd">&quot;&quot;&quot;Equivalent to ``jac_deproject``, but the inputs are in radians and may be numpy</span>
 <span class="sd">        arrays.</span>
 
 <span class="sd">        :param u:           The u position (in radians) on the tangent plane</span>
@@ -1004,12 +1075,12 @@
 <div class="viewcode-block" id="CelestialCoord.ecliptic"><a class="viewcode-back" href="../../celestial.html#coord.CelestialCoord.ecliptic">[docs]</a>    <span class="k">def</span> <span class="nf">ecliptic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epoch</span><span class="o">=</span><span class="mf">2000.</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the longitude and latitude in ecliptic coordinates corresponding to this position.</span>
 
-<span class="sd">        The `epoch` parameter is used to get an accurate value for the (time-varying) obliquity of</span>
+<span class="sd">        The ``epoch`` parameter is used to get an accurate value for the (time-varying) obliquity of</span>
 <span class="sd">        the ecliptic.  The formulae for this are quite straightforward.  It requires just a single</span>
 <span class="sd">        parameter for the transformation, the obliquity of the ecliptic (the Earth&#39;s axial tilt).</span>
 
 <span class="sd">        :param epoch:       The epoch to be used for estimating the obliquity of the ecliptic, if</span>
-<span class="sd">                            `date` is None.  But if `date` is given, then use that to determine the</span>
+<span class="sd">                            ``date`` is None.  But if ``date`` is given, then use that to determine the</span>
 <span class="sd">                            epoch.  [default: 2000.]</span>
 <span class="sd">        :param date:        If a date is given as a python datetime object, then return the</span>
 <span class="sd">                            position in ecliptic coordinates with respect to the sun position at</span>
@@ -1052,7 +1123,7 @@
 <span class="sd">        :param lam:         The longitude in ecliptic coordinates (an Angle instance)</span>
 <span class="sd">        :param beta:        The latitude in ecliptic coordinates (an Angle instance)</span>
 <span class="sd">        :param epoch:       The epoch to be used for estimating the obliquity of the ecliptic, if</span>
-<span class="sd">                            `date` is None.  But if `date` is given, then use that to determine the</span>
+<span class="sd">                            ``date`` is None.  But if ``date`` is given, then use that to determine the</span>
 <span class="sd">                            epoch.  [default: 2000.]</span>
 <span class="sd">        :param date:        If a date is given as a python datetime object, then return the</span>
 <span class="sd">                            position in ecliptic coordinates with respect to the sun position at</span>
@@ -1119,13 +1190,13 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Coord 1.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Coord 1.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, LSST DESC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
     </div>
   </body>
 </html>

@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>coord.angle &#8212; Coord 1.1 documentation</title>
+    <meta charset="utf-8" />
+    <title>coord.angle &#8212; Coord 1.2 documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -24,20 +22,18 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Coord 1.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Coord 1.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -121,7 +117,7 @@
 
 <span class="sd">            &gt;&gt;&gt; theta = 90 * degrees</span>
 <span class="sd">            &gt;&gt;&gt; print(theta.rad)</span>
-<span class="sd">            1.57079632679</span>
+<span class="sd">            1.5707963267948966</span>
 
 <span class="sd">        It is equivalent to the more verbose:</span>
 
@@ -129,7 +125,7 @@
 
 <span class="sd">            &gt;&gt;&gt; x = theta / radians</span>
 <span class="sd">            &gt;&gt;&gt; print(x)</span>
-<span class="sd">            1.57079632679</span>
+<span class="sd">            1.5707963267948966</span>
 
 <span class="sd">        but without actually requiring the floating point operation of dividing by 1.</span>
 
@@ -138,7 +134,7 @@
 <span class="sd">        Allowed arithmetic with Angles include the following.</span>
 <span class="sd">        In the list below,</span>
 
-<span class="sd">            - ``x`` is an arbitrary `float` value</span>
+<span class="sd">            - ``x`` is an arbitrary ``float`` value</span>
 <span class="sd">            - ``unit1`` and ``unit2`` are arbitrary `AngleUnit` instances</span>
 <span class="sd">            - ``theta1`` and ``theta2`` are arbitrary `Angle` instances</span>
 
@@ -228,6 +224,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rad</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">deg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the Angle in degrees.</span>
+
+<span class="sd">        Equivalent to angle / coord.degrees</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">/</span> <span class="n">degrees</span>
+
     <span class="k">def</span> <span class="nf">__neg__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">_Angle</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_rad</span><span class="p">)</span>
 
@@ -268,8 +272,8 @@
 
 <span class="sd">            &gt;&gt;&gt; theta = Angle(700 * degrees)</span>
 <span class="sd">            &gt;&gt;&gt; theta = theta.wrap()</span>
-<span class="sd">            &gt;&gt;&gt; print(theta / degrees)</span>
-<span class="sd">            -20.0</span>
+<span class="sd">            &gt;&gt;&gt; print(theta.deg)</span>
+<span class="sd">            -19.99999999999998</span>
 
 <span class="sd">        This could be appropriate before testing for the equality of two angles for example, or</span>
 <span class="sd">        calculating the difference between them.</span>
@@ -331,6 +335,26 @@
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Angle</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Cannot compare </span><span class="si">%s</span><span class="s2"> of type </span><span class="si">%s</span><span class="s2"> to an Angle&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">other</span><span class="p">,</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rad</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">_rad</span>
+
+    <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Angle</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Cannot compare </span><span class="si">%s</span><span class="s2"> of type </span><span class="si">%s</span><span class="s2"> to an Angle&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">other</span><span class="p">,</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rad</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">_rad</span>
+
+    <span class="k">def</span> <span class="nf">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Angle</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Cannot compare </span><span class="si">%s</span><span class="s2"> of type </span><span class="si">%s</span><span class="s2"> to an Angle&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">other</span><span class="p">,</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rad</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">_rad</span>
+
+    <span class="k">def</span> <span class="nf">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Angle</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Cannot compare </span><span class="si">%s</span><span class="s2"> of type </span><span class="si">%s</span><span class="s2"> to an Angle&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">other</span><span class="p">,</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rad</span> <span class="o">&gt;</span> <span class="n">other</span><span class="o">.</span><span class="n">_rad</span>
+
     <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="s1">&#39;coord.Angle&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rad</span><span class="p">))</span>
 
@@ -391,7 +415,7 @@
 <span class="sd">        An optional ``sep`` parameter can change the : to something else (e.g. a space or</span>
 <span class="sd">        nothing at all).</span>
 
-<span class="sd">        Note: the reverse process is effected by `from_hms`:</span>
+<span class="sd">        Note: the reverse process is effected by :meth:`Angle.from_hms`:</span>
 
 <span class="sd">            ..</span>
 
@@ -401,7 +425,7 @@
 <span class="sd">            -05:21:25.2</span>
 <span class="sd">            &gt;&gt;&gt; angle2 = Angle.from_hms(hms)</span>
 <span class="sd">            &gt;&gt;&gt; print(angle2 / hours)</span>
-<span class="sd">            -5.357</span>
+<span class="sd">            -5.356999999999999</span>
 
 <span class="sd">        :param sep:         The token to put between the hh and mm and beteen mm and ss.  This may</span>
 <span class="sd">                            also be a string of 2 or 3 items, e.g. &#39;hm&#39; or &#39;hms&#39;.  Or even a</span>
@@ -426,7 +450,7 @@
 <span class="sd">        An optional ``sep`` parameter can change the : to something else (e.g. a space or</span>
 <span class="sd">        nothing at all).</span>
 
-<span class="sd">        Note: the reverse process is effected by ``from_dms``:</span>
+<span class="sd">        Note: the reverse process is effected by :meth:`Angle.from_dms`:</span>
 
 <span class="sd">            ..</span>
 
@@ -436,7 +460,7 @@
 <span class="sd">            -05:21:25.2</span>
 <span class="sd">            &gt;&gt;&gt; angle2 = Angle.from_dms(dms)</span>
 <span class="sd">            &gt;&gt;&gt; print(angle2 / degrees)</span>
-<span class="sd">            -5.357</span>
+<span class="sd">            -5.356999999999999</span>
 
 <span class="sd">        :param sep:         The token to put between the hh and mm and beteen mm and ss.  This may</span>
 <span class="sd">                            also be a string of 2 or 3 items, e.g. &#39;dm&#39; or &#39;dms&#39;.  Or even a</span>
@@ -475,7 +499,7 @@
 <span class="sd">            -05:21:25.2</span>
 <span class="sd">            &gt;&gt;&gt; angle2 = Angle.from_hms(hms)</span>
 <span class="sd">            &gt;&gt;&gt; print(angle2 / hours)</span>
-<span class="sd">            -5.357</span>
+<span class="sd">            -5.356999999999999</span>
 
 <span class="sd">        :param str:     The string to parse.</span>
 
@@ -502,7 +526,7 @@
 <span class="sd">            -05:21:25.2</span>
 <span class="sd">            &gt;&gt;&gt; angle2 = Angle.from_dms(dms)</span>
 <span class="sd">            &gt;&gt;&gt; print(angle2 / degrees)</span>
-<span class="sd">            -5.357</span>
+<span class="sd">            -5.356999999999999</span>
 
 <span class="sd">        :param str:     The string to parse.</span>
 
@@ -561,13 +585,13 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Coord 1.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Coord 1.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, LSST DESC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
     </div>
   </body>
 </html>
