@@ -22,6 +22,13 @@ Code Documentation
     celestial
     util
 
+Revision History
+================
+
+.. toctree::
+
+    history
+
 Indices and tables
 ==================
 
