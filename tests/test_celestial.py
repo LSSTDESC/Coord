@@ -404,6 +404,111 @@ def test_angleBetween():
             tan(E/4)**2,
             (s/2).tan() * ((s-a)/2).tan() * ((s-b)/2).tan() * ((s-c)/2).tan(), decimal=12)
 
+@timer
+def test_greatcircle():
+    """Test the greatCirclePoint function.
+    """
+    # First, let's test some simple great circles:
+
+    # Equator:
+    eq1 = coord.CelestialCoord(0 * radians, 0 * radians)  # point on the equator
+    eq2 = coord.CelestialCoord(1 * radians, 0 * radians)  # 1 radian along equator
+    eq3 = coord.CelestialCoord(pi * radians, 0 * radians)  # antipode of eq1
+    for t in [1.e-3, 0.1, 0.432423, pi, 2*pi, 50]:
+        theta = t * radians
+        point = eq1.greatCirclePoint(eq2, theta)
+        np.testing.assert_almost_equal(point.ra.wrap(theta).rad, t)
+        np.testing.assert_almost_equal(point.dec.rad, 0.)
+
+        point = eq3.greatCirclePoint(eq2, (pi-t) * radians)
+        np.testing.assert_almost_equal(point.ra.wrap(theta).rad, t)
+        np.testing.assert_almost_equal(point.dec.rad, 0.)
+
+    np.testing.assert_raises(ValueError, eq1.greatCirclePoint, eq1, theta)
+    np.testing.assert_raises(ValueError, eq2.greatCirclePoint, eq2, theta)
+    # eq1 -> eq3 doesn't trigger this due to rounding errors (y is not exactly 0).
+    # But if we explicitly form eq3 from x,y,z with y=0, it works.
+    eq3b = coord.CelestialCoord.from_xyz(-1, 0, 0)
+    np.testing.assert_raises(ValueError, eq1.greatCirclePoint, eq3b, theta)
+
+    # Meridian
+    north_pole = coord.CelestialCoord(0 * radians, pi/2 * radians)  # north pole
+    south_pole = coord.CelestialCoord(0 * radians, -pi/2 * radians) # south pole
+    for t in [1.e-3, 0.1, 0.432423, pi/2.-1.e-3]:
+        point = eq2.greatCirclePoint(north_pole, t * radians)
+        np.testing.assert_almost_equal(point.ra.rad, 1.)
+        np.testing.assert_almost_equal(point.dec.rad, t)
+
+        point = eq2.greatCirclePoint(south_pole, t * radians)
+        np.testing.assert_almost_equal(point.ra.rad, 1.)
+        np.testing.assert_almost_equal(point.dec.rad, -t)
+
+        point = eq2.greatCirclePoint(north_pole, (pi/2+t) * radians)
+        np.testing.assert_almost_equal(point.ra.rad, 1.+pi)
+        np.testing.assert_almost_equal(point.dec.rad, pi/2-t)
+
+        point = eq2.greatCirclePoint(north_pole, (pi+t) * radians)
+        np.testing.assert_almost_equal(point.ra.rad, 1.+pi)
+        np.testing.assert_almost_equal(point.dec.rad, -t)
+
+    # With t = pi/2, it gets to the pole itself (and ra is arbitrary)
+    point = eq1.greatCirclePoint(north_pole, 90 * degrees)
+    np.testing.assert_almost_equal(point.dec.deg, 90)
+    point = eq2.greatCirclePoint(north_pole, 90 * degrees)
+    np.testing.assert_almost_equal(point.dec.deg, 90)
+    point = eq3.greatCirclePoint(north_pole, 90 * degrees)
+    np.testing.assert_almost_equal(point.dec.deg, 90)
+    point = eq1.greatCirclePoint(south_pole, 90 * degrees)
+    np.testing.assert_almost_equal(point.dec.deg, -90)
+    point = eq2.greatCirclePoint(south_pole, 90 * degrees)
+    np.testing.assert_almost_equal(point.dec.deg, -90)
+    point = eq3.greatCirclePoint(south_pole, 90 * degrees)
+    np.testing.assert_almost_equal(point.dec.deg, -90)
+
+    # Two random points
+    c1 = coord.CelestialCoord(0.234 * radians, 0.342 * radians)
+    c2 = coord.CelestialCoord(0.822 * radians, -0.712 * radians)
+
+    # Some combinations give back c1 or c2
+    p = c1.greatCirclePoint(c2, 0*degrees)
+    np.testing.assert_almost_equal(p.ra.deg, c1.ra.deg)
+    np.testing.assert_almost_equal(p.dec.deg, c1.dec.deg)
+
+    p = c1.greatCirclePoint(c2, c1.distanceTo(c2))
+    np.testing.assert_almost_equal(p.ra.deg, c2.ra.deg)
+    np.testing.assert_almost_equal(p.dec.deg, c2.dec.deg)
+
+    p = c2.greatCirclePoint(c1, c1.distanceTo(c2))
+    np.testing.assert_almost_equal(p.ra.deg, c1.ra.deg)
+    np.testing.assert_almost_equal(p.dec.deg, c1.dec.deg)
+
+    p = c2.greatCirclePoint(c1, 360*degrees)
+    np.testing.assert_almost_equal(p.ra.deg, c2.ra.deg)
+    np.testing.assert_almost_equal(p.dec.deg, c2.dec.deg)
+
+    # 180 degrees hits the antipode
+    p = c1.greatCirclePoint(c2, 180*degrees)
+    np.testing.assert_almost_equal(p.ra.deg, c1.ra.deg+180)
+    np.testing.assert_almost_equal(p.dec.deg, -c1.dec.deg)
+
+    p = c2.greatCirclePoint(c1, 180*degrees)
+    np.testing.assert_almost_equal(p.ra.deg, c2.ra.deg+180)
+    np.testing.assert_almost_equal(p.dec.deg, -c2.dec.deg)
+
+    full = c1.distanceTo(c2).deg
+    for t in [1, 21, 29, 55, 67]:
+        # c1,c2s are about 68 degrees apart.  For theta < 68, the point is between c1 and c2.
+        p = c1.greatCirclePoint(c2, t*degrees)
+        np.testing.assert_almost_equal(c1.distanceTo(p).deg + c2.distanceTo(p).deg, full)
+
+        # Negative theta is on the c1 side of the arc
+        p = c1.greatCirclePoint(c2, -t*degrees)
+        np.testing.assert_almost_equal(c1.distanceTo(p).deg + full,  c2.distanceTo(p).deg)
+
+        # More than 68 is on the c2 side of the arc
+        p = c1.greatCirclePoint(c2, (full + t)*degrees)
+        np.testing.assert_almost_equal(c1.distanceTo(p).deg,  full + c2.distanceTo(p).deg)
+
 
 @timer
 def test_gnomonic_projection():
@@ -998,6 +1103,7 @@ if __name__ == '__main__':
     test_xyz()
     test_xyz_array()
     test_angleBetween()
+    test_greatcircle()
     test_gnomonic_projection()
     test_stereographic_projection()
     test_lambert_projection()

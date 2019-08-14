@@ -309,11 +309,25 @@ class CelestialCoord(object):
         """
         return _CelestialCoord(self.ra.wrap(_Angle(math.pi)), self.dec)
 
+    @staticmethod
+    def _raw_dsq(c1, c2):
+        # Compute the raw dsq between two coordinates.
+        # Both are expected to already have _set_aux() called.
+        return (c1._x-c2._x)**2 + (c1._y-c2._y)**2 + (c1._z-c2._z)**2
+
+    @staticmethod
+    def _raw_cross(c1, c2):
+        # Compute the raw cross product between two coordinates.
+        # Both are expected to already have _set_aux() called.
+        return (c1._y * c2._z - c2._y * c1._z,
+                c1._z * c2._x - c2._z * c1._x,
+                c1._x * c2._y - c2._x * c1._y)
+
     def distanceTo(self, coord2):
         """Returns the great circle distance between this coord and another one.
         The return value is an Angle object
 
-        :param coord2:      The CelestialCoordinate to calculate the distance to.
+        :param coord2:      The CelestialCoord to calculate the distance to.
 
         :returns: the great circle distance to ``coord2``.
         """
@@ -331,8 +345,7 @@ class CelestialCoord(object):
         # The direct distance between the two points is
         #
         # d^2 = (x1-x2)^2 + (y1-y2)^2 + (z1-z2)^2
-
-        dsq = (self._x-coord2._x)**2 + (self._y-coord2._y)**2 + (self._z-coord2._z)**2
+        dsq = self._raw_dsq(self, coord2)
 
         if dsq < 3.99:
             # (The usual case.  This formula is perfectly stable here.)
@@ -344,12 +357,73 @@ class CelestialCoord(object):
         else:
             # Points are nearly antipodes where the accuracy of this formula starts to break down.
             # But in this case, the cross product provides an accurate distance.
-            crosssq = ((coord2._y * self._z - coord2._z * self._y)**2 +
-                       (coord2._z * self._x - coord2._x * self._z)**2 +
-                       (coord2._x * self._y - coord2._y * self._x)**2)
+            cx, cy, cz = self._raw_cross(self, coord2)
+            crosssq = cx**2 + cy**2 + cz**2
             theta = math.pi - math.asin(math.sqrt(crosssq))
 
         return _Angle(theta)
+
+    def greatCirclePoint(self, coord2, theta):
+        """Returns a point on the great circle connecting self and coord2.
+
+        Two points, c1 and c2, on the unit sphere define a great circle (so long as the two points
+        are not either coincident or antipodal).  We can define points on this great circle by
+        their angle from c1, such that the angle for c2 has 0 < theta2 < pi.  I.e. theta increases
+        from 0 as the points move from c1 towards c2.
+
+        This function then returns the coordinate on this great circle (where c1 is ``self`` and
+        c2 is ``coord2``) that corresponds to the given angle ``theta``.
+
+        :param coord2:      Another CelestialCoord defining the great circle to use.
+        :param theta:       The Angle along the great circle corresponding to the desired point.
+
+        :returns: the corresponding CelestialCoord
+        """
+        self._set_aux()
+        coord2._set_aux()
+
+        # Define u = self
+        #        v = coord2
+        #        w = (u x v) x u
+        # The great circle through u and v is then
+        #
+        #   R(t) = u cos(t) + w sin(t)
+        #
+        # Rather than directly calculate (u x v) x u, let's do some simplification first.
+        # u x v = ( uy vz - uz vy )
+        #         ( uz vx - ux vz )
+        #         ( ux vy - uy vx )
+        # wx = (u x v)_y uz - (u x v)_z uy
+        #    = (uz vx - ux vz) uz - (ux vy - uy vx) uy
+        #    = vx uz^2 - vz ux uz - vy ux uy + vx uy^2
+        #    = vx (1 - ux^2) - ux (uz vz + uy vy)
+        #    = vx - ux (u . v)
+        #    = vx - ux (1 - d^2/2)
+        #    = vx - ux + ux d^2/2
+        # wy = vy - uy + uy d^2/2
+        # wz = vz - uz + uz d^2/2
+
+        dsq = self._raw_dsq(self, coord2)
+
+        # These are unnormalized yet.
+        wx = coord2._x - self._x + self._x * dsq/2.
+        wy = coord2._y - self._y + self._y * dsq/2.
+        wz = coord2._z - self._z + self._z * dsq/2.
+
+        # Normalize
+        wr = (wx**2 + wy**2 + wz**2)**0.5
+        if wr == 0.:
+            raise ValueError("coord2 does not define a unique great circle with self.")
+        wx /= wr
+        wy /= wr
+        wz /= wr
+
+        # R(theta)
+        s, c = theta.sincos()
+        rx = self._x * c + wx * s
+        ry = self._y * c + wy * s
+        rz = self._z * c + wz * s
+        return CelestialCoord.from_xyz(rx,ry,rz)
 
 
     def _triple(self, coord2, coord3):
