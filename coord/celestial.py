@@ -80,7 +80,7 @@ class CelestialCoord(object):
             >>> b = cC.distanceTo(cA)
             >>> c = cA.distanceTo(cB)
             >>> print(a.deg, b.deg, c.deg)
-            14.106044260566367 10.0 10.0
+            14.106044260566366 10.0 10.0
             >>> A = cA.angleBetween(cB, cC)
             >>> B = cB.angleBetween(cC, cA)
             >>> C = cC.angleBetween(cA, cB)
@@ -101,7 +101,7 @@ class CelestialCoord(object):
             coord.CelestialCoord(2.748893571891069 radians, 0.5410520681182421 radians)
             >>> u, v = center.project(sky_coord)
             >>> print(u.deg, v.deg)
-            -6.452371275343265 1.2179498728863534
+            -6.452371275343261 1.21794987288635
 
         and back:
 
@@ -109,7 +109,7 @@ class CelestialCoord(object):
 
             >>> sky_coord = center.deproject(u,v)
             >>> print(sky_coord)
-            coord.CelestialCoord(2.748893571891069 radians, 0.5410520681182422 radians)
+            coord.CelestialCoord(2.748893571891069 radians, 0.5410520681182421 radians)
 
         where u and v are Angles and center and sky_coord are CelestialCoords.
     """
@@ -232,10 +232,10 @@ class CelestialCoord(object):
             >>> dec = 31*degrees/radians    # in radians
 
             >>> CelestialCoord.radec_to_xyz(ra, dec)
-            (-0.85716730070211233, 1.0497271911386187e-16, 0.51503807491005416)
+            (-0.8571673007021123, 1.0497271911386187e-16, 0.5150380749100542)
 
             >>> CelestialCoord(ra * radians, dec * radians).get_xyz()
-            (-0.85716730070211233, 1.0497271911386187e-16, 0.51503807491005416)
+            (-0.8571673007021123, 1.0497271911386187e-16, 0.5150380749100542)
 
         However, the advantage of this function is that the input values may be numpy
         arrays, in which case, the return values will also be numpy arrays.
