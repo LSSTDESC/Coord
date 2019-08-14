@@ -44,7 +44,7 @@ class CelestialCoord(object):
 
             >>> c = CelestialCoord(ra=12*hours, dec=31*degrees)
             >>> print(c)
-            coord.CelestialCoord(3.14159265359 radians, 0.541052068118 radians)
+            coord.CelestialCoord(3.141592653589793 radians, 0.5410520681182421 radians)
 
     **Attributes:**
 
@@ -79,13 +79,14 @@ class CelestialCoord(object):
             >>> a = cB.distanceTo(cC)
             >>> b = cC.distanceTo(cA)
             >>> c = cA.distanceTo(cB)
-            >>> print(a / degrees, b / degrees, c / degrees)
-            14.1060442606 10.0 10.0
+            >>> print(a.deg, b.deg, c.deg)
+            14.106044260566367 10.0 10.0
             >>> A = cA.angleBetween(cB, cC)
             >>> B = cB.angleBetween(cC, cA)
             >>> C = cC.angleBetween(cA, cB)
-            >>> print(A / degrees, B / degrees, C / degrees)
-            90.0 45.4385485867 45.4385485867
+            >>> print(A.deg, B.deg, C.deg)
+            90.0 45.43854858674231 45.43854858674231
+
 
     **Projections:**
 
@@ -97,10 +98,10 @@ class CelestialCoord(object):
             >>> center = CelestialCoord(ra=10*hours, dec=30*degrees)
             >>> sky_coord = CelestialCoord(ra=10.5*hours, dec=31*degrees)
             >>> print(sky_coord)
-            coord.CelestialCoord(2.74889357189 radians, 0.541052068118 radians)
+            coord.CelestialCoord(2.748893571891069 radians, 0.5410520681182421 radians)
             >>> u, v = center.project(sky_coord)
-            >>> print(u / degrees, v / degrees)
-            -6.45237127534 1.21794987289
+            >>> print(u.deg, v.deg)
+            -6.452371275343265 1.2179498728863534
 
         and back:
 
@@ -108,7 +109,7 @@ class CelestialCoord(object):
 
             >>> sky_coord = center.deproject(u,v)
             >>> print(sky_coord)
-            coord.CelestialCoord(2.74889357189 radians, 0.541052068118 radians)
+            coord.CelestialCoord(2.748893571891069 radians, 0.5410520681182422 radians)
 
         where u and v are Angles and center and sky_coord are CelestialCoords.
     """
