@@ -68,7 +68,7 @@ class Angle(object):
 
             >>> theta = 90 * degrees
             >>> print(theta.rad)
-            1.57079632679
+            1.5707963267948966
 
         It is equivalent to the more verbose:
 
@@ -76,7 +76,7 @@ class Angle(object):
 
             >>> x = theta / radians
             >>> print(x)
-            1.57079632679
+            1.5707963267948966
 
         but without actually requiring the floating point operation of dividing by 1.
 
@@ -223,8 +223,8 @@ class Angle(object):
 
             >>> theta = Angle(700 * degrees)
             >>> theta = theta.wrap()
-            >>> print(theta / degrees)
-            -20.0
+            >>> print(theta.deg)
+            -19.99999999999998
 
         This could be appropriate before testing for the equality of two angles for example, or
         calculating the difference between them.
@@ -376,7 +376,7 @@ class Angle(object):
             -05:21:25.2
             >>> angle2 = Angle.from_hms(hms)
             >>> print(angle2 / hours)
-            -5.357
+            -5.356999999999999
 
         :param sep:         The token to put between the hh and mm and beteen mm and ss.  This may
                             also be a string of 2 or 3 items, e.g. 'hm' or 'hms'.  Or even a
@@ -411,7 +411,7 @@ class Angle(object):
             -05:21:25.2
             >>> angle2 = Angle.from_dms(dms)
             >>> print(angle2 / degrees)
-            -5.357
+            -5.356999999999999
 
         :param sep:         The token to put between the hh and mm and beteen mm and ss.  This may
                             also be a string of 2 or 3 items, e.g. 'dm' or 'dms'.  Or even a
@@ -450,7 +450,7 @@ class Angle(object):
             -05:21:25.2
             >>> angle2 = Angle.from_hms(hms)
             >>> print(angle2 / hours)
-            -5.357
+            -5.356999999999999
 
         :param str:     The string to parse.
 
@@ -477,7 +477,7 @@ class Angle(object):
             -05:21:25.2
             >>> angle2 = Angle.from_dms(dms)
             >>> print(angle2 / degrees)
-            -5.357
+            -5.356999999999999
 
         :param str:     The string to parse.
 

@@ -31,7 +31,7 @@ script:
     - cd tests
     - nosetests -v --with-coverage --cover-package=coord
     # Only do doctests on one version, since number of digits output varies between python 2 and 3
-    - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then nosetests -v --with-coverage --cover-package=coord --with-doctest --where=../coord; fi
+    - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then nosetests -v --with-coverage --cover-package=coord --with-doctest --where=../coord; fi
 
 after_success:
     - codecov
