@@ -7,12 +7,12 @@
     <title>Celestial Coordinates &#8212; Coord 1.2 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Utility Functions" href="util.html" />
@@ -57,7 +57,7 @@
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
 
@@ -81,7 +81,7 @@ spherical triangles, projecting from sky coordinates onto a Euclidean tangent pl
 <div><p>A <cite>CelestialCoord</cite> object is constructed from the right ascension and declination:</p>
 <blockquote>
 <div><p><a class="reference internal" href="#coord.CelestialCoord.__init__" title="coord.CelestialCoord.__init__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">coord.CelestialCoord.__init__()</span></code></a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mi">12</span><span class="o">*</span><span class="n">hours</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="mi">31</span><span class="o">*</span><span class="n">degrees</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mi">12</span><span class="o">*</span><span class="n">hours</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="mi">31</span><span class="o">*</span><span class="n">degrees</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 <span class="go">coord.CelestialCoord(3.141592653589793 radians, 0.5410520681182421 radians)</span>
 </pre></div>
@@ -100,7 +100,7 @@ spherical triangles, projecting from sky coordinates onto a Euclidean tangent pl
 <dd class="field-even"><p>The declination (an Angle instance)</p>
 </dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">ra</span> <span class="o">/</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">dec</span> <span class="o">/</span> <span class="n">degrees</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">ra</span> <span class="o">/</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">dec</span> <span class="o">/</span> <span class="n">degrees</span><span class="p">)</span>
 <span class="go">180.0 31.0</span>
 </pre></div>
 </div>
@@ -112,7 +112,7 @@ spherical triangles, projecting from sky coordinates onto a Euclidean tangent pl
 <dd class="field-odd"><p>A tuple (ra.rad, dec.rad)</p>
 </dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">rad</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">rad</span><span class="p">)</span>
 <span class="go">(3.141592653589793, 0.5410520681182421)</span>
 </pre></div>
 </div>
@@ -128,7 +128,7 @@ sides and angles via:</p>
 <div class="line"><a class="reference internal" href="#coord.CelestialCoord.distanceTo" title="coord.CelestialCoord.distanceTo"><code class="xref py py-meth docutils literal notranslate"><span class="pre">coord.CelestialCoord.distanceTo()</span></code></a></div>
 <div class="line"><a class="reference internal" href="#coord.CelestialCoord.angleBetween" title="coord.CelestialCoord.angleBetween"><code class="xref py py-meth docutils literal notranslate"><span class="pre">coord.CelestialCoord.angleBetween()</span></code></a></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cA</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">,</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cA</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">,</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cB</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cC</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">,</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">cB</span><span class="o">.</span><span class="n">distanceTo</span><span class="p">(</span><span class="n">cC</span><span class="p">)</span>
@@ -151,7 +151,7 @@ sides and angles via:</p>
 method:</p>
 <blockquote>
 <div><p><a class="reference internal" href="#coord.CelestialCoord.project" title="coord.CelestialCoord.project"><code class="xref py py-meth docutils literal notranslate"><span class="pre">coord.CelestialCoord.project()</span></code></a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">center</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mi">10</span><span class="o">*</span><span class="n">hours</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="mi">30</span><span class="o">*</span><span class="n">degrees</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">center</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mi">10</span><span class="o">*</span><span class="n">hours</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="mi">30</span><span class="o">*</span><span class="n">degrees</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sky_coord</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mf">10.5</span><span class="o">*</span><span class="n">hours</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="mi">31</span><span class="o">*</span><span class="n">degrees</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sky_coord</span><span class="p">)</span>
 <span class="go">coord.CelestialCoord(2.748893571891069 radians, 0.5410520681182421 radians)</span>
@@ -164,7 +164,7 @@ method:</p>
 <p>and back:</p>
 <blockquote>
 <div><p><a class="reference internal" href="#coord.CelestialCoord.deproject" title="coord.CelestialCoord.deproject"><code class="xref py py-meth docutils literal notranslate"><span class="pre">coord.CelestialCoord.deproject()</span></code></a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sky_coord</span> <span class="o">=</span> <span class="n">center</span><span class="o">.</span><span class="n">deproject</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sky_coord</span> <span class="o">=</span> <span class="n">center</span><span class="o">.</span><span class="n">deproject</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sky_coord</span><span class="p">)</span>
 <span class="go">coord.CelestialCoord(2.748893571891069 radians, 0.5410520681182421 radians)</span>
 </pre></div>
@@ -255,15 +255,15 @@ z &amp;= r \sin(dec)\end{split}\]</div>
 </pre></div>
 </div>
 <p>For a single ra,dec pair, the following are essentially equivalent:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ra</span> <span class="o">=</span> <span class="mi">12</span><span class="o">*</span><span class="n">hours</span><span class="o">/</span><span class="n">radians</span>       <span class="c1"># May be any angle measured</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ra</span> <span class="o">=</span> <span class="mi">12</span><span class="o">*</span><span class="n">hours</span><span class="o">/</span><span class="n">radians</span>       <span class="c1"># May be any angle measured</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="mi">31</span><span class="o">*</span><span class="n">degrees</span><span class="o">/</span><span class="n">radians</span>    <span class="c1"># in radians</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">CelestialCoord</span><span class="o">.</span><span class="n">radec_to_xyz</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">CelestialCoord</span><span class="o">.</span><span class="n">radec_to_xyz</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
 <span class="go">(-0.8571673007021123, 1.0497271911386187e-16, 0.5150380749100542)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">CelestialCoord</span><span class="p">(</span><span class="n">ra</span> <span class="o">*</span> <span class="n">radians</span><span class="p">,</span> <span class="n">dec</span> <span class="o">*</span> <span class="n">radians</span><span class="p">)</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">CelestialCoord</span><span class="p">(</span><span class="n">ra</span> <span class="o">*</span> <span class="n">radians</span><span class="p">,</span> <span class="n">dec</span> <span class="o">*</span> <span class="n">radians</span><span class="p">)</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">()</span>
 <span class="go">(-0.8571673007021123, 1.0497271911386187e-16, 0.5150380749100542)</span>
 </pre></div>
 </div>
@@ -295,16 +295,16 @@ arrays, in which case, the return values will also be numpy arrays.</p>
 </pre></div>
 </div>
 <p>For a single (x,y,z) position, the following are essentially equivalent:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.839</span>       <span class="c1"># May be any any 3D location</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.839</span>       <span class="c1"># May be any any 3D location</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="mf">0.123</span>       <span class="c1"># Not necessarily on unit sphere</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="mf">0.530</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">CelestialCoord</span><span class="o">.</span><span class="n">xyz_to_radec</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">CelestialCoord</span><span class="o">.</span><span class="n">xyz_to_radec</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
 <span class="go">(0.14556615088111796, 0.558616191048523)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="o">.</span><span class="n">from_xyz</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">CelestialCoord</span><span class="o">.</span><span class="n">from_xyz</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">rad</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">rad</span>
 <span class="go">(0.145566150881118, 0.558616191048523)</span>
 </pre></div>
@@ -728,7 +728,7 @@ that date.  If None, then return the true ecliptic coordiantes.
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, LSST DESC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>
