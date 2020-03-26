@@ -1,0 +1,2 @@
+setupRequired(numpy)
+setupRequired(python_future)
