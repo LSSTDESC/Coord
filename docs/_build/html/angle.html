@@ -7,12 +7,12 @@
     <title>Angles &#8212; Coord 1.2 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Celestial Coordinates" href="celestial.html" />
@@ -57,7 +57,7 @@
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
 
@@ -76,10 +76,10 @@
 <blockquote>
 <div><p>You typically create an Angle by multiplying a number by a coord.AngleUnit, for example:</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pixel</span> <span class="o">=</span> <span class="mf">0.27</span> <span class="o">*</span> <span class="n">arcsec</span>
+<div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pixel</span> <span class="o">=</span> <span class="mf">0.27</span> <span class="o">*</span> <span class="n">arcsec</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ra</span> <span class="o">=</span> <span class="mf">13.4</span> <span class="o">*</span> <span class="n">hours</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="o">-</span><span class="mi">32</span> <span class="o">*</span> <span class="n">degrees</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">pi</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">pi</span><span class="o">/</span><span class="mf">2.</span> <span class="o">*</span> <span class="n">radians</span>
 </pre></div>
 </div>
@@ -87,7 +87,7 @@
 <p>You can also initialize explicitly, taking a value and a unit:</p>
 <blockquote>
 <div><p><a class="reference internal" href="#coord.Angle.__init__" title="coord.Angle.__init__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">coord.Angle.__init__()</span></code></a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">unit</span> <span class="o">=</span> <span class="n">AngleUnit</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1"># gradians</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">unit</span> <span class="o">=</span> <span class="n">AngleUnit</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1"># gradians</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">phi</span> <span class="o">=</span> <span class="n">Angle</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -129,7 +129,7 @@ to do this quickly:</p>
 </div></blockquote>
 <p>For example:</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="mi">90</span> <span class="o">*</span> <span class="n">degrees</span>
+<div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="mi">90</span> <span class="o">*</span> <span class="n">degrees</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">rad</span><span class="p">)</span>
 <span class="go">1.5707963267948966</span>
 </pre></div>
@@ -137,7 +137,7 @@ to do this quickly:</p>
 </div></blockquote>
 <p>It is equivalent to the more verbose:</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="n">radians</span>
+<div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="n">radians</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="go">1.5707963267948966</span>
 </pre></div>
@@ -155,12 +155,12 @@ In the list below,</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">unit1</span></code> and <code class="docutils literal notranslate"><span class="pre">unit2</span></code> are arbitrary <cite>AngleUnit</cite> instances</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">theta1</span></code> and <code class="docutils literal notranslate"><span class="pre">theta2</span></code> are arbitrary <cite>Angle</cite> instances</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="mf">37.8</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="mf">37.8</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">unit1</span> <span class="o">=</span> <span class="n">arcmin</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">unit2</span> <span class="o">=</span> <span class="n">degrees</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">theta1</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">unit1</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">theta1</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">unit1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">theta2</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">unit2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span> <span class="o">=</span> <span class="n">theta1</span> <span class="o">/</span> <span class="n">unit2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">theta1</span> <span class="o">+</span> <span class="n">theta2</span>
@@ -191,7 +191,7 @@ cos separately:</p>
 <div class="line"><a class="reference internal" href="#coord.Angle.tan" title="coord.Angle.tan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">coord.Angle.tan()</span></code></a></div>
 <div class="line"><a class="reference internal" href="#coord.Angle.sincos" title="coord.Angle.sincos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">coord.Angle.sincos()</span></code></a></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sint</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">sin</span><span class="p">()</span>  <span class="c1"># equivalent to sint = math.sin(theta.rad)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sint</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">sin</span><span class="p">()</span>  <span class="c1"># equivalent to sint = math.sin(theta.rad)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cost</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">cos</span><span class="p">()</span>  <span class="c1"># equivalent to cost = math.cos(theta.rad)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tant</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">tan</span><span class="p">()</span>  <span class="c1"># equivalent to tant = math.tan(theta.rad)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sint</span><span class="p">,</span> <span class="n">cost</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">sincos</span><span class="p">()</span>
@@ -200,7 +200,7 @@ cos separately:</p>
 </div></blockquote>
 <p>These functions mean that numpy trig functions will work on Angles or arrays of Angles:</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+<div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cost</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tant</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
 </pre></div>
@@ -213,7 +213,7 @@ cos separately:</p>
 If you want your angles to be wrapped to [-pi,pi) radians, you can do this by calling</p>
 <blockquote>
 <div><p><a class="reference internal" href="#coord.Angle.wrap" title="coord.Angle.wrap"><code class="xref py py-meth docutils literal notranslate"><span class="pre">coord.Angle.wrap()</span></code></a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">wrap</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">wrap</span><span class="p">()</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -256,7 +256,7 @@ the center of the range.</p>
 <p>Depending on the context, theta = 2pi radians and theta = 0 radians are the same thing.
 If you want your angles to be wrapped to [-pi, pi) radians, you can do this as follows:</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">Angle</span><span class="p">(</span><span class="mi">700</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">)</span>
+<div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">Angle</span><span class="p">(</span><span class="mi">700</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">wrap</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
 <span class="go">-19.99999999999998</span>
@@ -269,7 +269,7 @@ calculating the difference between them.</p>
 to be the desired center of the the range.  e.g. for return values to fall in [0, 2pi),
 you could call</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mf">180.</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">)</span>
+<div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mf">180.</span> <span class="o">*</span> <span class="n">degrees</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">theta</span> <span class="o">/</span> <span class="n">degrees</span><span class="p">)</span>
 <span class="go">340.0</span>
 </pre></div>
@@ -318,7 +318,7 @@ you could call</p>
 nothing at all).</p>
 <p>Note: the reverse process is effected by <a class="reference internal" href="#coord.Angle.from_hms" title="coord.Angle.from_hms"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Angle.from_hms()</span></code></a>:</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.357</span> <span class="o">*</span> <span class="n">hours</span>
+<div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.357</span> <span class="o">*</span> <span class="n">hours</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span> <span class="o">=</span> <span class="n">angle</span><span class="o">.</span><span class="n">hms</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">hms</span><span class="p">)</span>
 <span class="go">-05:21:25.2</span>
@@ -356,7 +356,7 @@ An optional <code class="docutils literal notranslate"><span class="pre">sep</sp
 nothing at all).</p>
 <p>Note: the reverse process is effected by <a class="reference internal" href="#coord.Angle.from_dms" title="coord.Angle.from_dms"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Angle.from_dms()</span></code></a>:</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">degrees</span> <span class="o">+</span> <span class="mi">21</span> <span class="o">*</span> <span class="n">arcmin</span> <span class="o">+</span> <span class="mf">25.2</span> <span class="o">*</span> <span class="n">arcsec</span><span class="p">)</span>
+<div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">degrees</span> <span class="o">+</span> <span class="mi">21</span> <span class="o">*</span> <span class="n">arcmin</span> <span class="o">+</span> <span class="mf">25.2</span> <span class="o">*</span> <span class="n">arcsec</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">angle</span><span class="o">.</span><span class="n">dms</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">dms</span><span class="p">)</span>
 <span class="go">-05:21:25.2</span>
@@ -396,7 +396,7 @@ digits.  There may be a colon separating hh, mm, and ss, or whitespace, or nothi
 In fact, the code will ignore any non-digits between the hours, minutes, and seconds.</p>
 <p>Note: the reverse process is effected by Angle.hms():</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.357</span> <span class="o">*</span> <span class="n">hours</span>
+<div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.357</span> <span class="o">*</span> <span class="n">hours</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span> <span class="o">=</span> <span class="n">angle</span><span class="o">.</span><span class="n">hms</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">hms</span><span class="p">)</span>
 <span class="go">-05:21:25.2</span>
@@ -426,7 +426,7 @@ digits.  There may be a colon separating dd, mm, and ss, or whitespace, or nothi
 In fact, the code will ignore any non-digits between the degrees, minutes, and seconds.</p>
 <p>Note: the reverse process is effected by Angle.dms():</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">degrees</span> <span class="o">+</span> <span class="mi">21</span> <span class="o">*</span> <span class="n">arcmin</span> <span class="o">+</span> <span class="mf">25.2</span> <span class="o">*</span> <span class="n">arcsec</span><span class="p">)</span>
+<div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">degrees</span> <span class="o">+</span> <span class="mi">21</span> <span class="o">*</span> <span class="n">arcmin</span> <span class="o">+</span> <span class="mf">25.2</span> <span class="o">*</span> <span class="n">arcsec</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">angle</span><span class="o">.</span><span class="n">dms</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">dms</span><span class="p">)</span>
 <span class="go">-05:21:25.2</span>
@@ -485,7 +485,7 @@ much to be honest, but this is nonetheless slightly quicker).</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, LSST DESC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
     </div>
   </body>
 </html>
