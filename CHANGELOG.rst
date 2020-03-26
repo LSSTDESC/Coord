@@ -8,3 +8,10 @@ New Features
 - Added Angle.deg property
 - Enabled <, >, <=, >= comparisons between Angles
 
+Changes from v1.2.0 to v1.2.1
+=============================
+
+Installation Fix
+----------------
+
+- Fixed failed installation on some new Mac systems due to clang library change.
