@@ -25,7 +25,11 @@ try:
 except ImportError:
     import pickle
 import copy
-from collections import Hashable, Counter
+from collections import Counter
+try:
+    from collections.abc import Hashable
+except ImportError:
+    from collections import Hashable
 import functools
 import time
 import coord

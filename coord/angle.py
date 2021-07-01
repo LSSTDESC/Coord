@@ -490,7 +490,7 @@ class Angle(object):
         """Convert a string of the form dd:mm:ss.decimal into decimal degrees.
         """
         import re
-        tokens = tuple(filter(None, re.split('([\.\d]+)', dms.strip())))
+        tokens = tuple(filter(None, re.split(r'([\.\d]+)', dms.strip())))
         if len(tokens) <= 1:
             raise ValueError("string is not of the expected format")
         sign = 1
