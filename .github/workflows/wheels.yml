@@ -55,7 +55,7 @@ jobs:
         run: |
           python setup.py sdist
           ls -l dist
-          tar tvfz dist/Coord-*.tar.gz
+          tar tvfz dist/LSSTDESC.Coord-*.tar.gz
 
       - name: Copy wheels
         run: |
