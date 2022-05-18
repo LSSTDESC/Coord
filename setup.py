@@ -13,6 +13,7 @@ with open('requirements.txt') as f:
     required = f.read().splitlines()
 
 sources = glob.glob(os.path.join('src','*.cpp'))
+if os.name != 'nt': sources.remove(os.path.join('src','windows.cpp'))
 print('sources = ',sources)
 headers = glob.glob(os.path.join('include','*.h'))
 print('headers = ',headers)
