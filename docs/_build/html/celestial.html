@@ -1,18 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Celestial Coordinates &#8212; Coord 1.2 documentation</title>
-    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Utility Functions" href="util.html" />
@@ -30,36 +30,10 @@
         <li class="right" >
           <a href="angle.html" title="Angles"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Coord 1.2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Coord 1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Celestial Coordinates</a></li> 
       </ul>
-    </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="angle.html"
-                        title="previous chapter">Angles</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="util.html"
-                        title="next chapter">Utility Functions</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/celestial.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
@@ -68,9 +42,9 @@
             
   <div class="section" id="celestial-coordinates">
 <h1>Celestial Coordinates<a class="headerlink" href="#celestial-coordinates" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="coord.CelestialCoord">
-<em class="property">class </em><code class="sig-prename descclassname">coord.</code><code class="sig-name descname">CelestialCoord</code><span class="sig-paren">(</span><em class="sig-param">ra</em>, <em class="sig-param">dec=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">coord.</span></code><code class="sig-name descname"><span class="pre">CelestialCoord</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class defines a position on the celestial sphere, normally given by two angles,
 <code class="docutils literal notranslate"><span class="pre">ra</span></code> and <code class="docutils literal notranslate"><span class="pre">dec</span></code>.</p>
 <p>This class can be used to perform various calculations in spherical coordinates, such
@@ -172,9 +146,9 @@ method:</p>
 </div></blockquote>
 <p>where u and v are Angles and center and sky_coord are CelestialCoords.</p>
 </div></blockquote>
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">ra</em>, <em class="sig-param">dec=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -185,27 +159,27 @@ method:</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.ra">
-<em class="property">property </em><code class="sig-name descname">ra</code><a class="headerlink" href="#coord.CelestialCoord.ra" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">ra</span></code><a class="headerlink" href="#coord.CelestialCoord.ra" title="Permalink to this definition">¶</a></dt>
 <dd><p>A read-only attribute, giving the Right Ascension as an Angle</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.dec">
-<em class="property">property </em><code class="sig-name descname">dec</code><a class="headerlink" href="#coord.CelestialCoord.dec" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dec</span></code><a class="headerlink" href="#coord.CelestialCoord.dec" title="Permalink to this definition">¶</a></dt>
 <dd><p>A read-only attribute, giving the Declination as an Angle</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.rad">
-<em class="property">property </em><code class="sig-name descname">rad</code><a class="headerlink" href="#coord.CelestialCoord.rad" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">rad</span></code><a class="headerlink" href="#coord.CelestialCoord.rad" title="Permalink to this definition">¶</a></dt>
 <dd><p>A convenience property, giving a tuple (ra.rad, dec.rad)</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.get_xyz">
-<code class="sig-name descname">get_xyz</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.get_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.get_xyz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_xyz</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.get_xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.get_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the (x,y,z) coordinates on the unit sphere corresponding to this (RA, Dec).</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}x &amp;= \cos(dec) \cos(ra)  \\
@@ -218,9 +192,9 @@ z &amp;= \sin(dec)\end{split}\]</div>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.from_xyz">
-<em class="property">static </em><code class="sig-name descname">from_xyz</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.from_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.from_xyz" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">from_xyz</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.from_xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.from_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct a CelestialCoord from a given (x,y,z) position in three dimensions.</p>
 <p>The 3D (x,y,z) position does not need to fall on the unit sphere.  The RA, Dec will
 be inferred from the relations:</p>
@@ -243,9 +217,9 @@ z &amp;= r \sin(dec)\end{split}\]</div>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.radec_to_xyz">
-<em class="property">static </em><code class="sig-name descname">radec_to_xyz</code><span class="sig-paren">(</span><em class="sig-param">ra</em>, <em class="sig-param">dec</em>, <em class="sig-param">r=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.radec_to_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.radec_to_xyz" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">radec_to_xyz</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.radec_to_xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.radec_to_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert ra, dec (in radians) to 3D x,y,z coordinates on the unit sphere.</p>
 <p>The connection between (ra,dec) and (x,y,z) are given by the following formulae:
 .. math:</p>
@@ -283,9 +257,9 @@ arrays, in which case, the return values will also be numpy arrays.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.xyz_to_radec">
-<em class="property">static </em><code class="sig-name descname">xyz_to_radec</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">z</em>, <em class="sig-param">return_r=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.xyz_to_radec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.xyz_to_radec" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">xyz_to_radec</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.xyz_to_radec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.xyz_to_radec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert 3D x,y,z coordinates to ra, dec (in radians).</p>
 <p>The connection between (ra,dec) and (x,y,z) are given by the following formulae:
 .. math:</p>
@@ -326,18 +300,18 @@ arrays, in which case, the return values will also be numpy arrays.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.normal">
-<code class="sig-name descname">normal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.normal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.normal" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">normal</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.normal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.normal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the coordinate in the “normal” convention of having 0 &lt;= ra &lt; 24 hours.</p>
 <p>This convention is not enforced on construction, so this function exists to make it
 easy to convert if desired.</p>
 <p>Functions such as <cite>from_galactic</cite> and <cite>from_xyz</cite> will return normal coordinates.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.distanceTo">
-<code class="sig-name descname">distanceTo</code><span class="sig-paren">(</span><em class="sig-param">coord2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.distanceTo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.distanceTo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">distanceTo</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.distanceTo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.distanceTo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the great circle distance between this coord and another one.
 The return value is an Angle object</p>
 <dl class="field-list simple">
@@ -350,9 +324,9 @@ The return value is an Angle object</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.greatCirclePoint">
-<code class="sig-name descname">greatCirclePoint</code><span class="sig-paren">(</span><em class="sig-param">coord2</em>, <em class="sig-param">theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.greatCirclePoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.greatCirclePoint" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">greatCirclePoint</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.greatCirclePoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.greatCirclePoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a point on the great circle connecting self and coord2.</p>
 <p>Two points, c1 and c2, on the unit sphere define a great circle (so long as the two points
 are not either coincident or antipodal).  We can define points on this great circle by
@@ -373,9 +347,9 @@ c2 is <code class="docutils literal notranslate"><span class="pre">coord2</span>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.angleBetween">
-<code class="sig-name descname">angleBetween</code><span class="sig-paren">(</span><em class="sig-param">coord2</em>, <em class="sig-param">coord3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.angleBetween"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.angleBetween" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">angleBetween</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coord3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.angleBetween"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.angleBetween" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the open angle at the location of the current coord between <code class="docutils literal notranslate"><span class="pre">coord2</span></code> and <code class="docutils literal notranslate"><span class="pre">coord3</span></code>.</p>
 <p>The current coordinate along with the two other coordinates form a spherical triangle
 on the sky.  This function calculates the angle between the two sides at the location of
@@ -397,9 +371,9 @@ current coordinate.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.area">
-<code class="sig-name descname">area</code><span class="sig-paren">(</span><em class="sig-param">coord2</em>, <em class="sig-param">coord3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.area" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">area</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coord3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.area" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the area of a spherical triangle in steradians.</p>
 <p>The current coordinate along with the two other coordinates form a spherical triangle
 on the sky.  This function calculates the area of that spherical triangle, which is
@@ -417,9 +391,9 @@ measured in steradians (i.e. surface area of the triangle on the unit sphere).</
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.project">
-<code class="sig-name descname">project</code><span class="sig-paren">(</span><em class="sig-param">coord2</em>, <em class="sig-param">projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.project" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">project</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.project" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use the currect coord as the center point of a tangent plane projection to project
 the <code class="docutils literal notranslate"><span class="pre">coord2</span></code> coordinate onto that plane.</p>
 <p>This function return a tuple (u,v) in the Euclidean coordinate system defined by
@@ -468,9 +442,9 @@ for other options]</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.project_rad">
-<code class="sig-name descname">project_rad</code><span class="sig-paren">(</span><em class="sig-param">ra</em>, <em class="sig-param">dec</em>, <em class="sig-param">projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.project_rad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.project_rad" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">project_rad</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.project_rad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.project_rad" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is basically identical to the project() function except that the input <code class="docutils literal notranslate"><span class="pre">ra</span></code>, <code class="docutils literal notranslate"><span class="pre">dec</span></code>
 are given in radians rather than packaged as a CelestialCoord object and the returned
 u,v are given in radians.</p>
@@ -491,9 +465,9 @@ docstring for other options]</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.deproject">
-<code class="sig-name descname">deproject</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.deproject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.deproject" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">deproject</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.deproject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.deproject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Do the reverse process from the project() function.</p>
 <p>i.e. This takes in a position (u,v) and returns the corresponding celestial
 coordinate, using the current coordinate as the center point of the tangent plane
@@ -515,9 +489,9 @@ docstring for other options]</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.deproject_rad">
-<code class="sig-name descname">deproject_rad</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.deproject_rad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.deproject_rad" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">deproject_rad</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.deproject_rad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.deproject_rad" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is basically identical to the deproject() function except that the output <code class="docutils literal notranslate"><span class="pre">ra</span></code>,
 <code class="docutils literal notranslate"><span class="pre">dec</span></code> are returned as a tuple (ra, dec) in radians rather than packaged as a CelestialCoord
 object and <code class="docutils literal notranslate"><span class="pre">u</span></code> and <code class="docutils literal notranslate"><span class="pre">v</span></code> are in radians rather than Angle instances.</p>
@@ -538,9 +512,9 @@ docstring for other options]</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.jac_deproject">
-<code class="sig-name descname">jac_deproject</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.jac_deproject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.jac_deproject" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">jac_deproject</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.jac_deproject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.jac_deproject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the jacobian of the deprojection.</p>
 <p>i.e. if the input position is (u,v) then the return matrix is</p>
 <div class="math notranslate nohighlight">
@@ -564,9 +538,9 @@ docstring for other options]</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.jac_deproject_rad">
-<code class="sig-name descname">jac_deproject_rad</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.jac_deproject_rad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.jac_deproject_rad" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">jac_deproject_rad</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.jac_deproject_rad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.jac_deproject_rad" title="Permalink to this definition">¶</a></dt>
 <dd><p>Equivalent to <code class="docutils literal notranslate"><span class="pre">jac_deproject</span></code>, but the inputs are in radians and may be numpy
 arrays.</p>
 <dl class="field-list simple">
@@ -584,9 +558,9 @@ docstring for other options]</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.precess">
-<code class="sig-name descname">precess</code><span class="sig-paren">(</span><em class="sig-param">from_epoch</em>, <em class="sig-param">to_epoch</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.precess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.precess" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">precess</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_epoch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.precess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.precess" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>This function precesses equatorial ra and dec from one epoch to another.</dt><dd><p>It is adapted from a set of fortran subroutines based on (a) pages 30-34 of
 the Explanatory Supplement to the AE, (b) Lieske, et al. (1977) A&amp;A 58, 1-16,
@@ -606,9 +580,9 @@ and (c) Lieske (1979) A&amp;A 73, 282-284.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.galactic">
-<code class="sig-name descname">galactic</code><span class="sig-paren">(</span><em class="sig-param">epoch=2000.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.galactic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.galactic" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">galactic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.galactic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.galactic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the longitude and latitude in galactic coordinates corresponding to this position.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -620,9 +594,9 @@ and (c) Lieske (1979) A&amp;A 73, 282-284.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.from_galactic">
-<em class="property">static </em><code class="sig-name descname">from_galactic</code><span class="sig-paren">(</span><em class="sig-param">el</em>, <em class="sig-param">b</em>, <em class="sig-param">epoch=2000.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.from_galactic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.from_galactic" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">from_galactic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">el</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.from_galactic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.from_galactic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a CelestialCoord from the given galactic coordinates</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -638,9 +612,9 @@ and (c) Lieske (1979) A&amp;A 73, 282-284.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.ecliptic">
-<code class="sig-name descname">ecliptic</code><span class="sig-paren">(</span><em class="sig-param">epoch=2000.0</em>, <em class="sig-param">date=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.ecliptic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.ecliptic" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">ecliptic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.ecliptic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.ecliptic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the longitude and latitude in ecliptic coordinates corresponding to this position.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">epoch</span></code> parameter is used to get an accurate value for the (time-varying) obliquity of
 the ecliptic.  The formulae for this are quite straightforward.  It requires just a single
@@ -663,9 +637,9 @@ that date.  If None, then return the true ecliptic coordiantes.
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="coord.CelestialCoord.from_ecliptic">
-<em class="property">static </em><code class="sig-name descname">from_ecliptic</code><span class="sig-paren">(</span><em class="sig-param">lam</em>, <em class="sig-param">beta</em>, <em class="sig-param">epoch=2000.0</em>, <em class="sig-param">date=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.from_ecliptic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord.CelestialCoord.from_ecliptic" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">from_ecliptic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#CelestialCoord.from_ecliptic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord.CelestialCoord.from_ecliptic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a CelestialCoord from the given ecliptic coordinates</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -689,9 +663,9 @@ that date.  If None, then return the true ecliptic coordiantes.
 
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="coord._CelestialCoord">
-<code class="sig-prename descclassname">coord.</code><code class="sig-name descname">_CelestialCoord</code><span class="sig-paren">(</span><em class="sig-param">ra</em>, <em class="sig-param">dec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#_CelestialCoord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coord._CelestialCoord" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">coord.</span></code><code class="sig-name descname"><span class="pre">_CelestialCoord</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coord/celestial.html#_CelestialCoord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coord._CelestialCoord" title="Permalink to this definition">¶</a></dt>
 <dd><p>Equivalent to CeletialCoord(ra,dec), but without the normal sanity checks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -706,7 +680,35 @@ that date.  If None, then return the true ecliptic coordiantes.
 </div>
 
 
+            <div class="clearer"></div>
           </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="angle.html"
+                        title="previous chapter">Angles</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="util.html"
+                        title="next chapter">Utility Functions</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/celestial.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -723,12 +725,13 @@ that date.  If None, then return the true ecliptic coordiantes.
         <li class="right" >
           <a href="angle.html" title="Angles"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Coord 1.2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Coord 1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Celestial Coordinates</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, LSST DESC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
     </div>
   </body>
 </html>
