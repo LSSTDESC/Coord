@@ -20,25 +20,8 @@
  * SOFTWARE.Copyright (c) 2013-2017 LSST Dark Energy Science Collaboration (DESC)
  */
 
-#include <cmath>
 
-#ifdef _WIN32
-#define extern __declspec(dllexport)
-#endif
-
-extern "C" {
-#include "Angle_C.h"
-}
-
-void coord_sincos(double theta, double* sc)
-{
-#ifdef _GLIBCXX_HAVE_SINCOS
-    ::sincos(theta,&sc[0],&sc[1]);
-#else
-    // If the native sincos function isn't available, then most compilers will still optimize
-    // this into a single trig calculation.
-    sc[0] = std::sin(theta);
-    sc[1] = std::cos(theta);
-#endif
-}
-
+// This contains hacks to get the installation on Windows working.
+// This fixes error LNK2001: unresolved external symbol PyInit__coord
+// cf. https://techoverflow.net/2022/01/23/how-to-fix-python-cffi-error-lnk2001-unresolved-external-symbol-pyinit__/
+void PyInit__coord(void) { }
