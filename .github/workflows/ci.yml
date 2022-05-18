@@ -109,7 +109,7 @@ jobs:
                 pip install -U -r requirements.txt
 
                 # Extra packages needed for testing
-                pip install -U nose codecov coverage pytest
+                pip install -U nose codecov coverage pytest astropy
 
             - name: List all installed packages for reference
               run: pip list
@@ -120,6 +120,7 @@ jobs:
             - name: Run unit tests
               run: |
                 cd tests
+                python -c "import coord; print(dir(coord._lib))"
                 coverage run -m pytest -v
                 cd ..  # N.B. This seems to happen automatically if omitted.
                        # Less confusing to include it explicitly.

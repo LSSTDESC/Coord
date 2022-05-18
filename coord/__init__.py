@@ -30,15 +30,16 @@ version = __version__
 coord_dir = os.path.dirname(__file__)
 include_dir = os.path.join(coord_dir,'include')
 
-lib_file = os.path.join(coord_dir,'_coord.so')
+ext = 'pyd' if os.name == 'nt' else 'so'
+lib_file = os.path.join(coord_dir,'_coord.' + ext)
 # Some installation (e.g. Travis with python 3.x) name this e.g. _coord.cpython-34m.so,
 # so if the normal name doesn't exist, look for something else.
 if not os.path.exists(lib_file): # pragma: no cover
-    alt_files = glob.glob(os.path.join(coord_dir,'_coord*.so'))
+    alt_files = glob.glob(os.path.join(coord_dir,'_coord*.' + ext))
     if len(alt_files) == 0:
-        raise IOError("No file '_coord.so' found in %s"%coord_dir)
+        raise IOError("No file '_coord.%s' found in %s"%(ext,coord_dir))
     if len(alt_files) > 1:
-        raise IOError("Multiple files '_coord*.so' found in %s: %s"%(coord_dir,alt_files))
+        raise IOError("Multiple files '_coord*.%s' found in %s: %s"%(ext,coord_dir,alt_files))
     lib_file = alt_files[0]
 
 # Load the C functions with cffi
