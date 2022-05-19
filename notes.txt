@@ -22,6 +22,6 @@ Checklist for making a new release:
 - Get the current version onto pip.  (Maybe check again that the current version is installed!)
     python setup.py sdist upload
     pip install -UI LSSTDESC.Coord --user  (To test that it worked)
-- Back in master, update version number to M.(m+1) (i.e. no .r)
+- Back in main, update version number to M.(m+1) (i.e. no .r)
 - Move the CHANGELOG information into docs/history.rst and clear out the current CHANGELOG.rst
   file for the next version.

@@ -1,6 +1,6 @@
-.. image:: https://api.travis-ci.org/LSSTDESC/Coord.svg?branch=master
+.. image:: https://api.travis-ci.org/LSSTDESC/Coord.svg?branch=main
         :target: https://travis-ci.org/LSSTDESC/Coord
-.. image:: https://codecov.io/gh/LSSTDESC/Coord/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/LSSTDESC/Coord/branch/main/graph/badge.svg
         :target: https://codecov.io/gh/LSSTDESC/Coord
 
 Coord is a Python module that provides basic functionality related to angles and
