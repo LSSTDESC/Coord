@@ -1,5 +1,5 @@
-.. image:: https://api.travis-ci.org/LSSTDESC/Coord.svg?branch=main
-        :target: https://travis-ci.org/LSSTDESC/Coord
+.. image:: https://github.com/LSSTDESC/Coord/actions/workflows/ci.yml/badge.svg
+        :target: https://github.com/LSSTDESC/Coord/actions/workflows/ci.yml
 .. image:: https://codecov.io/gh/LSSTDESC/Coord/branch/main/graph/badge.svg
         :target: https://codecov.io/gh/LSSTDESC/Coord
 
