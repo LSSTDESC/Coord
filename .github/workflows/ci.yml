@@ -33,26 +33,18 @@ jobs:
                     # One in MacOS
                     - os: macos-latest
                       py: 3.9
-                      CC: cc
-                      CXX: c++
 
                     # Check one with clang compiler
                     - os: ubuntu-latest
                       py: 3.8
-                      CC: clang
-                      CXX: clang++
 
                     # Check one with gcc-11
                     - os: ubuntu-latest
                       py: 3.9
-                      CC: gcc-11
-                      CXX: g++-11
 
                     # Check one on Windows
                     - os: windows-latest
                       py: 3.9
-                      CC: gcc
-                      CXX: g++
 
         steps:
             - uses: actions/checkout@v2
@@ -73,30 +65,6 @@ jobs:
                 restore-keys: |
                     ${{ runner.os }}-${{ matrix.py }}-pip-
                     ${{ runner.os }}-
-
-            - name: Install libffi on linux
-              if: matrix.os == 'ubuntu-latest'
-              run: |
-                echo ${{ matrix.os }}
-                sudo -H apt-get -qq update
-                sudo -H apt-get install -y libffi-dev
-
-            - name: Install gcc-11
-              if: matrix.CC == 'gcc-11'
-              run: |
-                echo ${{ matrix.CC }}
-                sudo -H apt-get -qq update
-                sudo -H apt-get install -y gcc-11 g++-11
-
-            - name: Install libffi on MacOS
-              if: matrix.os == 'macos-latest'
-              # brew sometimes exits with 1 if things are already installed.
-              # continue-on-error means that this still counds as success for this step.
-              continue-on-error: true
-              run: |
-                echo ${{ matrix.os }}
-                brew update
-                brew install libffi
 
             - name: Install basic dependencies
               run: |
@@ -120,7 +88,6 @@ jobs:
             - name: Run unit tests
               run: |
                 cd tests
-                python -c "import coord; print(dir(coord._lib))"
                 coverage run -m pytest -v
                 cd ..  # N.B. This seems to happen automatically if omitted.
                        # Less confusing to include it explicitly.
