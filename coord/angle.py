@@ -262,16 +262,10 @@ class Angle(object):
 
     def sincos(self):
         """Return both the sin and cos of an Angle as a numpy array [sint, cost].
-
-        (On some systems, this may be slightly faster than doing each separately.)
         """
-        # Note: This is admittedly pretty gratuitous.  We're writing Python after all, so the
-        # difference between this and two trig calls is probably neglible given all the normal
-        # Python overhead.  Mostly, I added this as an excuse to set up the C++ extension stuff
-        # to make sure people could see how to add further C++-layer optimizations as needed.
-        import coord
         sc = np.empty(2)
-        coord._lib.coord_sincos(self._rad, coord._ffi.cast('double*', sc.ctypes.data))
+        sc[0] = np.sin(self._rad)
+        sc[1] = np.cos(self._rad)
         return sc
 
     def __str__(self):
