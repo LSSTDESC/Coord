@@ -20,34 +20,13 @@
 
 # The version is stored in _version.py as recommended here:
 # http://stackoverflow.com/questions/458550/standard-way-to-embed-version-into-python-package
+#
+# flake8: noqa
+
 from ._version import __version__, __version_info__
-import os,cffi,glob
 
 # Also let coord.version show the version.
 version = __version__
-
-# Set module level attributes for the include directory and the library file name.
-coord_dir = os.path.dirname(__file__)
-include_dir = os.path.join(coord_dir,'include')
-
-ext = 'pyd' if os.name == 'nt' else 'so'
-lib_file = os.path.join(coord_dir,'_coord.' + ext)
-# Some installation (e.g. Travis with python 3.x) name this e.g. _coord.cpython-34m.so,
-# so if the normal name doesn't exist, look for something else.
-if not os.path.exists(lib_file): # pragma: no cover
-    alt_files = glob.glob(os.path.join(coord_dir,'_coord*.' + ext))
-    if len(alt_files) == 0:
-        raise IOError("No file '_coord.%s' found in %s"%(ext,coord_dir))
-    if len(alt_files) > 1:
-        raise IOError("Multiple files '_coord*.%s' found in %s: %s"%(ext,coord_dir,alt_files))
-    lib_file = alt_files[0]
-
-# Load the C functions with cffi
-_ffi = cffi.FFI()
-for file_name in glob.glob(os.path.join(include_dir,'*_C.h')):
-    with open(file_name) as f:
-        _ffi.cdef(f.read())
-_lib = _ffi.dlopen(lib_file)
 
 # Explicitly import things that we want to be in the coord namespace
 from .angleunit import AngleUnit, arcsec, arcmin, degrees, hours, radians

@@ -43,41 +43,7 @@ the accompanying LICENSE file with the distribution.
 Installation
 ============
 
-Installing libffi
------------------
-
-This module is mostly pure Python.  However, it does have a small bit of C++ code, which is
-wrapped with cffi.  This in turn depends on libffi, which is not itself pip installable.
-Most modern Python installations will have this already installed, so you probably don't have
-to do anything special to use it.  However, if not, installing libffi is fairly straightforward:
-
-On a Mac, you should only need to run the command::
-
-    $ xcode-select --install
-
-On Linux, if you have root access, then one of the following should work for you::
-
-    $ apt-get install libffi-dev
-    $ yum install libffi-devel
-
-If you don't have root access (and don't want to bother your sysadmin), then installing from
-source into a {prefix} directory where you have write access (e.g. your home directory) is also
-not very hard::
-
-    $ wget ftp://sourceware.org:/pub/libffi/libffi-3.2.1.tar.gz
-    $ tar xfz libffi-3.2.1.tar.gz
-    $ cd libffi-3.2.1
-    $ ./configure --prefix={prefix}
-    $ make
-    $ make install
-    $ cp */include/ffi*.h {prefix}/include
-    $ cd ..
-
-Installing Coord
-----------------
-
-Once you have done one of the above (or not if you already have libffi installed), you can
-install Coord with pip::
+You can install Coord with pip::
 
     $ pip install LSSTDESC.Coord --user
 
@@ -86,6 +52,10 @@ or if you have root access, you might prefer::
     $ sudo pip install LSSTDESC.Coord
 
 or possibly with neither ``sudo`` nor ``--user`` if your Python distro is in a writable directory.
+
+If you use anaconda you can install from conda forge::
+
+    $ conda install -c conda-forge lsstdesc.coord
 
 If you prefer to download or clone the repo and install manually, you can install with
 setup.py using one of the usual variants::
