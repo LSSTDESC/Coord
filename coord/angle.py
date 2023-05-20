@@ -263,10 +263,9 @@ class Angle(object):
     def sincos(self):
         """Return both the sin and cos of an Angle as a numpy array [sint, cost].
         """
-        sc = np.empty(2)
-        sc[0] = np.sin(self._rad)
-        sc[1] = np.cos(self._rad)
-        return sc
+        sin = math.sin(self._rad)
+        cos = math.cos(self._rad)
+        return sin, cos
 
     def __str__(self):
         return str(self._rad) + ' radians'
