@@ -216,6 +216,20 @@ def test_compare():
     assert theta3.wrap() > theta4.wrap()
     assert theta4.wrap() < theta3.wrap()
 
+    # Check invalid arithmetic
+    np.testing.assert_raises(TypeError, coord.Angle.__lt__, theta1, 23)
+    np.testing.assert_raises(TypeError, coord.Angle.__lt__, theta1, '23')
+    np.testing.assert_raises(TypeError, coord.Angle.__lt__, theta1, coord.degrees)
+    np.testing.assert_raises(TypeError, coord.Angle.__le__, theta1, 23)
+    np.testing.assert_raises(TypeError, coord.Angle.__le__, theta1, '23')
+    np.testing.assert_raises(TypeError, coord.Angle.__le__, theta1, coord.degrees)
+    np.testing.assert_raises(TypeError, coord.Angle.__gt__, theta1, 23)
+    np.testing.assert_raises(TypeError, coord.Angle.__gt__, theta1, '23')
+    np.testing.assert_raises(TypeError, coord.Angle.__gt__, theta1, coord.degrees)
+    np.testing.assert_raises(TypeError, coord.Angle.__ge__, theta1, 23)
+    np.testing.assert_raises(TypeError, coord.Angle.__ge__, theta1, '23')
+    np.testing.assert_raises(TypeError, coord.Angle.__ge__, theta1, coord.degrees)
+
 
 @timer
 def test_trig():
