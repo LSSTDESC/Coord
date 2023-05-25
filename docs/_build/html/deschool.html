@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DESC DE School &#8212; Coord 1.3 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Angle Units" href="angleunit.html" />
+    <link rel="prev" title="Features" href="overview.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="angleunit.html" title="Angle Units"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Features"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Coord 1.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">DESC DE School</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="desc-de-school">
+<h1>DESC DE School<a class="headerlink" href="#desc-de-school" title="Permalink to this headline">¶</a></h1>
+<p>This module was used as a pedagogical tool for an LSST DESC DE School lesson on July 10, 2017.</p>
+<p>A video of the <a class="reference external" href="http://www.lsst-desc.org/DEschool#MikeJarvis">lesson</a> can be viewed
+<a class="reference external" href="https://www.youtube.com/watch?v=u3x5OEXgtnU">here</a>.</p>
+<p>Prior to the lesson, only a few of the unit tests had been copied over to this repository
+from the TreeCorr and/or GalSim repositories, where earlier versions of the code lived.
+The lesson culminated in students having an opportunity to practice designing unit tests by
+filling in some of the missing tests.</p>
+<div class="section" id="original-instructions-for-de-school-stutents">
+<h2>Original instructions for DE School stutents:<a class="headerlink" href="#original-instructions-for-de-school-stutents" title="Permalink to this headline">¶</a></h2>
+<p>Prior to attending DE School, it would be a good idea to try to clone this repository and install
+the code.  If you have trouble, please ask for help on the #desc-bnl-sb-2017 Slack channel.
+It will be helpful if you have the code already installed on your laptop, although you may
+certainly still participate even if not.</p>
+<p>After the end of the class I will add all the unit tests that I currently have for this module
+along with (hopefully) some that the class will have written.</p>
+<ol class="arabic">
+<li><p>Clone the repository onto your laptop.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone git@github.com:LSSTDESC/Coord.git
+</pre></div>
+</div>
+</li>
+<li><p>Follow the above instructions to install Coord.</p></li>
+<li><p>Make sure you have nose and astropy installed.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install nose astropy
+</pre></div>
+</div>
+</li>
+<li><p>Try running the existing tests.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd tests
+$ nosetests
+</pre></div>
+</div>
+</li>
+<li><p>Make sure that you are a member of the LSSTDESC GitHub team.  If not, post a request on the
+#desc-ci Slack channel that you want to be added.</p></li>
+<li><p>Look through the documentation here:</p>
+<blockquote>
+<div><p><a class="reference external" href="https://lsstdesc.github.io/Coord/">https://lsstdesc.github.io/Coord/</a></p>
+</div></blockquote>
+</li>
+<li><p>Make a branch for yourself.  Pick some appropriate name for your branch, like your last name,
+or your initials.  Something you think would likely be unique to you.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git pull
+$ git checkout -b your_branch_name
+$ git push -u origin your_branch_name
+</pre></div>
+</div>
+</li>
+<li><p>Look through the existing tests and pick a test that is currently unimplemented.
+There are lots of stubs of test functions that you can pick from that currently just say
+<code class="docutils literal notranslate"><span class="pre">pass</span></code>, or feel free to do something different if you have an idea of what to test and
+don’t seem something appropriate.</p>
+<p>Write the test.  Think about the various considerations I talked about in the lesson.</p>
+<p>Be as complete or not as you want.  You only have half an hour, so don’t worry if you don’t
+feel like you covered everything about the concept you are trying to test.</p>
+</li>
+<li><p>One the test is working, commit and push.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git add -p
+$ git commit -m &quot;Add some tests of the .... function&quot;
+$ git push
+</pre></div>
+</div>
+</li>
+<li><p>Make a pull request of your new test.  Start here:</p>
+<blockquote>
+<div><p><a class="reference external" href="https://github.com/LSSTDESC/Coord/compare">https://github.com/LSSTDESC/Coord/compare</a></p>
+</div></blockquote>
+<p>Select the “compare” tab, and find your branch name.</p>
+<p>Write a short title.  e.g. “Add test of stereographic projection”</p>
+<p>Write a slightly longer summary in the text box.  (Normally – for this exercise there might
+not be much more to write than what you already wrote in the title.)</p>
+<p>Click “Create pull request”</p>
+<p>Wait for Travis to run your test.  If it fails, check why and edit your code appropriately.
+You can add more commits to your branch, which will be included in the pull request.</p>
+</li>
+</ol>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">DESC DE School</a><ul>
+<li><a class="reference internal" href="#original-instructions-for-de-school-stutents">Original instructions for DE School stutents:</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="previous chapter">Features</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="angleunit.html"
+                        title="next chapter">Angle Units</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/deschool.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="angleunit.html" title="Angle Units"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Features"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Coord 1.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">DESC DE School</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, LSST DESC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+    </div>
+  </body>
+</html>
