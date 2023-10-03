@@ -32,7 +32,6 @@ except ImportError:
 from collections import Counter
 import functools
 import time
-import coord
 
 # This file has some helper functions that are used by tests from multiple files to help
 # avoid code duplication.
@@ -53,6 +52,16 @@ def do_pickle(obj, func=(lambda x : x), copyable=True, reprable=True):
                         obj = eval(repr(obj)).  This is often a desirable property of objects,
                         but it may not always be possible (or efficient). [default: True]
     """
+    # This import needs to be hidden from the top-level of this helper module so
+    # that JAX-GalSim can test its implementation of the functionality in coord
+    # using this test suite. The jax-galsim test suite, instead of vendoring the
+    # tests from coord and galsim, uses the upstream test suites. It replaces all
+    # imports of galsim and coord with imports of jax_galsim. This helper file
+    # gets reimported after the initial replacement, and the reimport of coord
+    # breaks the replacement. By delaying the import, we avoid this breakage.
+    # - MRB 2024-07-26
+    import coord
+
     # Test pickle round-trip returns an equivalent (but not identical) object
     print('Try pickling ',obj)  # Note: this implicitly checks that str(obj) works.
     obj2 = pickle.loads(pickle.dumps(obj))

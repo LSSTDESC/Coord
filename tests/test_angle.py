@@ -77,7 +77,9 @@ def test_invalid():
 
     # Invalid value type
     np.testing.assert_raises(TypeError, coord.Angle, theta, coord.degrees)
-    np.testing.assert_raises(ValueError, coord.Angle, 'spam', coord.degrees)
+    # the jax-galsim version of this class raises a TypeError here
+    # instead of a ValueError
+    np.testing.assert_raises((ValueError, TypeError), coord.Angle, 'spam', coord.degrees)
 
     # Wrong order
     np.testing.assert_raises(TypeError, coord.Angle, coord.degrees, 1.3)
@@ -116,6 +118,10 @@ def test_arith():
     theta2 /= -2
     np.testing.assert_almost_equal(theta2.rad, -pi, decimal=12)
 
+
+@timer
+def test_arith_raises():
+    theta1 = 45. * coord.degrees
     # Check invalid arithmetic
     np.testing.assert_raises(TypeError, coord.Angle.__add__, theta1, 23)
     np.testing.assert_raises(TypeError, coord.Angle.__add__, theta1, '23')
