@@ -52,6 +52,8 @@ def do_pickle(obj, func=(lambda x : x), copyable=True, reprable=True):
                         obj = eval(repr(obj)).  This is often a desirable property of objects,
                         but it may not always be possible (or efficient). [default: True]
     """
+    import coord
+
     # Test pickle round-trip returns an equivalent (but not identical) object
     print('Try pickling ',obj)  # Note: this implicitly checks that str(obj) works.
     obj2 = pickle.loads(pickle.dumps(obj))
