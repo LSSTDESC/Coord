@@ -89,6 +89,9 @@ def test_init():
     do_pickle(c3)
     do_pickle(c4)
 
+
+@timer
+def test_init_raises():
     # Check some invalid values
     np.testing.assert_raises(TypeError, coord.CelestialCoord, 11 * hours)
     np.testing.assert_raises(TypeError, coord.CelestialCoord, 11 * hours, -37)
@@ -202,11 +205,11 @@ def test_xyz():
     tx = tdec.cos() * tra.cos()
     ty = tdec.cos() * tra.sin()
     tz = tdec.sin()
-    
+
     # Check get_xyz by comparing to true values
     c1 = coord.CelestialCoord(ra=tra, dec=tdec)
     np.testing.assert_almost_equal(c1.get_xyz(), (tx, ty, tz), decimal=12)
-    
+
     # Check ra and dec when setting coordinates with from_xyz
     c2 = coord.CelestialCoord.from_xyz(tx, ty, tz)
     np.testing.assert_almost_equal(c2.ra.rad, tra.rad, decimal=12,
@@ -252,6 +255,9 @@ def test_xyz():
         np.testing.assert_almost_equal(c4.dec.rad, c.dec.rad, decimal=12)
         check_aux(c4)
 
+
+@timer
+def test_xyz_raises():
     # constructing from x,y,z = 0,0,0 is undefined.
     np.testing.assert_raises(ValueError, coord.CelestialCoord.from_xyz, 0., 0., 0.)
 
@@ -424,13 +430,6 @@ def test_greatcircle():
         np.testing.assert_almost_equal(point.ra.wrap(theta).rad, t)
         np.testing.assert_almost_equal(point.dec.rad, 0.)
 
-    np.testing.assert_raises(ValueError, eq1.greatCirclePoint, eq1, theta)
-    np.testing.assert_raises(ValueError, eq2.greatCirclePoint, eq2, theta)
-    # eq1 -> eq3 doesn't trigger this due to rounding errors (y is not exactly 0).
-    # But if we explicitly form eq3 from x,y,z with y=0, it works.
-    eq3b = coord.CelestialCoord.from_xyz(-1, 0, 0)
-    np.testing.assert_raises(ValueError, eq1.greatCirclePoint, eq3b, theta)
-
     # Meridian
     north_pole = coord.CelestialCoord(0 * radians, pi/2 * radians)  # north pole
     south_pole = coord.CelestialCoord(0 * radians, -pi/2 * radians) # south pole
@@ -511,6 +510,20 @@ def test_greatcircle():
 
 
 @timer
+def test_greatcircle_raises():
+    theta = 50 * radians
+    eq1 = coord.CelestialCoord(0 * radians, 0 * radians)  # point on the equator
+    eq2 = coord.CelestialCoord(1 * radians, 0 * radians)  # 1 radian along equator
+
+    np.testing.assert_raises(ValueError, eq1.greatCirclePoint, eq1, theta)
+    np.testing.assert_raises(ValueError, eq2.greatCirclePoint, eq2, theta)
+    # eq1 -> eq3 doesn't trigger this due to rounding errors (y is not exactly 0).
+    # But if we explicitly form eq3 from x,y,z with y=0, it works.
+    eq3b = coord.CelestialCoord.from_xyz(-1, 0, 0)
+    np.testing.assert_raises(ValueError, eq1.greatCirclePoint, eq3b, theta)
+
+
+@timer
 def test_gnomonic_projection():
     """Test the gnomonic projection.
     """
@@ -581,7 +594,7 @@ def test_gnomonic_projection():
 
     # center projects to 0,0 with unit area
     u, v = center.project(center, 'gnomonic')
-    np.testing.assert_allclose([u.rad, v.rad], 0., err_msg='center did not project to (0,0)')
+    np.testing.assert_allclose([u.rad, v.rad], 0., err_msg='center did not project to (0,0)', atol=1e-16, rtol=0)
     c2 = center.deproject(u,v, 'gnomonic')
     np.testing.assert_allclose(c2.rad, center.rad, err_msg='(0,0) did not deproject to center')
     np.testing.assert_allclose(np.linalg.det(center.jac_deproject(u, v, 'gnomonic')), 1.,
@@ -721,7 +734,7 @@ def test_stereographic_projection():
 
     # center projects to 0,0 with unit area
     u, v = center.project(center, 'stereographic')
-    np.testing.assert_allclose([u.rad, v.rad], 0., err_msg='center did not project to (0,0)')
+    np.testing.assert_allclose([u.rad, v.rad], 0., err_msg='center did not project to (0,0)', atol=1e-16, rtol=0)
     c2 = center.deproject(u,v, 'stereographic')
     np.testing.assert_allclose(c2.rad, center.rad, err_msg='(0,0) did not deproject to center')
     np.testing.assert_allclose(np.linalg.det(center.jac_deproject(u, v, 'stereographic')), 1.,
@@ -805,7 +818,7 @@ def test_lambert_projection():
 
     # center projects to 0,0 with unit area
     u, v = center.project(center, 'lambert')
-    np.testing.assert_allclose([u.rad, v.rad], 0., err_msg='center did not project to (0,0)')
+    np.testing.assert_allclose([u.rad, v.rad], 0., err_msg='center did not project to (0,0)', atol=1e-16, rtol=0)
     c2 = center.deproject(u,v, 'lambert')
     np.testing.assert_allclose(c2.rad, center.rad, err_msg='(0,0) did not deproject to center')
     np.testing.assert_allclose(np.linalg.det(center.jac_deproject(u, v, 'lambert')), 1.,
@@ -894,7 +907,7 @@ def test_postel_projection():
 
     # center projects to 0,0 with unit area
     u, v = center.project(center, 'postel')
-    np.testing.assert_allclose([u.rad, v.rad], 0., err_msg='center did not project to (0,0)')
+    np.testing.assert_allclose([u.rad, v.rad], 0., err_msg='center did not project to (0,0)', atol=1e-16, rtol=0)
     c2 = center.deproject(u,v, 'postel')
     np.testing.assert_allclose(c2.rad, center.rad, err_msg='(0,0) did not deproject to center')
     np.testing.assert_allclose(np.linalg.det(center.jac_deproject(u, v, 'postel')), 1.,
