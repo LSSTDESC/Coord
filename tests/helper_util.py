@@ -32,7 +32,6 @@ except ImportError:
 from collections import Counter
 import functools
 import time
-import coord
 
 # This file has some helper functions that are used by tests from multiple files to help
 # avoid code duplication.
