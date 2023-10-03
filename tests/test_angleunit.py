@@ -66,7 +66,9 @@ def test_invalid():
     # Wrong type of value argument
     np.testing.assert_raises(TypeError, coord.AngleUnit, coord.degrees)
     # Also wrong type, but strings give a ValueError
-    np.testing.assert_raises(ValueError, coord.AngleUnit, 'spam')
+    # the jax-galsim version of this class raises a TypeError here
+    # instead of a ValueError
+    np.testing.assert_raises((ValueError, TypeError), coord.AngleUnit, 'spam', coord.degrees)
     # Wrong number of arguments
     np.testing.assert_raises(TypeError, coord.AngleUnit, 1, 3)
     np.testing.assert_raises(TypeError, coord.AngleUnit)
