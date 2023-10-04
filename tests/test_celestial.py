@@ -202,11 +202,11 @@ def test_xyz():
     tx = tdec.cos() * tra.cos()
     ty = tdec.cos() * tra.sin()
     tz = tdec.sin()
-    
+
     # Check get_xyz by comparing to true values
     c1 = coord.CelestialCoord(ra=tra, dec=tdec)
     np.testing.assert_almost_equal(c1.get_xyz(), (tx, ty, tz), decimal=12)
-    
+
     # Check ra and dec when setting coordinates with from_xyz
     c2 = coord.CelestialCoord.from_xyz(tx, ty, tz)
     np.testing.assert_almost_equal(c2.ra.rad, tra.rad, decimal=12,
@@ -252,6 +252,9 @@ def test_xyz():
         np.testing.assert_almost_equal(c4.dec.rad, c.dec.rad, decimal=12)
         check_aux(c4)
 
+
+@timer
+def test_xyz_raises():
     # constructing from x,y,z = 0,0,0 is undefined.
     np.testing.assert_raises(ValueError, coord.CelestialCoord.from_xyz, 0., 0., 0.)
 
@@ -424,13 +427,6 @@ def test_greatcircle():
         np.testing.assert_almost_equal(point.ra.wrap(theta).rad, t)
         np.testing.assert_almost_equal(point.dec.rad, 0.)
 
-    np.testing.assert_raises(ValueError, eq1.greatCirclePoint, eq1, theta)
-    np.testing.assert_raises(ValueError, eq2.greatCirclePoint, eq2, theta)
-    # eq1 -> eq3 doesn't trigger this due to rounding errors (y is not exactly 0).
-    # But if we explicitly form eq3 from x,y,z with y=0, it works.
-    eq3b = coord.CelestialCoord.from_xyz(-1, 0, 0)
-    np.testing.assert_raises(ValueError, eq1.greatCirclePoint, eq3b, theta)
-
     # Meridian
     north_pole = coord.CelestialCoord(0 * radians, pi/2 * radians)  # north pole
     south_pole = coord.CelestialCoord(0 * radians, -pi/2 * radians) # south pole
@@ -508,6 +504,20 @@ def test_greatcircle():
         # More than 68 is on the c2 side of the arc
         p = c1.greatCirclePoint(c2, (full + t)*degrees)
         np.testing.assert_almost_equal(c1.distanceTo(p).deg,  full + c2.distanceTo(p).deg)
+
+
+@timer
+def test_greatcircle_raises():
+    theta = 50 * radians
+    eq1 = coord.CelestialCoord(0 * radians, 0 * radians)  # point on the equator
+    eq2 = coord.CelestialCoord(1 * radians, 0 * radians)  # 1 radian along equator
+
+    np.testing.assert_raises(ValueError, eq1.greatCirclePoint, eq1, theta)
+    np.testing.assert_raises(ValueError, eq2.greatCirclePoint, eq2, theta)
+    # eq1 -> eq3 doesn't trigger this due to rounding errors (y is not exactly 0).
+    # But if we explicitly form eq3 from x,y,z with y=0, it works.
+    eq3b = coord.CelestialCoord.from_xyz(-1, 0, 0)
+    np.testing.assert_raises(ValueError, eq1.greatCirclePoint, eq3b, theta)
 
 
 @timer
