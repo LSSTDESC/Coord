@@ -89,6 +89,9 @@ def test_init():
     do_pickle(c3)
     do_pickle(c4)
 
+
+@timer
+def test_init_raises():
     # Check some invalid values
     np.testing.assert_raises(TypeError, coord.CelestialCoord, 11 * hours)
     np.testing.assert_raises(TypeError, coord.CelestialCoord, 11 * hours, -37)
