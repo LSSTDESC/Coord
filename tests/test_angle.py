@@ -113,6 +113,10 @@ def test_arith():
     theta2 /= -2
     np.testing.assert_almost_equal(theta2.rad, -pi, decimal=12)
 
+
+@timer
+def test_arith_raises():
+    theta1 = 45. * coord.degrees
     # Check invalid arithmetic
     np.testing.assert_raises(TypeError, coord.Angle.__add__, theta1, 23)
     np.testing.assert_raises(TypeError, coord.Angle.__add__, theta1, '23')
