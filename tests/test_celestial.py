@@ -907,7 +907,7 @@ def test_postel_projection():
 
     # center projects to 0,0 with unit area
     u, v = center.project(center, 'postel')
-    np.testing.assert_allclose([u.rad, v.rad], 0., err_msg='center did not project to (0,0)')
+    np.testing.assert_allclose([u.rad, v.rad], 0., err_msg='center did not project to (0,0)', atol=1e-16, rtol=0)
     c2 = center.deproject(u,v, 'postel')
     np.testing.assert_allclose(c2.rad, center.rad, err_msg='(0,0) did not deproject to center')
     np.testing.assert_allclose(np.linalg.det(center.jac_deproject(u, v, 'postel')), 1.,
