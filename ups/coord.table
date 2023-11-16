@@ -1,2 +1,1 @@
-setupRequired(numpy)
-setupRequired(python_future)
+envPrepend(PYTHONPATH, ${PRODUCT_DIR})
