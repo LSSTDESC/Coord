@@ -186,6 +186,9 @@ class Angle(object):
     def __neg__(self):
         return _Angle(-self._rad)
 
+    def __pos__(self):
+        return self
+
     def __abs__(self):
         return _Angle(abs(self._rad))
 
