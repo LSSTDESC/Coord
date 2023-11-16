@@ -186,6 +186,9 @@ class Angle(object):
     def __neg__(self):
         return _Angle(-self._rad)
 
+    def __abs__(self):
+        return _Angle(abs(self._rad))
+
     def __add__(self, other):
         if not isinstance(other, Angle):
             raise TypeError("Cannot add %s of type %s to an Angle"%(other,type(other)))
