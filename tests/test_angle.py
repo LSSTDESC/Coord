@@ -103,6 +103,8 @@ def test_arith():
     np.testing.assert_almost_equal((4*theta1 - theta2).rad, pi/4., decimal=12)
     np.testing.assert_almost_equal((theta1/2.).rad, pi/8., decimal=12)
     np.testing.assert_almost_equal((-theta1).rad, -pi/4., decimal=12)
+    np.testing.assert_almost_equal((abs(theta1)).rad, pi/4., decimal=12)
+    np.testing.assert_almost_equal((abs(-theta1)).rad, pi/4., decimal=12)
 
     theta2 += theta1
     np.testing.assert_almost_equal(theta2.rad, pi, decimal=12)
