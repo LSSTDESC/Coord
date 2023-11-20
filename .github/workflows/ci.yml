@@ -20,7 +20,7 @@ jobs:
             matrix:
                 # First all python versions in basic linux
                 os: [ ubuntu-latest ]
-                py: [ 3.7, 3.8, 3.9, "3.10", pypy-3.8 ]
+                py: [ 3.7, 3.8, 3.9, "3.10", 3.11, pypy3.9 ]
 
                 # Add some other particular combinations to test
                 include:
@@ -33,18 +33,18 @@ jobs:
                       py: 3.9
 
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
               with:
                 # Helpful for a reliable codecov upload.
                 fetch-depth: 0
 
             - name: Set up Python ${{ matrix.py }}
-              uses: actions/setup-python@v3
+              uses: actions/setup-python@v4
               with:
                 python-version: ${{ matrix.py }}
 
             - name: Cache pip
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                 path: ~/.cache/pip
                 key: ${{ runner.os }}-${{ matrix.py }}-pip-${{ hashFiles('requirements.txt') }}
