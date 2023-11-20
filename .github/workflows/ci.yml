@@ -59,6 +59,9 @@ jobs:
                 # Check what is already installed.
                 pip list
 
+                # Update setuptools
+                pip install -U setuptools
+
                 # Do this first to clarify potential conflicts
                 pip install -U numpy
 
