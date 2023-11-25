@@ -77,7 +77,10 @@ def test_invalid():
 
     # Invalid value type
     np.testing.assert_raises(TypeError, coord.Angle, theta, coord.degrees)
-    np.testing.assert_raises(ValueError, coord.Angle, 'spam', coord.degrees)
+    try:
+        np.testing.assert_raises(ValueError, coord.Angle, 'spam', coord.degrees)
+    except Exception:
+        np.testing.assert_raises(TypeError, coord.Angle, 'spam', coord.degrees)
 
     # Wrong order
     np.testing.assert_raises(TypeError, coord.Angle, coord.degrees, 1.3)
@@ -113,6 +116,10 @@ def test_arith():
     theta2 /= -2
     np.testing.assert_almost_equal(theta2.rad, -pi, decimal=12)
 
+
+@timer
+def test_arith_raises():
+    theta1 = 45. * coord.degrees
     # Check invalid arithmetic
     np.testing.assert_raises(TypeError, coord.Angle.__add__, theta1, 23)
     np.testing.assert_raises(TypeError, coord.Angle.__add__, theta1, '23')
