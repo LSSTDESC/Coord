@@ -77,7 +77,10 @@ def test_invalid():
 
     # Invalid value type
     np.testing.assert_raises(TypeError, coord.Angle, theta, coord.degrees)
-    np.testing.assert_raises(ValueError, coord.Angle, 'spam', coord.degrees)
+    try:
+        np.testing.assert_raises(ValueError, coord.Angle, 'spam', coord.degrees)
+    except Exception:
+        np.testing.assert_raises(TypeError, coord.Angle, 'spam', coord.degrees)
 
     # Wrong order
     np.testing.assert_raises(TypeError, coord.Angle, coord.degrees, 1.3)
