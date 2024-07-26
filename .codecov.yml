@@ -1,5 +1,5 @@
 codecov:
-  branch: master
+  branch: main
 
 coverage:
   precision: 2
@@ -9,7 +9,7 @@ coverage:
   status:
     project:
       default:
-        target: 95%
+        target: 100%
         threshold: 1%
         branches: null
 
