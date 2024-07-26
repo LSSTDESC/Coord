@@ -1,35 +1,13 @@
 [run]
 branch = True
 
+include = **/coord/*
+
 [report]
 # Regexes for lines to exclude from consideration
 exclude_lines =
     # If you put this in a comment, you can manually exclude code from being covered.
     pragma: no cover
-
-    # Don't complain about missing debug-only code:
-    if self\.debug
-    logger.debug
-
-    # Don't complain if tests don't hit defensive checks that probably shouldn't ever be run.
-    raise AssertionError
-    raise NotImplementedError
-    raise IOError
-    raise MemoryError
-
-    # The rest of these are arguable.  For now keep these enabled...
-    #raise ValueError
-    #raise RuntimeError
-    #raise TypeError
-    #raise AttributeError
-    #raise IndexError
-    #raise KeyError
-
-    # Don't complain about not hitting warning code
-    if suppress_warnings is False:
-    import warnings
-    warnings.warn
-    logger.warning
 
     # Don't complain if non-runnable code isn't run:
     if False:
@@ -37,9 +15,5 @@ exclude_lines =
     if __name__ == .__main__.:
 
     # Don't complain about exceptional circumstances not under control of the test suite
-    except KeyboardInterrupt
-    except IOError
-    except OSError
-
-    # Or code for special cases of older versions of things.
-    except ImportError
+    except .*KeyboardInterrupt
+    except .*OSError
