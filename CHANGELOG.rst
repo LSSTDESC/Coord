@@ -2,6 +2,8 @@ Changes from v1.2 to v1.3
 =========================
 
 - Convert to pure python.
+- Add abs, + for Angle class
+- Fix a regex syntax error that will cause errors in future python versions.
 
 Changes from v1.1 to v1.2
 =========================
