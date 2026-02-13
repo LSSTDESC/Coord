@@ -32,7 +32,7 @@ jobs:
       - name: Build sdist
         run: |
           python setup.py sdist
-          cp wheels/LSSTDESC.Coord* dist
+          cp wheels/lsstdesc_coord* dist
           ls -l dist
           tar tvfz dist/lsstdesc_coord-*.tar.gz
 
