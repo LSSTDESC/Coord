@@ -1,22 +1,21 @@
-
 <!DOCTYPE html>
 
-<html>
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>Overview &#8212; Coord 1.3 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css?v=34905f61" />
+    <script src="_static/documentation_options.js?v=c55cb9cb"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Features" href="overview.html" /> 
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -37,8 +36,8 @@
             
   <p>Coord is a Python module that provides basic functionality related to angles and
 celestial coordinates.  It is hosted at <a class="reference external" href="https://github.com/LSSTDESC/Coord">https://github.com/LSSTDESC/Coord</a>.</p>
-<div class="section" id="overview">
-<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Features</a></li>
@@ -50,20 +49,81 @@ celestial coordinates.  It is hosted at <a class="reference external" href="http
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="code-documentation">
-<h1>Code Documentation<a class="headerlink" href="#code-documentation" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="code-documentation">
+<h1>Code Documentation<a class="headerlink" href="#code-documentation" title="Link to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="angleunit.html">Angle Units</a></li>
-<li class="toctree-l1"><a class="reference internal" href="angle.html">Angles</a></li>
-<li class="toctree-l1"><a class="reference internal" href="celestial.html">Celestial Coordinates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="util.html">Utility Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="angleunit.html">Angle Units</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="angleunit.html#coord.AngleUnit"><code class="docutils literal notranslate"><span class="pre">AngleUnit</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="angleunit.html#coord.AngleUnit.__init__"><code class="docutils literal notranslate"><span class="pre">AngleUnit.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="angleunit.html#coord.AngleUnit.value"><code class="docutils literal notranslate"><span class="pre">AngleUnit.value</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="angleunit.html#coord.AngleUnit.from_name"><code class="docutils literal notranslate"><span class="pre">AngleUnit.from_name()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="angle.html">Angles</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="angle.html#coord.Angle"><code class="docutils literal notranslate"><span class="pre">Angle</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="angle.html#coord.Angle.__init__"><code class="docutils literal notranslate"><span class="pre">Angle.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="angle.html#coord.Angle.rad"><code class="docutils literal notranslate"><span class="pre">Angle.rad</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="angle.html#coord.Angle.deg"><code class="docutils literal notranslate"><span class="pre">Angle.deg</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="angle.html#coord.Angle.wrap"><code class="docutils literal notranslate"><span class="pre">Angle.wrap()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="angle.html#coord.Angle.sin"><code class="docutils literal notranslate"><span class="pre">Angle.sin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="angle.html#coord.Angle.cos"><code class="docutils literal notranslate"><span class="pre">Angle.cos()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="angle.html#coord.Angle.tan"><code class="docutils literal notranslate"><span class="pre">Angle.tan()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="angle.html#coord.Angle.sincos"><code class="docutils literal notranslate"><span class="pre">Angle.sincos()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="angle.html#coord.Angle.hms"><code class="docutils literal notranslate"><span class="pre">Angle.hms()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="angle.html#coord.Angle.dms"><code class="docutils literal notranslate"><span class="pre">Angle.dms()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="angle.html#coord.Angle.from_hms"><code class="docutils literal notranslate"><span class="pre">Angle.from_hms()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="angle.html#coord.Angle.from_dms"><code class="docutils literal notranslate"><span class="pre">Angle.from_dms()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="angle.html#coord._Angle"><code class="docutils literal notranslate"><span class="pre">_Angle()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="celestial.html">Celestial Coordinates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="celestial.html#coord.CelestialCoord"><code class="docutils literal notranslate"><span class="pre">CelestialCoord</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.__init__"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.ra"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.ra</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.dec"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.dec</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.rad"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.rad</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.get_xyz"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.get_xyz()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.from_xyz"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.from_xyz()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.radec_to_xyz"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.radec_to_xyz()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.xyz_to_radec"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.xyz_to_radec()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.normal"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.normal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.distanceTo"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.distanceTo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.greatCirclePoint"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.greatCirclePoint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.angleBetween"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.angleBetween()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.area"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.area()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.project"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.project()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.project_rad"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.project_rad()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.deproject"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.deproject()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.deproject_rad"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.deproject_rad()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.jac_deproject"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.jac_deproject()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.jac_deproject_rad"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.jac_deproject_rad()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.precess"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.precess()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.galactic"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.galactic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.from_galactic"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.from_galactic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.ecliptic"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.ecliptic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="celestial.html#coord.CelestialCoord.from_ecliptic"><code class="docutils literal notranslate"><span class="pre">CelestialCoord.from_ecliptic()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="celestial.html#coord._CelestialCoord"><code class="docutils literal notranslate"><span class="pre">_CelestialCoord()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">Utility Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="util.html#coord.util.sun_position_ecliptic"><code class="docutils literal notranslate"><span class="pre">sun_position_ecliptic()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="util.html#coord.util.date_to_julian_day"><code class="docutils literal notranslate"><span class="pre">date_to_julian_day()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="util.html#coord.util.ecliptic_obliquity"><code class="docutils literal notranslate"><span class="pre">ecliptic_obliquity()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </div>
-</div>
-<div class="section" id="revision-history">
-<h1>Revision History<a class="headerlink" href="#revision-history" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="revision-history">
+<h1>Revision History<a class="headerlink" href="#revision-history" title="Link to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="history.html">Changes from v1.2 to v1.3</a></li>
@@ -78,33 +138,37 @@ celestial coordinates.  It is hosted at <a class="reference external" href="http
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">¶</a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
-</div>
+</section>
 
 
             <div class="clearer"></div>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="#">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Overview</a></li>
 <li><a class="reference internal" href="#code-documentation">Code Documentation</a></li>
 <li><a class="reference internal" href="#revision-history">Revision History</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
-  <h4>Next topic</h4>
-  <p class="topless"><a href="overview.html"
-                        title="next chapter">Features</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="overview.html"
+                          title="next chapter">Features</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -112,21 +176,21 @@ celestial coordinates.  It is hosted at <a class="reference external" href="http
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
-<script>$('#searchbox').show(0);</script>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -140,8 +204,8 @@ celestial coordinates.  It is hosted at <a class="reference external" href="http
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, LSST DESC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+    &#169; Copyright 2017, LSST DESC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
     </div>
   </body>
 </html>

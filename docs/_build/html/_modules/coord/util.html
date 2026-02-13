@@ -1,21 +1,19 @@
-
 <!DOCTYPE html>
 
-<html>
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>coord.util &#8212; Coord 1.3 documentation</title>
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinxdoc.css?v=34905f61" />
+    <script src="../../_static/documentation_options.js?v=c55cb9cb"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -64,7 +62,9 @@
 <span class="kn">from</span> <span class="nn">.angleunit</span> <span class="kn">import</span> <span class="n">degrees</span>
 <span class="kn">from</span> <span class="nn">.angle</span> <span class="kn">import</span> <span class="n">Angle</span>
 
-<div class="viewcode-block" id="sun_position_ecliptic"><a class="viewcode-back" href="../../util.html#coord.util.sun_position_ecliptic">[docs]</a><span class="k">def</span> <span class="nf">sun_position_ecliptic</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
+<div class="viewcode-block" id="sun_position_ecliptic">
+<a class="viewcode-back" href="../../util.html#coord.util.sun_position_ecliptic">[docs]</a>
+<span class="k">def</span> <span class="nf">sun_position_ecliptic</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper routine to calculate the position of the sun in ecliptic coordinates given a</span>
 <span class="sd">    python datetime object.</span>
 
@@ -84,7 +84,10 @@
     <span class="n">lam</span> <span class="o">=</span> <span class="n">L</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.915</span><span class="o">*</span><span class="n">degrees</span><span class="p">)</span><span class="o">*</span><span class="n">g</span><span class="o">.</span><span class="n">sin</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.020</span><span class="o">*</span><span class="n">degrees</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">sin</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">lam</span></div>
 
-<div class="viewcode-block" id="date_to_julian_day"><a class="viewcode-back" href="../../util.html#coord.util.date_to_julian_day">[docs]</a><span class="k">def</span> <span class="nf">date_to_julian_day</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
+
+<div class="viewcode-block" id="date_to_julian_day">
+<a class="viewcode-back" href="../../util.html#coord.util.date_to_julian_day">[docs]</a>
+<span class="k">def</span> <span class="nf">date_to_julian_day</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper routine to return the Julian day for a given date.</span>
 
 <span class="sd">    If `date` is a datetime.datetime instance, then it uses the full time info.</span>
@@ -106,7 +109,10 @@
         <span class="n">retval</span> <span class="o">+=</span> <span class="n">dayfrac</span>
     <span class="k">return</span> <span class="n">retval</span></div>
 
-<div class="viewcode-block" id="ecliptic_obliquity"><a class="viewcode-back" href="../../util.html#coord.util.ecliptic_obliquity">[docs]</a><span class="k">def</span> <span class="nf">ecliptic_obliquity</span><span class="p">(</span><span class="n">epoch</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ecliptic_obliquity">
+<a class="viewcode-back" href="../../util.html#coord.util.ecliptic_obliquity">[docs]</a>
+<span class="k">def</span> <span class="nf">ecliptic_obliquity</span><span class="p">(</span><span class="n">epoch</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper routine to return the obliquity of the ecliptic for a given date.</span>
 
 <span class="sd">    :param epoch:   The epoch at which to calculate the obliquity.</span>
@@ -125,29 +131,30 @@
     <span class="c1"># There are even higher order terms, but they are probably not important for any reasonable</span>
     <span class="c1"># calculation someone would do with this package.</span>
     <span class="k">return</span> <span class="n">ep</span></div>
+
 </pre></div>
 
             <div class="clearer"></div>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
-<script>$('#searchbox').show(0);</script>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -159,8 +166,8 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, LSST DESC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+    &#169; Copyright 2017, LSST DESC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
     </div>
   </body>
 </html>
