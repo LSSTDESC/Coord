@@ -32,9 +32,9 @@ jobs:
       - name: Build sdist
         run: |
           python setup.py sdist
-          cp wheels/LSSTDESC.Coord* dist
+          cp wheels/lsstdesc_coord* dist
           ls -l dist
-          tar tvfz dist/LSSTDESC.Coord-*.tar.gz
+          tar tvfz dist/lsstdesc_coord-*.tar.gz
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
